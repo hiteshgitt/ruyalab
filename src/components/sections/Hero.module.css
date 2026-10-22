@@ -163,6 +163,76 @@
   gap: var(--s-6);
 }
 
+/* What we build */
+.build {
+  display: grid;
+  gap: var(--s-3);
+}
+
+.buildLabel {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a1c05;
+}
+
+.buildList {
+  list-style: none;
+  border-top: 1.5px solid #0b0b0d;
+}
+
+.buildLink {
+  display: grid;
+  grid-template-columns: 1.75rem 1.75rem 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 3rem;
+  padding-inline: 0.25rem;
+  border-bottom: 1px solid rgb(11 11 13 / 0.18);
+  color: #0b0b0d;
+  font-size: var(--t-small);
+  font-weight: 650;
+  transition:
+    background-color var(--d-fast) ease,
+    color var(--d-fast) ease,
+    padding var(--d-base) var(--ease-out);
+}
+
+.buildNum {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  color: #8a1c05;
+}
+
+.buildIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  /* Icons use the theme blue for their accent; keep them ink on yellow */
+  --c-blue: #2233d6;
+}
+
+.buildArrow {
+  transition: transform var(--d-base) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .buildLink:hover {
+    background: #0b0b0d;
+    color: var(--c-yellow);
+    padding-inline: 0.75rem;
+  }
+  .buildLink:hover .buildNum {
+    color: var(--c-yellow);
+  }
+  .buildLink:hover .buildIcon {
+    --c-blue: var(--c-yellow);
+  }
+  .buildLink:hover .buildArrow {
+    transform: translate(2px, -2px);
+  }
+}
+
 .mono {
   max-width: 22rem;
   font-family: var(--f-mono);
@@ -182,6 +252,7 @@
 }
 
 .meta dt {
+  white-space: nowrap;
   font-family: var(--f-mono);
   font-size: var(--t-label);
   letter-spacing: 0.06em;
@@ -348,6 +419,19 @@
   }
 }
 
+/* Tablet: list on the left, statement + numbers on the right, full width */
+@media (min-width: 640px) and (max-width: 1199px) {
+  .right {
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: var(--gutter);
+    align-items: end;
+  }
+  .build {
+    grid-row: span 2;
+  }
+}
+
 /* ---------- Desktop: three-column panel with the device in the middle */
 
 @media (min-width: 1200px) {
@@ -366,7 +450,9 @@
     margin: 0;
     pointer-events: none;
   }
-  .deviceWrap > * {
+  /* Only the device frame and switcher take clicks; the full-width stage
+     around them must not block the columns underneath */
+  .deviceWrap :global([data-hit]) {
     pointer-events: auto;
   }
   .panel {
@@ -381,10 +467,14 @@
     grid-column: 1;
     align-self: center;
   }
+  /* Fills the column: list level with the headline, meta at the bottom */
   .right {
     grid-column: 3;
-    align-self: end;
-    justify-self: end;
+    align-self: stretch;
+    justify-self: stretch;
+    max-width: 24rem;
+    margin-left: auto;
+    align-content: space-between;
   }
   .title {
     font-size: clamp(2.5rem, 0.5rem + 3.1vw, 4.75rem);

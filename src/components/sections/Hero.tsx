@@ -5,6 +5,7 @@ import { DeviceMorph } from "@/components/sections/DeviceMorph";
 import { Mascot } from "@/components/mascot/Mascot";
 import { Button } from "@/components/ui/Button";
 import { Flower } from "@/components/ui/Shapes";
+import { CapabilityIcon } from "@/components/ui/CapabilityIcon";
 import { projects } from "@/data/projects";
 import { capabilities } from "@/data/services";
 import styles from "./Hero.module.css";
@@ -76,6 +77,26 @@ export function Hero() {
             </div>
 
             <div className={styles.right} data-hero-fade>
+              {/* What we build: fills the column with real navigation */}
+              <nav className={styles.build} aria-label="What we build">
+                <p className={styles.buildLabel}>
+                  <span className="paren">What we build</span>
+                </p>
+                <ul className={styles.buildList}>
+                  {capabilities.map((c) => (
+                    <li key={c.index}>
+                      <a href={`#cap-${c.index}`} className={styles.buildLink}>
+                        <span className={styles.buildNum}>{c.index}</span>
+                        <CapabilityIcon index={c.index} className={styles.buildIcon} />
+                        <span className={styles.buildTitle}>{c.title}</span>
+                        <span className={styles.buildArrow} aria-hidden="true">
+                          ↗
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
               <p className={styles.mono}>
                 ( Web, mobile and everything in between — one product, designed for every screen ) +
               </p>

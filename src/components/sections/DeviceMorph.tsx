@@ -53,7 +53,7 @@ export function DeviceMorph() {
     >
       <div className={styles.box} aria-hidden="true">
         <span className={styles.stand} />
-        <div className={styles.frame}>
+        <div className={styles.frame} data-hit>
           <div className={styles.screen}>
             {/* Mobile — the live mascot app */}
             <div className={`${styles.layer} ${styles.lMobile}`}>
@@ -163,7 +163,7 @@ export function DeviceMorph() {
         </div>
       </div>
 
-      <div className={styles.switcher} role="group" aria-label="Preview the product on a device">
+      <div className={styles.switcher} data-hit role="group" aria-label="Preview the product on a device">
         {MODES.map((m) => (
           <button
             key={m}
