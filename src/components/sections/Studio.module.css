@@ -1,0 +1,125 @@
+.section {
+  padding-block: var(--s-section);
+}
+
+/* Immersive navy stage — the same in both themes */
+.panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-lg);
+  background:
+    radial-gradient(70% 60% at 78% 40%, rgb(47 107 255 / 0.28), transparent 70%),
+    linear-gradient(135deg, #070d22 0%, #101d4b 58%, #180d3e 100%);
+  color: #e6ecff;
+  padding: clamp(2rem, 5vw, 5.5rem) clamp(1.25rem, 5vw, 5.5rem);
+  isolation: isolate;
+}
+
+.visual {
+  position: absolute;
+  z-index: -1;
+  width: min(120vw, 820px);
+  aspect-ratio: 1;
+  right: -40%;
+  top: -6%;
+  opacity: 0.75;
+}
+
+.content {
+  position: relative;
+}
+
+.content .meta {
+  color: var(--c-cyan);
+  margin-bottom: var(--s-6);
+}
+
+.statement {
+  font-size: clamp(3.25rem, 1.5rem + 7.5vw, 10rem);
+  line-height: 0.9;
+  max-width: 11ch;
+  color: #fff;
+}
+
+.hl {
+  color: var(--c-yellow);
+}
+
+.lead {
+  margin-top: clamp(2rem, 1rem + 3vw, 4rem);
+  max-width: 34rem;
+  font-size: var(--t-lead);
+  line-height: 1.5;
+  color: rgb(230 236 255 / 0.85);
+}
+
+.pillars {
+  list-style: none;
+  display: grid;
+  gap: var(--s-3);
+  margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+}
+
+.pillar {
+  padding: var(--s-5);
+  border-radius: var(--r-md);
+  border: 1px solid rgb(230 236 255 / 0.16);
+  background: rgb(7 13 34 / 0.55);
+  color: rgb(230 236 255 / 0.75);
+  font-size: var(--t-small);
+  transition:
+    border-color var(--d-base) ease,
+    translate var(--d-base) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .pillar:hover {
+    border-color: var(--c-cyan);
+    translate: 0 -4px;
+  }
+}
+
+.pillarNum {
+  color: var(--c-cyan);
+}
+
+.pillarTitle {
+  margin-block: var(--s-3);
+  font-family: var(--f-display);
+  font-size: var(--t-h4);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  color: #fff;
+}
+
+/* ---------- Workflows */
+
+.workflows {
+  margin-top: clamp(3rem, 2rem + 4vw, 6rem);
+}
+
+.wfHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-3);
+  margin-bottom: var(--s-5);
+}
+
+.wfTitle {
+  font-size: var(--t-h3);
+}
+
+@media (min-width: 768px) {
+  .pillars {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .visual {
+    right: -18%;
+    top: -10%;
+    width: min(70vw, 900px);
+    opacity: 1;
+  }
+}

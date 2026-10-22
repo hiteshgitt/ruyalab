@@ -1,0 +1,123 @@
+.button {
+  --pad-x: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 3.25rem;
+  padding: 0 var(--pad-x);
+  font-family: var(--f-body);
+  font-size: var(--t-small);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1;
+  white-space: nowrap;
+  border-radius: var(--r-pill);
+  border: 1.5px solid transparent;
+  transition:
+    background-color var(--d-base) var(--ease-out),
+    color var(--d-base) var(--ease-out),
+    border-color var(--d-base) var(--ease-out),
+    transform var(--d-base) var(--ease-spring);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+.labelWrap {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  padding-block: 0.15em;
+}
+
+.label {
+  grid-area: 1 / 1;
+  transition: transform var(--d-base) var(--ease-out);
+}
+
+.label + .label {
+  transform: translateY(110%);
+}
+
+.arrow {
+  flex: none;
+  transition: transform var(--d-base) var(--ease-out);
+}
+
+.arrow[data-dir="down"] {
+  transform: rotate(90deg);
+}
+
+@media (hover: hover) {
+  .button:hover:not(:disabled) .label:first-child {
+    transform: translateY(-110%);
+  }
+  .button:hover:not(:disabled) .label + .label {
+    transform: none;
+  }
+  .button:hover:not(:disabled) .arrow[data-dir="right"] {
+    transform: translateX(3px) rotate(-45deg);
+  }
+  .button:hover:not(:disabled) .arrow[data-dir="down"] {
+    transform: rotate(90deg) translateX(3px);
+  }
+}
+
+/* Variants */
+
+.primary {
+  background: var(--c-invert);
+  color: var(--c-invert-text);
+}
+
+@media (hover: hover) {
+  .primary:hover:not(:disabled) {
+    background: var(--c-blue);
+    color: #fff;
+  }
+}
+
+.yellow {
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+}
+
+@media (hover: hover) {
+  .yellow:hover:not(:disabled) {
+    background: var(--c-invert);
+    color: var(--c-invert-text);
+  }
+}
+
+.ghost {
+  border-color: var(--c-text);
+  color: var(--c-text);
+}
+
+@media (hover: hover) {
+  .ghost:hover:not(:disabled) {
+    background: var(--c-text);
+    color: var(--c-bg);
+  }
+}
+
+.text {
+  --pad-x: 0;
+  min-height: 2.75rem;
+  color: var(--c-text);
+  border-radius: 0;
+  background: linear-gradient(currentColor, currentColor) left bottom / 100% 1.5px no-repeat;
+}
+
+@media (hover: hover) {
+  .text:hover {
+    color: var(--c-blue);
+  }
+}

@@ -1,0 +1,122 @@
+.section {
+  padding-block: 0 var(--s-section);
+}
+
+.panel {
+  position: relative;
+  display: grid;
+  gap: var(--s-7);
+  padding: clamp(1.75rem, 5vw, 5rem) clamp(1.25rem, 5vw, 5rem);
+  border-radius: var(--r-lg);
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+  overflow: hidden;
+}
+
+.intro {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.meta {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a1c05;
+}
+
+.title {
+  margin-block: var(--s-5);
+  font-size: clamp(3.25rem, 1.5rem + 6.5vw, 9rem);
+  max-width: 9ch;
+}
+
+.hl {
+  color: #2f45ff;
+}
+
+.copy {
+  max-width: 24rem;
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: rgb(11 11 13 / 0.78);
+}
+
+.direct {
+  display: grid;
+  gap: var(--s-2);
+  margin-top: var(--s-6);
+}
+
+.directLabel {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.direct a {
+  justify-self: start;
+  font-size: var(--t-h4);
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+  word-break: break-word;
+}
+
+.mascotWrap {
+  position: relative;
+  width: min(100%, 26rem);
+  margin-top: var(--s-6);
+}
+
+.flower {
+  position: absolute;
+  /* Centred on the mascot's eye (≈49% × 52% of the 5:3 artboard) */
+  width: 55%;
+  aspect-ratio: 1;
+  left: 21.5%;
+  top: 6%;
+  color: #0b0b0d;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flower {
+    animation: spin 30s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.mascot {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.formCard {
+  align-self: start;
+  padding: clamp(1.5rem, 3vw, 2.75rem);
+  border-radius: calc(var(--r-lg) - 6px);
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--c-shadow);
+}
+
+@media (min-width: 1024px) {
+  .panel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: stretch;
+  }
+  .mascotWrap {
+    margin-top: auto;
+  }
+}

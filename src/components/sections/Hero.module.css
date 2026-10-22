@@ -1,0 +1,539 @@
+.hero {
+  position: relative;
+  padding-top: calc(var(--nav-h) + var(--s-4));
+  padding-bottom: var(--s-6);
+  overflow: clip;
+}
+
+.stage {
+  /* Wordmark size: "RUYALAB" in Anton is ~3.18em wide; fit the container */
+  --word: calc((min(100vw, var(--max-w)) - 2 * var(--gutter)) / 3.18);
+  --dw: min(62vw, 290px);
+  position: relative;
+}
+
+/* ---------- Giant wordmark */
+
+.word {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--f-display);
+  font-size: var(--word);
+  line-height: 0.8;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--c-text);
+  user-select: none;
+}
+
+.word span {
+  display: inline-block;
+  transition:
+    color var(--d-base) var(--ease-out),
+    transform var(--d-base) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .word span:hover {
+    color: var(--c-text-3);
+    transform: translateY(-4%);
+  }
+  .word span:nth-child(3n + 2):hover {
+    color: var(--c-blue);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .word span {
+    animation: word-in 1.2s var(--ease-out) both;
+    animation-delay: calc(var(--i) * 0.05s);
+  }
+}
+
+@keyframes word-in {
+  from {
+    transform: translateY(30%);
+    opacity: 0;
+  }
+}
+
+/* ---------- Scene */
+
+.scene {
+  position: relative;
+  margin-top: calc(var(--word) * -0.16);
+}
+
+.deviceWrap {
+  position: relative;
+  z-index: 2;
+  width: var(--dw);
+  margin-inline: auto;
+  margin-bottom: calc(var(--dw) * -1.05);
+}
+
+.device {
+  aspect-ratio: 9 / 19;
+  padding: calc(var(--dw) * 0.032);
+  border-radius: calc(var(--dw) * 0.16);
+  background: #111114;
+  box-shadow:
+    inset 0 0 0 1.5px #3a3a42,
+    0 40px 80px -30px rgb(0 0 0 / 0.55);
+}
+
+.screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--dw) * 0.13);
+  background: radial-gradient(120% 80% at 50% 60%, #1b2a6b 0%, #0d1438 45%, #070d22 100%);
+  color: #e6ecff;
+  container-type: inline-size;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5cqw 9cqw 0;
+  font-family: var(--f-body);
+  font-size: 4.6cqw;
+  font-weight: 600;
+}
+
+.island {
+  width: 30cqw;
+  height: 8.5cqw;
+  border-radius: 99px;
+  background: #000;
+}
+
+.screenTop {
+  display: flex;
+  justify-content: space-between;
+  padding: 5cqw 6cqw 0;
+  font-family: var(--f-mono);
+  font-size: 3.6cqw;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+
+.screenWord {
+  margin-top: 3cqw;
+  font-family: var(--f-display);
+  font-size: 40cqw;
+  line-height: 0.85;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--c-yellow);
+}
+
+.screenSide {
+  position: absolute;
+  right: 3cqw;
+  top: 45%;
+  writing-mode: vertical-rl;
+  font-family: var(--f-mono);
+  font-size: 3.2cqw;
+  letter-spacing: 0.05em;
+  color: rgb(230 236 255 / 0.55);
+}
+
+.liveMascot {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: 30%;
+}
+
+.screenChips {
+  position: absolute;
+  left: 6cqw;
+  right: 6cqw;
+  bottom: 7cqw;
+  display: flex;
+  gap: 2cqw;
+  font-size: 3.8cqw;
+  font-weight: 600;
+}
+
+.screenChips span {
+  flex: 1;
+  padding: 2.6cqw 0;
+  text-align: center;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.screenChips span[data-on="true"] {
+  background: var(--c-yellow);
+  color: #0b0b0d;
+  border-color: transparent;
+}
+
+/* ---------- Yellow panel */
+
+.panel {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: var(--s-7);
+  padding: calc(var(--dw) * 1.12) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+  border-radius: var(--r-lg);
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+  overflow: hidden;
+}
+
+.edge {
+  display: none;
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #8a1c05;
+}
+
+.title {
+  margin-top: var(--s-4);
+  font-size: clamp(2.75rem, 1.6rem + 3.6vw, 5.25rem);
+  line-height: 0.92;
+}
+
+.mask {
+  display: block;
+  overflow: clip;
+  padding-bottom: 0.04em;
+}
+
+.line {
+  display: block;
+}
+
+.hl {
+  color: #2f45ff;
+}
+
+.copy {
+  margin-top: var(--s-5);
+  max-width: 28rem;
+  font-size: var(--t-lead);
+  line-height: 1.45;
+  color: rgb(11 11 13 / 0.78);
+  text-wrap: pretty;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-3);
+  margin-top: var(--s-6);
+}
+
+/* Both CTAs must stay ink-on-yellow in either theme */
+.ctas :global(a:first-child) {
+  background: #0b0b0d;
+  color: #fff;
+}
+
+.ghostOnYellow {
+  border-color: #0b0b0d;
+  color: #0b0b0d;
+}
+
+@media (hover: hover) {
+  .ctas :global(a:first-child:hover) {
+    background: #2f45ff;
+  }
+  .ghostOnYellow:hover:not(:disabled) {
+    background: #0b0b0d;
+    color: var(--c-yellow);
+  }
+}
+
+.right {
+  align-self: end;
+  display: grid;
+  gap: var(--s-6);
+}
+
+.mono {
+  max-width: 22rem;
+  font-family: var(--f-mono);
+  font-size: var(--t-small);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgb(11 11 13 / 0.8);
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s-4);
+  border-top: 1.5px solid #0b0b0d;
+  padding-top: var(--s-4);
+}
+
+.meta dt {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.meta dd {
+  font-family: var(--f-display);
+  font-size: clamp(3rem, 2rem + 3vw, 5rem);
+  line-height: 1;
+}
+
+/* ---------- Stickers */
+
+.sticker {
+  display: none;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 15rem;
+  padding: 0.65rem 1rem 0.65rem 0.65rem;
+  border-radius: 20px;
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--c-shadow);
+  border: 1px solid var(--c-line);
+}
+
+.cardImg {
+  width: 5.5rem;
+  height: auto;
+  border-radius: 14px;
+  background: radial-gradient(circle at 50% 55%, #1b2a6b, #070d22 75%);
+}
+
+.cardNum {
+  font-family: var(--f-display);
+  font-size: 2.6rem;
+  line-height: 1;
+}
+
+.cardTxt {
+  font-size: var(--t-small);
+  color: var(--c-text-2);
+}
+
+.drag {
+  display: block;
+  margin: 0.4rem 0 0 0.5rem;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-2);
+}
+
+.flower {
+  width: 7.5rem;
+  height: 7.5rem;
+  color: var(--c-text);
+}
+
+.flower > span {
+  color: var(--c-bg);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.8rem 1.15rem;
+  border-radius: 99px;
+  background: var(--c-invert);
+  color: var(--c-invert-text);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  box-shadow: var(--c-shadow);
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-orange);
+  box-shadow: 0 0 0 4px rgb(255 75 43 / 0.25);
+}
+
+.bubble {
+  display: block;
+  width: 8.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--c-orange);
+  box-shadow: var(--c-shadow);
+  border: 4px solid var(--c-surface);
+}
+
+.bubbleImg {
+  width: 170%;
+  max-width: none;
+  margin: 10% 0 0 -35%;
+}
+
+.star {
+  width: 4.5rem;
+  fill: var(--c-blue);
+}
+
+/* Touch / small: a couple of floating accents around the device */
+.sBubble {
+  display: block;
+  left: 0;
+  top: calc(var(--dw) * 0.15);
+  scale: 0.62;
+  transform-origin: left top;
+}
+
+.sStar {
+  display: block;
+  right: 2%;
+  top: calc(var(--dw) * 0.05);
+  scale: 0.7;
+}
+
+/* ---------- Entrance (pure CSS: starts at first paint, no hydration wait) */
+
+@media (prefers-reduced-motion: no-preference) {
+  .line {
+    animation: hero-rise 1.2s var(--ease-out) both;
+    animation-delay: calc(0.25s + var(--i, 0) * 0.08s);
+  }
+  .stage [data-hero-fade] {
+    animation: hero-fade 1s var(--ease-out) 0.5s both;
+  }
+  .deviceWrap {
+    animation: device-in 1.4s var(--ease-out) 0.1s both;
+  }
+}
+
+@keyframes hero-rise {
+  from { transform: translateY(105%); }
+}
+
+@keyframes hero-fade {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes device-in {
+  from { opacity: 0; transform: translateY(80px) rotate(-4deg); }
+}
+
+/* ---------- Tablet */
+
+@media (min-width: 640px) {
+  .stage {
+    --dw: min(42vw, 300px);
+  }
+  .panel {
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+  }
+  .left {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Desktop: three-column panel with the device in the middle */
+
+@media (min-width: 1024px) {
+  .stage {
+    --dw: clamp(250px, 21vw, 360px);
+  }
+  .scene {
+    margin-top: calc(var(--word) * -0.1);
+  }
+  .deviceWrap {
+    position: absolute;
+    left: 50%;
+    top: calc(var(--word) * -0.5);
+    bottom: 0;
+    margin: 0 0 0 calc(var(--dw) / -2);
+    /* Device runs off the bottom of the panel, like a product shot */
+    overflow: hidden;
+  }
+  .panel {
+    grid-template-columns: minmax(0, 1fr) calc(var(--dw) + 2 * var(--gutter)) minmax(0, 1fr);
+    gap: 0;
+    min-height: max(calc(var(--dw) * 1.6), 34rem);
+    padding: clamp(2.5rem, 4vw, 4rem) clamp(2.5rem, 4vw, 4.5rem);
+    align-items: stretch;
+  }
+  .left {
+    grid-column: 1;
+    align-self: center;
+  }
+  .right {
+    grid-column: 3;
+    align-self: end;
+    justify-self: end;
+  }
+  .title {
+    font-size: clamp(2.75rem, 0.8rem + 3.4vw, 5rem);
+  }
+  .edge {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+    writing-mode: vertical-rl;
+    white-space: nowrap;
+    font-family: var(--f-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    color: rgb(11 11 13 / 0.78);
+  }
+  .edgeL {
+    left: 0.9rem;
+    transform: rotate(180deg);
+  }
+  .edgeR {
+    right: 0.9rem;
+  }
+
+  .sticker {
+    display: block;
+    scale: none;
+  }
+  .sCard {
+    left: 17%;
+    top: calc(var(--word) * -0.36);
+  }
+  .sChip {
+    right: 4%;
+    top: calc(var(--word) * -0.22);
+  }
+  .sFlower {
+    right: 26%;
+    top: 30%;
+  }
+  .sBubble {
+    left: 3%;
+    top: calc(var(--word) * -0.62);
+  }
+  .sStar {
+    right: 33%;
+    top: calc(var(--word) * -0.7);
+  }
+}

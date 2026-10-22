@@ -1,0 +1,80 @@
+.mascot {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .body {
+    animation: bob 5s var(--ease-in-out) infinite;
+    transform-origin: 490px 315px;
+  }
+
+  .shadow {
+    animation: shadow 5s var(--ease-in-out) infinite;
+    transform-origin: 500px 440px;
+  }
+
+  .blink {
+    transform-origin: 490px 315px;
+    animation: blink 6.5s infinite;
+  }
+
+  .finTop {
+    transform-origin: 560px 150px;
+    animation: flap 3.2s var(--ease-in-out) infinite;
+  }
+
+  .orbA {
+    animation: orbit-a 7s linear infinite;
+    transform-origin: 490px 315px;
+  }
+
+  .orbB {
+    animation: orbit-a 9s linear infinite reverse;
+    transform-origin: 490px 315px;
+  }
+
+  .flow {
+    stroke-dasharray: 60 30;
+    animation: flow 2.4s linear infinite;
+  }
+
+  .spin {
+    transform-origin: 490px 310px;
+    animation: spin 0.9s var(--ease-spring);
+  }
+}
+
+@keyframes bob {
+  50% { transform: translateY(-14px) rotate(-1.2deg); }
+}
+
+@keyframes shadow {
+  50% { transform: scaleX(0.86); opacity: 0.35; }
+}
+
+@keyframes blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.08); }
+}
+
+@keyframes flap {
+  50% { transform: rotate(-6deg); }
+}
+
+@keyframes orbit-a {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes flow {
+  to { stroke-dashoffset: -90; }
+}
+
+@keyframes spin {
+  from { transform: rotate(0) scale(1); }
+  50% { transform: rotate(200deg) scale(1.5); }
+  to { transform: rotate(360deg) scale(1); }
+}

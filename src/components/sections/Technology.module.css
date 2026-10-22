@@ -1,0 +1,116 @@
+.section {
+  padding-block: var(--s-section);
+}
+
+.groups {
+  display: grid;
+  gap: var(--s-7);
+}
+
+.groupHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--s-4);
+  padding-bottom: var(--s-3);
+  margin-bottom: var(--s-4);
+  border-bottom: 1.5px solid var(--c-text);
+  font-weight: 400;
+}
+
+.groupHead :global(.label) {
+  color: var(--c-text);
+}
+
+.groupNote {
+  font-size: var(--t-small);
+  color: var(--c-text-3);
+}
+
+.items {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr));
+  gap: var(--s-3);
+}
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-6);
+  aspect-ratio: 1.15;
+  padding: var(--s-5);
+  border-radius: var(--r-md);
+  background: var(--c-card);
+  color: var(--c-text);
+  overflow: hidden;
+  transition: translate var(--d-base) var(--ease-spring);
+}
+
+/* Brand-coloured wash rises on hover */
+.item::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: color-mix(in srgb, var(--brand) 14%, transparent);
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease-out);
+}
+
+.logo {
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  transition:
+    color var(--d-base) ease,
+    transform 0.6s var(--ease-spring);
+}
+
+.name {
+  position: relative;
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .item:hover {
+    translate: 0 -4px;
+  }
+  .item:hover::before {
+    transform: none;
+  }
+  .item:hover .logo {
+    color: var(--brand);
+    transform: scale(1.15) rotate(-6deg);
+  }
+}
+
+/* Desktop: each group is a row — label rail on the left, logos on the right */
+@media (min-width: 900px) {
+  .groups {
+    gap: var(--s-5);
+  }
+  .group {
+    display: grid;
+    grid-template-columns: minmax(12rem, 3fr) 9fr;
+    gap: var(--gutter);
+    padding-top: var(--s-5);
+    border-top: 1.5px solid var(--c-text);
+  }
+  .groupHead {
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--s-2);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+  .items {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}

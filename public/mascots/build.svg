@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="600" viewBox="0 0 1000 600" role="img" aria-labelledby="title desc">
+<title id="title">Ruyalab Mascot — Build</title><desc id="desc">Editable vector mascot inspired by Ruyalab's living vision symbol, in white, electric blue and purple.</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071020"/><stop offset=".58" stop-color="#101d4b"/><stop offset="1" stop-color="#180d3e"/></linearGradient>
+ <linearGradient id="shell" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffffff"/><stop offset=".45" stop-color="#e9f1ff"/><stop offset=".76" stop-color="#b8c8f4"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+ <linearGradient id="iris" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5ff6ff"/><stop offset=".42" stop-color="#168aff"/><stop offset=".75" stop-color="#3438ef"/><stop offset="1" stop-color="#a34dff"/></linearGradient>
+ <linearGradient id="purpleBlue" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#43eaff"/><stop offset=".55" stop-color="#387bff"/><stop offset="1" stop-color="#a64dff"/></linearGradient>
+ <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5af4ff"/><stop offset=".5" stop-color="#4e78ff"/><stop offset="1" stop-color="#bd64ff"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#267dff" stop-opacity=".6"/><stop offset="1" stop-color="#267dff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="floorGlow"><stop stop-color="#4deaff" stop-opacity=".8"/><stop offset="1" stop-color="#684bff" stop-opacity="0"/></radialGradient>
+ <radialGradient id="blueOrb"><stop stop-color="#e7ffff"/><stop offset=".35" stop-color="#42ddff"/><stop offset="1" stop-color="#2764ff"/></radialGradient>
+ <radialGradient id="purpleOrb"><stop stop-color="#fff"/><stop offset=".4" stop-color="#b56bff"/><stop offset="1" stop-color="#5b37ee"/></radialGradient>
+ <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="22"/></filter>
+</defs>
+<ellipse cx="500" cy="315" rx="350" ry="260" fill="url(#glow)" filter="url(#softGlow)"/>
+
+          <path d="M640 315 L705 280 L770 315 L705 350 Z" fill="#182b69" stroke="#7f7cff" stroke-width="4"/>
+          <path d="M640 315 V385 L705 423 L705 350 M770 315 V385 L705 423" fill="#132153" stroke="#4edfff" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="720" cy="170" r="14" fill="url(#blueOrb)"/>
+        
+<!-- aerodynamic fins -->
+<path d="M540 125 C590 65 660 40 735 44 C716 105 662 150 585 164 Z" fill="url(#purpleBlue)" stroke="#9defff" stroke-width="3"/>
+<path d="M360 330 C290 292 258 258 270 218 C324 235 370 272 392 310 Z" fill="url(#purpleBlue)" stroke="#a5f4ff" stroke-width="3"/>
+<path d="M555 445 C610 472 645 505 650 540 C594 530 553 495 530 456 Z" fill="url(#purpleBlue)" stroke="#9beeff" stroke-width="3"/>
+<!-- body shell -->
+<ellipse cx="490" cy="315" rx="205" ry="175" fill="url(#shell)" stroke="#d9e7ff" stroke-width="5"/>
+<ellipse cx="490" cy="315" rx="171" ry="137" fill="#07132f" stroke="#8ca6f4" stroke-width="6"/>
+<ellipse cx="490" cy="315" rx="145" ry="115" fill="url(#iris)" stroke="#4deeff" stroke-width="7"/>
+<ellipse cx="490" cy="315" rx="103" ry="86" fill="#06112d" stroke="#536dff" stroke-width="5"/>
+<circle cx="455" cy="310" r="18" fill="#e9fdff"/>
+<ellipse cx="430" cy="275" rx="19" ry="10" transform="rotate(-42 430 275)" fill="#e6ffff" opacity=".95"/>
+<ellipse cx="452" cy="290" rx="8" ry="5" transform="rotate(-42 452 290)" fill="#fff" opacity=".9"/>
+<!-- orbital ring foreground -->
+<path d="M260 275 C340 400 590 480 735 345" fill="none" stroke="#d6faff" stroke-width="12" stroke-linecap="round" opacity=".8"/>
+<path d="M260 275 C340 400 590 480 735 345" fill="none" stroke="url(#orbit)" stroke-width="7" stroke-linecap="round"/>
+<!-- subtle highlight -->
+<path d="M355 220 C405 168 500 145 574 176" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+<!-- prop overlay -->
+
+          <path d="M640 315 L705 280 L770 315 L705 350 Z" fill="#182b69" stroke="#7f7cff" stroke-width="4"/>
+          <path d="M640 315 V385 L705 423 L705 350 M770 315 V385 L705 423" fill="#132153" stroke="#4edfff" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="720" cy="170" r="14" fill="url(#blueOrb)"/>
+        
+</svg>

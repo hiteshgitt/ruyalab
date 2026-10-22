@@ -1,0 +1,148 @@
+.section {
+  padding-bottom: var(--s-section);
+}
+
+.ticker {
+  padding-block: var(--s-4);
+  margin-bottom: var(--s-section);
+  border-block: 1px solid var(--c-line);
+}
+
+.steps {
+  list-style: none;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    "top art"
+    "text art";
+  gap: var(--s-3);
+  padding: clamp(1.25rem, 2vw, 2rem);
+  border-radius: var(--r-lg);
+  background: var(--c-card);
+  overflow: hidden;
+  outline-offset: 4px;
+  transition:
+    flex-grow 0.7s var(--ease-out),
+    background-color var(--d-base) ease,
+    color var(--d-base) ease;
+}
+
+.top {
+  grid-area: top;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.num {
+  font-size: clamp(3rem, 2rem + 3vw, 5.5rem);
+  line-height: 0.85;
+}
+
+.arrow {
+  display: none;
+  font-size: 1.25rem;
+}
+
+.art {
+  grid-area: art;
+  align-self: center;
+  width: clamp(7rem, 30vw, 10rem);
+}
+
+.mascot {
+  width: 100%;
+  height: auto;
+  transition: transform 0.8s var(--ease-spring);
+}
+
+.text {
+  grid-area: text;
+  align-self: end;
+}
+
+.title {
+  font-size: var(--t-h3);
+}
+
+.desc {
+  margin-top: var(--s-2);
+  max-width: 18rem;
+  color: var(--c-text-2);
+  font-size: var(--t-small);
+}
+
+/* ---------- Desktop: expanding accordion row */
+
+@media (min-width: 1024px) {
+  .steps {
+    display: flex;
+    gap: var(--s-3);
+    height: 34rem;
+  }
+
+  .step {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: default;
+  }
+
+  .arrow {
+    display: block;
+  }
+
+  .art {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    width: 22rem;
+    translate: -50% -50%;
+    opacity: 0;
+    scale: 0.6;
+    transition:
+      opacity var(--d-base) ease,
+      scale 0.7s var(--ease-spring);
+    pointer-events: none;
+  }
+
+  .desc {
+    opacity: 0;
+    transform: translateY(8px);
+    transition:
+      opacity var(--d-base) ease,
+      transform var(--d-base) var(--ease-out);
+  }
+
+  /* Active: hovered or keyboard-focused; the first step is active by default */
+  .step:hover,
+  .step:focus-visible,
+  .steps:not(:hover):not(:focus-within) .step:first-child {
+    flex-grow: 2.6;
+    background: var(--c-yellow);
+    color: var(--c-yellow-ink);
+  }
+
+  .step:hover .art,
+  .step:focus-visible .art,
+  .steps:not(:hover):not(:focus-within) .step:first-child .art {
+    opacity: 1;
+    scale: 1;
+  }
+
+  .step:hover .desc,
+  .step:focus-visible .desc,
+  .steps:not(:hover):not(:focus-within) .step:first-child .desc {
+    opacity: 1;
+    transform: none;
+    color: rgb(11 11 13 / 0.75);
+  }
+}

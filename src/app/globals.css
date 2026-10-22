@@ -1,40 +1,158 @@
+/* ==========================================================================
+   Ruyalab — design tokens & base styles
+   Light is the default; dark applies via [data-theme="dark"], which an inline
+   script sets before paint from the saved choice or the OS preference.
+   ========================================================================== */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand constants (same in both themes) */
+  --c-yellow: #ffd000;
+  --c-yellow-ink: #0b0b0d;
+  /* Display orange: tuned per theme to clear 3:1 for large text */
+  --c-orange: #f24426;
+  /* Small orange text needs more contrast on the light background */
+  --c-orange-text: #c4300f;
+  --c-cyan: #45e3ff;
+  --c-violet: #8f5bff;
+  --c-navy: #070d22;
+
+  /* Theme: light */
+  --c-bg: #f3f2ee;
+  --c-surface: #ffffff;
+  --c-card: #e7e6e1;
+  --c-card-2: #dcdbd5;
+  --c-text: #0b0b0d;
+  --c-text-2: #4f5056;
+  --c-text-3: #66676d;
+  --c-blue: #2f45ff;
+  --c-line: rgb(11 11 13 / 0.1);
+  --c-line-strong: rgb(11 11 13 / 0.22);
+  --c-invert: #0b0b0d;
+  --c-invert-text: #f3f2ee;
+  --c-danger: #d42a12;
+  --c-shadow: 0 1px 2px rgb(11 11 13 / 0.06), 0 18px 40px -18px rgb(11 11 13 / 0.28);
+
+  /* Type families (set by next/font in layout) */
+  --f-display: var(--font-display), "Arial Narrow", Impact, sans-serif;
+  --f-body: var(--font-body), system-ui, sans-serif;
+  --f-mono: var(--font-mono), ui-monospace, monospace;
+
+  /* Type scale (fluid, 360px → 1920px) */
+  --t-label: 0.75rem;
+  --t-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
+  --t-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --t-lead: clamp(1.125rem, 1.03rem + 0.42vw, 1.375rem);
+  --t-h4: clamp(1.5rem, 1.3rem + 0.9vw, 2.25rem);
+  --t-h3: clamp(2rem, 1.5rem + 2vw, 3.75rem);
+  --t-h2: clamp(3rem, 2rem + 5vw, 8rem);
+  --t-h1: clamp(3.5rem, 2rem + 7vw, 11rem);
+
+  /* Spacing */
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 3rem;
+  --s-8: 4rem;
+  --s-9: 6rem;
+  --s-section: clamp(5rem, 3.5rem + 7vw, 11rem);
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --max-w: 1680px;
+  --nav-h: 4.5rem;
+
+  /* Shape */
+  --r-sm: 6px;
+  --r-md: 18px;
+  --r-lg: clamp(20px, 1rem + 1.5vw, 40px);
+  --r-pill: 999px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --d-fast: 180ms;
+  --d-base: 420ms;
+  --d-slow: 900ms;
+
+  color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root[data-theme="dark"] {
+  --c-bg: #0b0b0d;
+  --c-surface: #151519;
+  --c-card: #1c1c21;
+  --c-card-2: #26262c;
+  --c-text: #f3f2ee;
+  --c-text-2: #a9a9ae;
+  --c-text-3: #8a8a90;
+  --c-orange-text: #ff6a4d;
+  --c-orange: #ff4b2b;
+  --c-blue: #8a96ff;
+  --c-line: rgb(243 242 238 / 0.1);
+  --c-line-strong: rgb(243 242 238 / 0.24);
+  --c-invert: #f3f2ee;
+  --c-invert-text: #0b0b0d;
+  --c-danger: #ff7a6b;
+  --c-shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 22px 50px -20px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
 }
 
-html {
-  height: 100%;
-}
+/* ---------------------------------------------------------------- Reset */
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: var(--nav-h);
+}
+
+/* Smooth only for in-page navigation the user triggers (focus is inside the
+   page). Initial #hash loads jump instantly, so ScrollTrigger's first refresh
+   can't interrupt an in-flight smooth scroll and strand the visitor. */
+@media (prefers-reduced-motion: no-preference) {
+  html:focus-within {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100svh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+  transition:
+    background-color var(--d-base) ease,
+    color var(--d-base) ease;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+/* Keep intrinsic ratio when CSS sets only the width (next/image emits height attrs) */
+img {
+  height: auto;
 }
 
 a {
@@ -42,8 +160,140 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  background: none;
+  border: 0;
+}
+
+::selection {
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-blue);
+  outline-offset: 3px;
+  border-radius: var(--r-sm);
+}
+
+/* ---------------------------------------------------------------- Utilities */
+
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+}
+
+/* Mono labels, reference-style: "( WORK )" */
+.label {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--c-text-2);
+}
+
+.paren::before {
+  content: "( ";
+}
+
+.paren::after {
+  content: " )";
+}
+
+.display {
+  font-family: var(--f-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.005em;
+  line-height: 0.9;
+}
+
+.accent {
+  color: var(--c-orange);
+}
+
+/* Orange at label size uses the higher-contrast text shade */
+.label .accent,
+.paren.accent {
+  color: var(--c-orange-text);
+}
+
+.blue {
+  color: var(--c-blue);
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: var(--s-3);
+  left: var(--s-3);
+  z-index: 100;
+  padding: var(--s-3) var(--s-4);
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+  font-weight: 600;
+  border-radius: var(--r-pill);
+  transform: translateY(-200%);
+  transition: transform var(--d-fast) var(--ease-out);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* SplitText line masks */
+.split-mask {
+  overflow: clip;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+}
+
+/* Ticker band between hero and work */
+.band {
+  padding-block: var(--s-4);
+  border-block: 1px solid var(--c-line);
+}
+
+.nf-mascot {
+  width: min(80vw, 26rem);
+  height: auto;
 }

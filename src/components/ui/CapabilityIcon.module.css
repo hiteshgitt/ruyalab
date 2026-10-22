@@ -1,0 +1,50 @@
+.icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  overflow: visible;
+}
+
+.fill {
+  fill: var(--c-blue);
+  stroke: none;
+}
+
+.fillSoft {
+  fill: color-mix(in srgb, var(--c-blue) 22%, transparent);
+}
+
+.icon [data-anim] {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.6s var(--ease-spring);
+}
+
+/* Animated when an ancestor card is hovered or focused */
+@media (prefers-reduced-motion: no-preference) {
+  :global(.cap-card:hover) .icon [data-anim="sparkle"],
+  :global(.cap-card:focus-within) .icon [data-anim="sparkle"] {
+    transform: rotate(90deg) scale(1.35);
+  }
+  :global(.cap-card:hover) .icon [data-anim="bar"],
+  :global(.cap-card:focus-within) .icon [data-anim="bar"] {
+    transform: scaleY(1.5);
+    transform-origin: bottom;
+  }
+  :global(.cap-card:hover) .icon [data-anim="pulse"],
+  :global(.cap-card:focus-within) .icon [data-anim="pulse"] {
+    transform: scale(1.6) rotate(45deg);
+  }
+  :global(.cap-card:hover) .icon [data-anim="spin"] {
+    animation: icon-spin 3s linear infinite;
+  }
+  :global(.cap-card:hover) .icon [data-anim="lines"],
+  :global(.cap-card:focus-within) .icon [data-anim="lines"] {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes icon-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

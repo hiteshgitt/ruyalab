@@ -1,0 +1,266 @@
+.section {
+  padding-block: var(--s-section);
+  overflow: clip;
+}
+
+/* ---------- Poster composition */
+
+.poster {
+  display: grid;
+  gap: 0;
+  margin-bottom: clamp(3rem, 2rem + 4vw, 6rem);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: clamp(0.75rem, 2vw, 2rem);
+}
+
+.big {
+  font-size: clamp(4.5rem, 2rem + 11vw, 13rem);
+  line-height: 0.86;
+  text-align: center;
+}
+
+.brand {
+  color: var(--c-orange);
+}
+
+.side {
+  justify-self: start;
+  color: var(--c-text);
+}
+
+.sideL {
+  justify-self: end;
+}
+
+.asterisk {
+  font-size: clamp(3rem, 1.5rem + 6vw, 8rem);
+  line-height: 0.6;
+  font-family: var(--f-body);
+  font-weight: 800;
+}
+
+.tileRow {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.3rem, 1vw, 1rem);
+}
+
+.bracket {
+  font-size: clamp(5rem, 2rem + 10vw, 12rem);
+  line-height: 0.8;
+  font-weight: 400;
+}
+
+.tile {
+  display: block;
+  width: clamp(9rem, 4rem + 16vw, 20rem);
+  aspect-ratio: 3 / 2;
+  border-radius: var(--r-md);
+  background: var(--c-yellow);
+  overflow: hidden;
+}
+
+.tileImg {
+  width: 130%;
+  max-width: none;
+  margin: -6% 0 0 -12%;
+  transition: transform 0.8s var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .tile:hover .tileImg {
+    transform: scale(1.08) rotate(-4deg);
+  }
+}
+
+/* Connector rails with pill links */
+.rail {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.rail::before,
+.rail::after {
+  content: "";
+  height: 1.5px;
+  flex: 1;
+  background: var(--c-text);
+}
+
+.rail::after {
+  margin-right: calc(var(--gutter) * -1);
+}
+
+.railL::before {
+  margin-left: calc(var(--gutter) * -1);
+}
+
+.pill {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 14px;
+  background: var(--c-invert);
+  color: var(--c-invert-text);
+  font-size: var(--t-small);
+  font-weight: 600;
+  transition:
+    background-color var(--d-fast) ease,
+    transform var(--d-base) var(--ease-spring);
+}
+
+.pill:hover {
+  background: var(--c-blue);
+  color: #fff;
+  transform: translateY(-2px) rotate(-2deg);
+}
+
+.intro {
+  max-width: 34rem;
+  margin: 0 auto clamp(2.5rem, 2rem + 2vw, 4rem);
+  text-align: center;
+  font-size: var(--t-lead);
+  color: var(--c-text-2);
+}
+
+/* ---------- Cards */
+
+.cards {
+  list-style: none;
+  display: grid;
+  gap: var(--s-3);
+}
+
+.item {
+  display: flex;
+  perspective: 1200px;
+  border-radius: var(--r-lg);
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
+  outline-offset: 4px;
+}
+
+.item:target .card {
+  box-shadow: 0 0 0 3px var(--c-blue);
+}
+
+.card {
+  flex: 1;
+  --rx: 0deg;
+  --ry: 0deg;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-7);
+  min-height: 22rem;
+  padding: clamp(1.5rem, 2vw, 2.25rem);
+  border-radius: var(--r-lg);
+  background: var(--c-card);
+  color: var(--c-text);
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    background-color var(--d-base) var(--ease-out),
+    color var(--d-base) var(--ease-out),
+    transform 0.25s ease-out;
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.num {
+  font-size: clamp(4rem, 3rem + 3vw, 6.5rem);
+  line-height: 0.85;
+}
+
+.icon {
+  color: var(--c-text);
+  transition: color var(--d-base) ease;
+}
+
+.cardTitle {
+  font-size: var(--t-h4);
+  font-weight: 650;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+}
+
+.desc {
+  margin-top: var(--s-3);
+  max-width: 30rem;
+  color: var(--c-text-2);
+  font-size: var(--t-small);
+  transition: color var(--d-base) ease;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  margin-top: var(--s-5);
+  list-style: none;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-text-2);
+}
+
+@media (hover: hover) {
+  .card:hover {
+    background: var(--c-yellow);
+    color: var(--c-yellow-ink);
+  }
+  .card:hover .desc,
+  .card:hover .tags,
+  .card:hover .icon {
+    color: #0b0b0d;
+  }
+}
+
+@media (min-width: 720px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .item:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1100px) {
+  .cards {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+  .item {
+    grid-column: span 2;
+  }
+  .item:nth-child(4),
+  .item:last-child {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 719px) {
+  .row {
+    column-gap: 0.4rem;
+  }
+  .side {
+    font-size: 0.625rem;
+  }
+  .pill {
+    min-height: 2.5rem;
+    padding: 0 0.9rem;
+    font-size: 0.75rem;
+  }
+}

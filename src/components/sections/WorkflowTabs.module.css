@@ -1,0 +1,77 @@
+.wrap {
+  display: grid;
+  gap: var(--s-4);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--c-line-strong);
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--c-text);
+  transition:
+    background-color var(--d-fast) ease,
+    border-color var(--d-fast) ease,
+    color var(--d-fast) ease;
+}
+
+.tab:hover {
+  border-color: var(--c-text);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--c-invert);
+  border-color: var(--c-invert);
+  color: var(--c-invert-text);
+}
+
+.tabNum {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  color: var(--c-orange-text);
+}
+
+.panel {
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #071020;
+}
+
+.panel:not([hidden]) {
+  animation: panel-in 0.6s var(--ease-out);
+}
+
+/* The diagrams are fixed-width art; let them scroll sideways on phones */
+.img {
+  width: 100%;
+  min-width: 720px;
+  height: auto;
+}
+
+.panel {
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.tab[aria-selected="true"] .tabNum {
+  color: inherit;
+  opacity: 0.7;
+}

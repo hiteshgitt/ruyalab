@@ -1,0 +1,51 @@
+.toggle {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1px solid var(--c-line-strong);
+  color: var(--c-text);
+  transition:
+    background-color var(--d-fast) ease,
+    border-color var(--d-fast) ease;
+}
+
+.toggle:hover {
+  background: var(--c-card);
+}
+
+.icon {
+  overflow: visible;
+}
+
+.rays {
+  transform-origin: 12px 12px;
+  transition:
+    opacity var(--d-base) var(--ease-out),
+    transform var(--d-base) var(--ease-out);
+}
+
+.bite {
+  transition: transform var(--d-base) var(--ease-out);
+  transform: translate(9px, -9px);
+}
+
+.disc {
+  transform-origin: 12px 12px;
+  transition: transform var(--d-base) var(--ease-spring);
+}
+
+/* Dark: rays collapse, the bite slides in → moon */
+.toggle[data-theme-state="dark"] .rays {
+  opacity: 0;
+  transform: rotate(-45deg) scale(0.6);
+}
+
+.toggle[data-theme-state="dark"] .bite {
+  transform: none;
+}
+
+.toggle[data-theme-state="dark"] .disc {
+  transform: scale(1.35);
+}
