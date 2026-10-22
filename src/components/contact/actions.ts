@@ -1,12 +1,16 @@
 "use server";
 
 import { readFields, validate, type ContactState } from "./schema";
+import { emailConfig, sendConfirmation, sendEnquiry } from "./email";
 
 /**
- * Delivery: if CONTACT_WEBHOOK_URL is set, the submission is POSTed there as
- * JSON (works with Slack/Discord-style webhooks, Zapier, Make, n8n, or your
- * own endpoint). Without it, development logs to the server console and
- * production returns an honest "not connected" error. See README.
+ * Delivery, in order of preference:
+ *  1. Email (RESEND_API_KEY + CONTACT_TO_EMAIL): the enquiry goes to the studio
+ *     inbox (Reply-To = visitor) and the visitor gets a receipt.
+ *  2. CONTACT_WEBHOOK_URL: the submission is POSTed as JSON (Slack, Zapier…).
+ *     Runs in addition to email when both are configured.
+ * With neither, development logs to the console and production returns an
+ * honest "not connected" error. See README.
  */
 export async function submitContact(_prev: ContactState, formData: FormData): Promise<ContactState> {
   // Honeypot: real people never see or fill this field.
@@ -20,11 +24,13 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     return { status: "error", message: "Please check the highlighted fields.", errors, values: fields };
   }
 
-  const webhook = process.env.CONTACT_WEBHOOK_URL;
+  const mail = emailConfig();
+  const webhook = process.env.CONTACT_WEBHOOK_URL?.trim();
+  const submittedAt = new Date().toISOString();
 
-  if (!webhook) {
+  if (!mail && !webhook) {
     if (process.env.NODE_ENV !== "production") {
-      console.info("[contact] CONTACT_WEBHOOK_URL not set — submission logged only:", fields);
+      console.info("[contact] no delivery configured — submission logged only:", fields);
       return {
         status: "success",
         message: "Thanks — your message is in. (Development mode: logged to the server console.)",
@@ -41,18 +47,22 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
   }
 
   try {
-    const res = await fetch(webhook, {
-      method: "POST",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({
-        ...fields,
-        // Plain-text summary for chat-style webhooks.
-        text: `New enquiry from ${fields.name} <${fields.email}>${fields.company ? ` (${fields.company})` : ""}\nType: ${fields.projectType || "—"}\n\n${fields.message}`,
-        submittedAt: new Date().toISOString(),
-      }),
-      signal: AbortSignal.timeout(8000),
-    });
-    if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
+    // The enquiry reaching us is what counts; this must succeed.
+    if (mail) await sendEnquiry(mail, fields, { submittedAt });
+    if (webhook) {
+      const res = await fetch(webhook, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          ...fields,
+          // Plain-text summary for chat-style webhooks.
+          text: `New enquiry from ${fields.name} <${fields.email}>${fields.company ? ` (${fields.company})` : ""}\nType: ${fields.projectType || "—"}\n\n${fields.message}`,
+          submittedAt,
+        }),
+        signal: AbortSignal.timeout(8000),
+      });
+      if (!res.ok) throw new Error(`Webhook responded ${res.status}`);
+    }
   } catch (err) {
     console.error("[contact] delivery failed:", err);
     return {
@@ -62,5 +72,22 @@ export async function submitContact(_prev: ContactState, formData: FormData): Pr
     };
   }
 
-  return { status: "success", message: "Thanks — your message is in. We'll be in touch soon." };
+  // The receipt is best-effort: a bounce here must not tell the visitor their
+  // enquiry failed, because it already reached us.
+  let receipt = false;
+  if (mail) {
+    try {
+      await sendConfirmation(mail, fields);
+      receipt = true;
+    } catch (err) {
+      console.error("[contact] confirmation email failed:", err);
+    }
+  }
+
+  return {
+    status: "success",
+    message: receipt
+      ? `Thanks — your message is in. We've sent a confirmation to ${fields.email}.`
+      : "Thanks — your message is in. We'll be in touch soon.",
+  };
 }

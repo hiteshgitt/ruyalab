@@ -22,24 +22,33 @@ Values that must be real (the domain, email address and social profiles) come fr
 | `NEXT_PUBLIC_SITE_URL` | Canonical URL for metadata, OG, sitemap and robots. **Set this before deploying.** On Vercel it falls back to `VERCEL_PROJECT_PRODUCTION_URL`. Otherwise it falls back to `localhost:3000`. |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Shows a direct email link in the contact section and footer. |
 | `NEXT_PUBLIC_SOCIAL_LINKS` | `Label\|https://url` pairs, comma-separated. |
-| `CONTACT_WEBHOOK_URL` | **Required for the contact form to deliver messages in production** (see below). |
+| `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` | **Enable contact-form email in production** (see below). |
+| `CONTACT_WEBHOOK_URL` | Optional: also POST submissions to a webhook. |
 
 ### Making the contact form operational
 
 The form posts to a Server Action (`src/components/contact/actions.ts`). The action validates on the server using the same rules as the client (`schema.ts`), has a honeypot field, and works without JavaScript.
 
-Messages are delivered by POSTing JSON to `CONTACT_WEBHOOK_URL`:
+**Email (recommended):** set `RESEND_API_KEY`, `CONTACT_TO_EMAIL` and `CONTACT_FROM_EMAIL`. Email goes out through [Resend](https://resend.com)'s HTTPS API (`email.ts`), so no SMTP is needed; that matters on Cloudflare Workers, where SMTP isn't practical. Each enquiry sends two emails:
 
-```json
-{ "name": "...", "email": "...", "company": "...", "projectType": "...", "message": "...", "text": "<plain-text summary>", "submittedAt": "ISO-8601" }
-```
+1. **To the studio inbox** with every field, `Reply-To` set to the visitor, so pressing Reply answers them.
+2. **To the visitor** as a short receipt, `Reply-To` set to the studio inbox. The receipt deliberately leaves out the visitor's message and any links, so nobody can use the form to send arbitrary content to strangers from your domain.
 
-The `text` field means Slack or Discord incoming webhooks work as-is. Zapier, Make and n8n can forward the payload to email or a CRM. If you'd rather send email directly, replace the `fetch` in `actions.ts` with your provider's SDK.
+If the first email fails, the visitor sees an error and their input is kept. The receipt is best-effort: a typo'd visitor address doesn't turn a delivered enquiry into an error.
 
-- **No webhook in development:** submissions are logged to the server console and the form shows success.
-- **No webhook in production:** the form shows an honest "not accepting messages" error and keeps the visitor's input. It never pretends a message was sent.
+Setup:
+1. Create a Resend account, **add the domain `ruyalab.com`**, and add the DNS records it lists (in Cloudflare → DNS, all *DNS only*). They live on `send.ruyalab.com` and `resend._domainkey`, so they don't conflict with Hostinger's mail records. Wait until Resend shows the domain as **Verified**.
+2. Create an API key with **Sending access** only.
+3. In Cloudflare → Workers → ruyalab → **Settings → Variables and Secrets** (the runtime ones):
+   - `RESEND_API_KEY`: type **Secret**
+   - `CONTACT_TO_EMAIL` = `contact@ruyalab.com`
+   - `CONTACT_FROM_EMAIL` = `Ruyalab <contact@ruyalab.com>`
 
-There is no rate limiting beyond the honeypot. If spam becomes a problem, add a firewall or rate-limit rule at the edge, or a bot check.
+**Webhook (optional, in addition):** `CONTACT_WEBHOOK_URL` POSTs each submission as JSON. The `text` field means Slack or Discord webhooks work as-is.
+
+With neither configured, production shows an honest "not accepting messages" error and development logs submissions to the console.
+
+Spam protection is the honeypot only. If spam shows up, add Cloudflare Turnstile to the form.
 
 ## Structure
 
