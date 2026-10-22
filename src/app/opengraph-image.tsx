@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { cacheLife } from "next/cache";
 
 export const alt = "Ruyalab — We turn ambitious ideas into digital reality.";
 export const size = { width: 1200, height: 630 };
@@ -7,8 +6,6 @@ export const contentType = "image/png";
 
 // Fetch Anton from Google Fonts so the card matches the site's display face.
 async function anton(): Promise<ArrayBuffer | null> {
-  "use cache";
-  cacheLife("max");
   try {
     const css = await fetch("https://fonts.googleapis.com/css2?family=Anton&text=RUYALABWETNMBISDGOC.", {
       headers: { "User-Agent": "Mozilla/5.0 (Windows NT 6.1)" },

@@ -2,7 +2,7 @@
 
 Website for Ruyalab, an independent creative technology studio. It is a single homepage with concept case-study pages, a morphing multi-device hero, scroll choreography built with GSAP, and a contact form.
 
-**Stack:** Next.js 16.4 (App Router, Cache Components, Turbopack), React 19.3, strict TypeScript, CSS Modules with design tokens, GSAP 3.15 (ScrollTrigger, SplitText, Draggable), and simple-icons.
+**Stack:** Next.js 16.4 (App Router, fully static generation, Turbopack), React 19.3, strict TypeScript, CSS Modules with design tokens, GSAP 3.15 (ScrollTrigger, SplitText, Draggable), and simple-icons.
 
 **Design:** the direction comes from two references: a Dribbble shot and a "floating cards" layout. Display type is Anton, ultra-condensed and uppercase. Body text is Inter, and labels use Geist Mono in the form `( WORK )`. Large sunflower-yellow panels carry most sections. The brand's "vision eye" mascot plays the role of the reference's character. The site has **light and dark themes**. It follows the OS setting until the visitor uses the header toggle; that choice is saved, and an inline script applies it before first paint so the wrong theme never flashes.
 
@@ -99,10 +99,19 @@ The Studio section's centrepiece is the live mascot (the same component as the h
 
 ## Known limitations
 
-- An unknown `/work/<slug>` renders the 404 page with `noindex` but returns HTTP 200. With Cache Components, the static shell's status is sent before `notFound()` resolves. Unknown root paths return a real 404.
 - The OG image fetches Anton from Google Fonts at build time (cached). If that fails, it falls back to a generic sans-serif.
 - There is no JSON-LD structured data. Add an `Organization` schema once real business details (legal name, address, profiles) are confirmed.
 
 ## Deployment
 
-The site is a standard Next.js app. On Vercel, import the repo and set the environment variables above. Every page except unknown slugs is prerendered statically.
+Every page is prerendered at build time (SSG), so the site runs on any Next.js host.
+
+**Cloudflare Workers (current setup).** The repo is connected to Workers Builds. Every push to `main` builds the site with the OpenNext adapter and deploys it to `ruyalab.talkel.workers.dev`.
+
+- **Cache Components is turned off on purpose.** Next.js warns that its Cache Components mode can't run reliably on the Workers runtime because of how Workers implements `setTimeout()`. With it enabled, every page hung and Cloudflare returned error 1101. Because the site is fully static, it doesn't need Cache Components.
+- **Check before pushing.** To test the Worker locally (requires Node 22 or later), run `npx opennextjs-cloudflare build && npx wrangler dev` with a `wrangler.jsonc` that matches the dashboard bindings (`ASSETS`, `IMAGES`, `WORKER_SELF_REFERENCE`).
+- **Environment variables** go in Cloudflare → Workers → ruyalab → Settings:
+  - `NEXT_PUBLIC_*` values are inlined at build time, so add them as **build** variables, then redeploy.
+  - `CONTACT_WEBHOOK_URL` is read when the form is submitted, so it is a **runtime** variable. Store it as a secret.
+
+**Vercel or Node.** These also work with no extra configuration (`npm run build && npm start` for Node).

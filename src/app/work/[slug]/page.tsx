@@ -7,6 +7,9 @@ import { RevealScope } from "@/components/motion/RevealScope";
 import { Button } from "@/components/ui/Button";
 import styles from "./page.module.css";
 
+// Only the studies listed in data exist; anything else is a real 404.
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return projects.filter((p) => p.caseStudy).map((p) => ({ slug: p.slug }));
 }

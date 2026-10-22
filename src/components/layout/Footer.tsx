@@ -1,18 +1,12 @@
 import Link from "next/link";
-import { cacheLife } from "next/cache";
 import { navItems, site } from "@/lib/site";
 import { Logo } from "@/components/ui/Logo";
 import { Mascot } from "@/components/mascot/Mascot";
 import styles from "./Footer.module.css";
 
-async function currentYear() {
-  "use cache";
-  cacheLife("days");
-  return new Date().getFullYear();
-}
-
-export async function Footer() {
-  const year = await currentYear();
+export function Footer() {
+  // Static pages: resolved at build time, so each deploy picks up the new year.
+  const year = new Date().getFullYear();
 
   return (
     <footer className={styles.footer}>
