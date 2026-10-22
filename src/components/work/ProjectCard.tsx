@@ -4,86 +4,83 @@ import type { Project } from "@/data/projects";
 import { ProjectCover } from "./ProjectCover";
 import styles from "./ProjectCard.module.css";
 
-export type CardLayout = "wide" | "tall" | "offset" | "pano";
+export type CardLayout = "featured" | "card";
 
+/**
+ * A project presented as a self-explanatory card: cover art with the project
+ * type tagged on top and an info bar (name, summary, services, CTA) on the
+ * cover itself, so it reads as "a project" at a glance.
+ */
 export function ProjectCard({ project, index, layout }: { project: Project; index: number; layout: CardLayout }) {
   const href = project.caseStudy ? `/work/${project.slug}` : project.liveUrl;
   const external = !project.caseStudy && Boolean(project.liveUrl);
   const num = String(index + 1).padStart(2, "0");
+  const titleId = `p-${project.slug}`;
 
-  const media = (
-    <div className={styles.media}>
+  const body = (
+    <>
       <div className={styles.zoom}>
-      <div className={styles.art} data-parallax="0.12">
-        {project.cover ? (
-          <Image
-            src={project.cover.src}
-            alt={project.cover.alt}
-            width={project.cover.width}
-            height={project.cover.height}
-            sizes="(min-width: 1024px) 60vw, 100vw"
-            className={styles.img}
-          />
-        ) : (
-          <ProjectCover visual={project.visual} className={styles.img} />
+        <div className={styles.art} data-parallax="0.08">
+          {project.cover ? (
+            <Image
+              src={project.cover.src}
+              alt={project.cover.alt}
+              width={project.cover.width}
+              height={project.cover.height}
+              sizes={layout === "featured" ? "100vw" : "(min-width: 1024px) 33vw, 100vw"}
+              className={styles.img}
+            />
+          ) : (
+            <ProjectCover visual={project.visual} className={styles.img} />
+          )}
+        </div>
+      </div>
+
+      <p className={styles.tag}>
+        <span>( {project.status === "Concept" ? "Concept" : project.status} {num} )</span>
+        <span aria-hidden="true">+</span>
+        <span>( {project.industry} )</span>
+      </p>
+
+      <div className={styles.info}>
+        <div className={styles.infoMain}>
+          <h3 id={titleId} className={`display ${styles.name}`}>
+            {project.name}
+          </h3>
+          <p className={styles.summary}>{project.summary}</p>
+          <ul className={styles.services} aria-label="Services">
+            {project.services.map((s) => (
+              <li key={s}>{s}</li>
+            ))}
+          </ul>
+        </div>
+        {href && (
+          <span className={styles.cta} aria-hidden="true">
+            {external ? "Visit site" : "View study"}
+            <svg viewBox="0 0 16 16" width="14" height="14">
+              <path d="M4 12L12 4M6 4h6v6" fill="none" stroke="currentColor" strokeWidth="1.6" />
+            </svg>
+          </span>
         )}
       </div>
-      </div>
-      {href && (
-        <span className={styles.chip} aria-hidden="true">
-          {external ? "Visit site" : "View study"}
-        </span>
-      )}
-    </div>
+    </>
   );
 
   return (
     <article className={styles.card} data-layout={layout} data-reveal>
       {href ? (
         external ? (
-          <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link} aria-labelledby={`p-${project.slug}`}>
-            {media}
+          <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link} aria-labelledby={titleId}>
+            {body}
           </a>
         ) : (
-          <Link href={href} className={styles.link} aria-labelledby={`p-${project.slug}`}>
-            {media}
+          <Link href={href} className={styles.link} aria-labelledby={titleId}>
+            {body}
           </Link>
         )
       ) : (
-        media
+        <div className={styles.link}>{body}</div>
       )}
-
-      <div className={styles.info}>
-        <span className={`label ${styles.num}`}>{num}</span>
-        <div className={styles.titleRow}>
-          <h3 id={`p-${project.slug}`} className={styles.name}>
-            {href ? (
-              <Link href={href} className={styles.nameLink} tabIndex={-1}>
-                {project.name}
-              </Link>
-            ) : (
-              project.name
-            )}
-          </h3>
-          <p className={styles.summary}>{project.summary}</p>
-        </div>
-        <dl className={styles.facts}>
-          <div>
-            <dt className="visually-hidden">Industry</dt>
-            <dd>{project.industry}</dd>
-          </div>
-          <div>
-            <dt className="visually-hidden">Services</dt>
-            <dd>{project.services.join(" · ")}</dd>
-          </div>
-          <div className={styles.status}>
-            <dt className="visually-hidden">Year and status</dt>
-            <dd>
-              {project.year} <span className={styles.badge}>{project.status}</span>
-            </dd>
-          </div>
-        </dl>
-      </div>
     </article>
   );
 }

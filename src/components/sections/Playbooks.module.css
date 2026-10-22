@@ -1,0 +1,348 @@
+.root {
+  display: grid;
+  gap: var(--s-6);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-5);
+}
+
+.title {
+  margin-top: var(--s-3);
+  font-size: var(--t-h2);
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--c-line-strong);
+  font-size: var(--t-small);
+  font-weight: 600;
+  color: var(--c-text);
+  transition:
+    background-color var(--d-fast) ease,
+    border-color var(--d-fast) ease,
+    color var(--d-fast) ease;
+}
+
+.tab:hover {
+  border-color: var(--c-text);
+}
+
+.tab[aria-selected="true"] {
+  background: var(--c-invert);
+  border-color: var(--c-invert);
+  color: var(--c-invert-text);
+}
+
+.tabNum {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  color: var(--c-orange-text);
+}
+
+.tab[aria-selected="true"] .tabNum {
+  color: inherit;
+  opacity: 0.7;
+}
+
+/* ---------- Panel */
+
+.panel {
+  display: grid;
+  gap: var(--s-4);
+  padding: clamp(1rem, 2.5vw, 2rem);
+  border-radius: var(--r-lg);
+  background: var(--c-card);
+}
+
+/* Mobile: vertical list of steps */
+.rail {
+  position: relative;
+}
+
+.track,
+.glider {
+  display: none;
+}
+
+.steps {
+  list-style: none;
+  display: grid;
+  gap: var(--s-2);
+}
+
+.step {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    "dot title"
+    "dot short";
+  column-gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-4);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  color: var(--c-text);
+  text-align: left;
+  transition:
+    background-color var(--d-base) ease,
+    color var(--d-base) ease,
+    translate var(--d-base) var(--ease-spring);
+}
+
+.step:hover {
+  translate: 0 -3px;
+}
+
+.step[aria-current="step"] {
+  background: var(--c-yellow);
+  color: var(--c-yellow-ink);
+}
+
+.dot {
+  grid-area: dot;
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font-family: var(--f-mono);
+  font-size: var(--t-small);
+  font-weight: 600;
+  transition:
+    background-color var(--d-base) ease,
+    color var(--d-base) ease;
+}
+
+.step[data-done="true"] .dot {
+  background: var(--c-blue);
+  border-color: var(--c-blue);
+  color: #fff;
+}
+
+.step[aria-current="step"] .dot {
+  background: #0b0b0d;
+  border-color: #0b0b0d;
+  color: var(--c-yellow);
+}
+
+.stepTitle {
+  grid-area: title;
+  font-size: clamp(1.5rem, 1.2rem + 1vw, 2.25rem);
+  line-height: 1;
+}
+
+.stepShort {
+  grid-area: short;
+  font-size: var(--t-small);
+  opacity: 0.75;
+}
+
+/* ---------- Detail */
+
+.detail {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-4);
+  align-items: center;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border-radius: var(--r-md);
+  background: var(--c-surface);
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .detail {
+    animation: detail-in 0.6s var(--ease-out);
+  }
+}
+
+@keyframes detail-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+.detailArt {
+  display: none;
+}
+
+.detailTitle {
+  margin-top: var(--s-2);
+  font-size: var(--t-h3);
+}
+
+.detailShort {
+  color: var(--c-text-3);
+}
+
+.detailBody {
+  margin-top: var(--s-3);
+  max-width: 36rem;
+  color: var(--c-text-2);
+}
+
+.controls {
+  display: flex;
+  gap: var(--s-2);
+}
+
+.ctrl {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--c-line-strong);
+  color: var(--c-text);
+  font-size: 1rem;
+  transition:
+    background-color var(--d-fast) ease,
+    color var(--d-fast) ease,
+    border-color var(--d-fast) ease;
+}
+
+.ctrl:hover {
+  background: var(--c-invert);
+  border-color: var(--c-invert);
+  color: var(--c-invert-text);
+}
+
+.play {
+  font-size: 0.75rem;
+  letter-spacing: -0.1em;
+}
+
+/* Autoplay countdown bar */
+.timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--c-blue);
+  transform-origin: left;
+  animation: timer 2.8s linear;
+}
+
+@keyframes timer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+/* ---------- Desktop: horizontal rail with a gliding mascot */
+
+@media (min-width: 900px) {
+  .rail {
+    padding-top: 7.5rem;
+  }
+
+  .steps {
+    grid-template-columns: repeat(var(--n), minmax(0, 1fr));
+    gap: var(--s-3);
+  }
+
+  .step {
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "dot"
+      "title"
+      "short";
+    row-gap: var(--s-3);
+    align-content: start;
+    justify-items: start;
+    padding: var(--s-5);
+  }
+
+  .stepTitle {
+    margin-top: var(--s-4);
+  }
+
+  /* Progress track running through the step dots */
+  .track {
+    display: block;
+    position: absolute;
+    left: calc(50% / var(--n));
+    right: calc(50% / var(--n));
+    top: calc(7.5rem + var(--s-5) + 1.375rem);
+    height: 2px;
+    background: var(--c-line-strong);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .fill {
+    display: block;
+    height: 100%;
+    width: calc(var(--active) / (var(--n) - 1) * 100%);
+    background: var(--c-blue);
+    transition: width 0.8s var(--ease-out);
+  }
+
+  .steps li {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The mascot glides above the active step */
+  .glider {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: calc((var(--active) + 0.5) / var(--n) * 100%);
+    width: 11rem;
+    translate: -50% 0;
+    transition: left 0.9s var(--ease-spring);
+    pointer-events: none;
+  }
+
+  .gliderImg {
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .glider {
+      animation: glide-bob 3s var(--ease-in-out) infinite;
+    }
+  }
+
+  .detail {
+    grid-template-columns: 9rem 1fr auto;
+    gap: var(--s-6);
+  }
+
+  .detailArt {
+    display: block;
+  }
+
+  .detailImg {
+    width: 100%;
+  }
+}
+
+@keyframes glide-bob {
+  50% {
+    translate: -50% -8px;
+  }
+}

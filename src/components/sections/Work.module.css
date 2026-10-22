@@ -3,5 +3,5 @@
 }
 
 .list {
-  row-gap: clamp(4rem, 3rem + 5vw, 9rem);
+  row-gap: var(--gutter);
 }

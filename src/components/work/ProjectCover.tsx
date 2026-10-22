@@ -1,9 +1,8 @@
 import type { ProjectVisual } from "@/data/projects";
-import type { MascotPose } from "@/components/mascot/Mascot";
 
 /**
- * Original procedural cover artwork for concept projects: a vivid brand panel,
- * a drawn motif, and the mascot pose that matches the project. Drawn on a
+ * Original procedural cover artwork for concept projects: a vivid brand panel
+ * and a drawn motif for each product. Drawn on a
  * 1600×1000 canvas and cropped by the container (preserveAspectRatio slice),
  * so one artwork serves every aspect ratio. Deterministic for SSR.
  */
@@ -11,13 +10,13 @@ import type { MascotPose } from "@/components/mascot/Mascot";
 const W = 1600;
 const H = 1000;
 
-type Palette = { bg: string; ink: string; acc: string; pose: MascotPose; mascotX: number; mascotY: number };
+type Palette = { bg: string; ink: string; acc: string };
 
 const PALETTES: Record<ProjectVisual, Palette> = {
-  orbit: { bg: "#0b1438", ink: "#e6ecff", acc: "#ffd000", pose: "discover", mascotX: 80, mascotY: 520 },
-  ledger: { bg: "#ffd000", ink: "#0b0b0d", acc: "#2f45ff", pose: "grow", mascotX: 980, mascotY: 560 },
-  signal: { bg: "#ff4b2b", ink: "#0b0b0d", acc: "#ffffff", pose: "code", mascotX: 960, mascotY: 520 },
-  strata: { bg: "#cfc8ff", ink: "#0b0b0d", acc: "#ff4b2b", pose: "build", mascotX: 980, mascotY: 520 },
+  orbit: { bg: "#0b1438", ink: "#e6ecff", acc: "#ffd000" },
+  ledger: { bg: "#ffd000", ink: "#0b0b0d", acc: "#2f45ff" },
+  signal: { bg: "#ff4b2b", ink: "#0b0b0d", acc: "#ffffff" },
+  strata: { bg: "#cfc8ff", ink: "#0b0b0d", acc: "#ff4b2b" },
 };
 
 function Orbit({ ink, acc }: Palette) {
@@ -64,12 +63,6 @@ function Ledger({ ink, acc }: Palette) {
         const accent = i === 9;
         return <rect key={i} x={x0 + i * (bw + gap)} y={base - h} width={bw} height={h} rx="10" fill={accent ? acc : ink} fillOpacity={accent ? 1 : 0.85} />;
       })}
-      <text x="120" y="170" fill={ink} fontFamily="ui-monospace, monospace" fontSize="34" letterSpacing="4">
-        ( NET FLOW ) + ( Q3 )
-      </text>
-      <text x="1480" y="200" textAnchor="end" fill={ink} fontFamily="Impact, 'Arial Narrow', sans-serif" fontSize="120">
-        +12.4%
-      </text>
     </>
   );
 }
@@ -129,7 +122,6 @@ export function ProjectCover({ visual, className }: { visual: ProjectVisual; cla
     <svg className={className} viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
       <rect width={W} height={H} fill={p.bg} />
       <Art {...p} />
-      <image href={`/mascots/${p.pose}.svg`} x={p.mascotX} y={p.mascotY} width="560" height="336" />
     </svg>
   );
 }

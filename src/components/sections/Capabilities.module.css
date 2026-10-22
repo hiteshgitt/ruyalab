@@ -6,6 +6,7 @@
 /* ---------- Poster composition */
 
 .poster {
+  position: relative;
   display: grid;
   gap: 0;
   margin-bottom: clamp(3rem, 2rem + 4vw, 6rem);
@@ -124,12 +125,111 @@
   transform: translateY(-2px) rotate(-2deg);
 }
 
+/* ---------- Side asides (intro + index) */
+
+.asideL {
+  margin-top: clamp(2.5rem, 2rem + 2vw, 4rem);
+  text-align: center;
+}
+
+.asideLabel {
+  display: none;
+  color: var(--c-text);
+}
+
 .intro {
   max-width: 34rem;
-  margin: 0 auto clamp(2.5rem, 2rem + 2vw, 4rem);
-  text-align: center;
+  margin: 0 auto;
   font-size: var(--t-lead);
   color: var(--c-text-2);
+}
+
+.asideR {
+  display: none;
+}
+
+.index {
+  list-style: none;
+  margin-top: var(--s-4);
+  border-top: 1.5px solid var(--c-text);
+}
+
+.indexLink {
+  display: grid;
+  grid-template-columns: 2rem 2rem 1fr auto;
+  align-items: center;
+  gap: var(--s-3);
+  min-height: 3.25rem;
+  padding-inline: 0.25rem;
+  border-bottom: 1px solid var(--c-line-strong);
+  font-weight: 600;
+  font-size: var(--t-small);
+  color: var(--c-text);
+  transition:
+    background-color var(--d-fast) ease,
+    padding var(--d-base) var(--ease-out);
+}
+
+.indexNum {
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  color: var(--c-orange-text);
+}
+
+.indexIcon {
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.indexArrow {
+  transition: transform var(--d-base) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .indexLink:hover {
+    background: var(--c-yellow);
+    color: var(--c-yellow-ink);
+    padding-inline: 0.75rem;
+  }
+  .indexLink:hover .indexNum {
+    color: #8a1c05;
+  }
+  .indexLink:hover .indexArrow {
+    transform: translate(2px, 2px) rotate(-45deg);
+  }
+}
+
+/* Wide: pin the asides into the side gutters, beside RUYALAB */
+@media (min-width: 1360px) {
+  .asideL,
+  .asideR {
+    position: absolute;
+    top: 25%;
+    width: min(19rem, 24%);
+    margin: 0;
+    text-align: left;
+  }
+  .asideL {
+    left: 0;
+  }
+  .asideR {
+    display: block;
+    right: 0;
+    top: 22%;
+  }
+  .asideLabel {
+    display: block;
+  }
+  .intro {
+    margin-top: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1.5px solid var(--c-text);
+    font-size: var(--t-body);
+    color: var(--c-text);
+  }
+  .findLabel {
+    visibility: hidden;
+  }
 }
 
 /* ---------- Cards */

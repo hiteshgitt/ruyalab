@@ -46,7 +46,7 @@ export function Capabilities() {
               </span>
               <span className={`display ${styles.bracket}`}>)</span>
             </span>
-            <span className={`label ${styles.side}`} aria-hidden="true">
+            <span className={`label ${styles.side} ${styles.findLabel}`} aria-hidden="true">
               Find the idea
             </span>
           </div>
@@ -61,12 +61,38 @@ export function Capabilities() {
             </span>
             <span />
           </div>
-        </div>
 
-        <p className={styles.intro} data-reveal>
-          Five disciplines, one team. Most projects draw on several at once — that overlap is where the
-          interesting work happens.
-        </p>
+          {/* Wide screens: the side gutters carry the intro and a capability index */}
+          <div className={styles.asideL} data-reveal>
+            <p className={`label ${styles.asideLabel}`}>
+              <span className="paren">Five disciplines</span>
+            </p>
+            <p className={styles.intro}>
+              Five disciplines, one team. Most projects draw on several at once — that overlap is where
+              the interesting work happens.
+            </p>
+          </div>
+
+          <nav className={styles.asideR} aria-label="Capabilities index" data-reveal>
+            <p className={`label ${styles.asideLabel}`}>
+              <span className="paren">Find the idea</span>
+            </p>
+            <ol className={styles.index}>
+              {capabilities.map((c) => (
+                <li key={c.index}>
+                  <a href={`#cap-${c.index}`} className={styles.indexLink}>
+                    <span className={styles.indexNum}>{c.index}</span>
+                    <CapabilityIcon index={c.index} className={styles.indexIcon} />
+                    <span className={styles.indexTitle}>{c.title}</span>
+                    <span aria-hidden="true" className={styles.indexArrow}>
+                      ↘
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
 
         <ol className={styles.cards} data-reveal-group>
           {capabilities.map((c) => (

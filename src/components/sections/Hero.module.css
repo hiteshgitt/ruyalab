@@ -8,7 +8,10 @@
 .stage {
   /* Wordmark size: "RUYALAB" in Anton is ~3.18em wide; fit the container */
   --word: calc((min(100vw, var(--max-w)) - 2 * var(--gutter)) / 3.18);
-  --dw: min(62vw, 290px);
+  /* Content width of the container */
+  --cw: calc(min(100vw, var(--max-w)) - 2 * var(--gutter));
+  /* Device unit: phone width; tablet/desktop frames scale from it */
+  --dw: min(56vw, 250px);
   position: relative;
 }
 
@@ -61,117 +64,14 @@
 
 .scene {
   position: relative;
-  margin-top: calc(var(--word) * -0.16);
+  margin-top: calc(var(--word) * -0.2);
 }
 
+/* Mobile/tablet: the device sits over the wordmark and dips into the panel */
 .deviceWrap {
   position: relative;
   z-index: 2;
-  width: var(--dw);
-  margin-inline: auto;
-  margin-bottom: calc(var(--dw) * -1.05);
-}
-
-.device {
-  aspect-ratio: 9 / 19;
-  padding: calc(var(--dw) * 0.032);
-  border-radius: calc(var(--dw) * 0.16);
-  background: #111114;
-  box-shadow:
-    inset 0 0 0 1.5px #3a3a42,
-    0 40px 80px -30px rgb(0 0 0 / 0.55);
-}
-
-.screen {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  border-radius: calc(var(--dw) * 0.13);
-  background: radial-gradient(120% 80% at 50% 60%, #1b2a6b 0%, #0d1438 45%, #070d22 100%);
-  color: #e6ecff;
-  container-type: inline-size;
-}
-
-.status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 5cqw 9cqw 0;
-  font-family: var(--f-body);
-  font-size: 4.6cqw;
-  font-weight: 600;
-}
-
-.island {
-  width: 30cqw;
-  height: 8.5cqw;
-  border-radius: 99px;
-  background: #000;
-}
-
-.screenTop {
-  display: flex;
-  justify-content: space-between;
-  padding: 5cqw 6cqw 0;
-  font-family: var(--f-mono);
-  font-size: 3.6cqw;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--c-cyan);
-}
-
-.screenWord {
-  margin-top: 3cqw;
-  font-family: var(--f-display);
-  font-size: 40cqw;
-  line-height: 0.85;
-  text-align: center;
-  text-transform: uppercase;
-  color: var(--c-yellow);
-}
-
-.screenSide {
-  position: absolute;
-  right: 3cqw;
-  top: 45%;
-  writing-mode: vertical-rl;
-  font-family: var(--f-mono);
-  font-size: 3.2cqw;
-  letter-spacing: 0.05em;
-  color: rgb(230 236 255 / 0.55);
-}
-
-.liveMascot {
-  position: absolute;
-  left: -8%;
-  right: -8%;
-  top: 30%;
-}
-
-.screenChips {
-  position: absolute;
-  left: 6cqw;
-  right: 6cqw;
-  bottom: 7cqw;
-  display: flex;
-  gap: 2cqw;
-  font-size: 3.8cqw;
-  font-weight: 600;
-}
-
-.screenChips span {
-  flex: 1;
-  padding: 2.6cqw 0;
-  text-align: center;
-  border-radius: 99px;
-  background: rgb(255 255 255 / 0.08);
-  border: 1px solid rgb(255 255 255 / 0.12);
-}
-
-.screenChips span[data-on="true"] {
-  background: var(--c-yellow);
-  color: #0b0b0d;
-  border-color: transparent;
+  margin-bottom: calc(var(--dw) * -0.95 - 3.5rem);
 }
 
 /* ---------- Yellow panel */
@@ -181,7 +81,7 @@
   z-index: 1;
   display: grid;
   gap: var(--s-7);
-  padding: calc(var(--dw) * 1.12) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
+  padding: calc(var(--dw) * 0.95 + 5rem) clamp(1.25rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem);
   border-radius: var(--r-lg);
   background: var(--c-yellow);
   color: var(--c-yellow-ink);
@@ -400,16 +300,16 @@
 .sBubble {
   display: block;
   left: 0;
-  top: calc(var(--dw) * 0.15);
-  scale: 0.62;
+  top: calc(var(--word) * -0.55);
+  scale: 0.55;
   transform-origin: left top;
 }
 
 .sStar {
   display: block;
   right: 2%;
-  top: calc(var(--dw) * 0.05);
-  scale: 0.7;
+  top: calc(var(--word) * -0.7);
+  scale: 0.6;
 }
 
 /* ---------- Entrance (pure CSS: starts at first paint, no hydration wait) */
@@ -422,9 +322,6 @@
   .stage [data-hero-fade] {
     animation: hero-fade 1s var(--ease-out) 0.5s both;
   }
-  .deviceWrap {
-    animation: device-in 1.4s var(--ease-out) 0.1s both;
-  }
 }
 
 @keyframes hero-rise {
@@ -435,15 +332,12 @@
   from { opacity: 0; transform: translateY(16px); }
 }
 
-@keyframes device-in {
-  from { opacity: 0; transform: translateY(80px) rotate(-4deg); }
-}
 
 /* ---------- Tablet */
 
 @media (min-width: 640px) {
   .stage {
-    --dw: min(42vw, 300px);
+    --dw: min(36vw, 280px);
   }
   .panel {
     grid-template-columns: 1fr 1fr;
@@ -456,26 +350,30 @@
 
 /* ---------- Desktop: three-column panel with the device in the middle */
 
-@media (min-width: 1024px) {
+@media (min-width: 1200px) {
   .stage {
-    --dw: clamp(250px, 21vw, 360px);
+    --dw: clamp(220px, 17vw, 320px);
   }
   .scene {
-    margin-top: calc(var(--word) * -0.1);
+    margin-top: calc(var(--word) * -0.12);
   }
+  /* Desktop: device centred, rising out of the panel over the wordmark */
   .deviceWrap {
     position: absolute;
-    left: 50%;
-    top: calc(var(--word) * -0.5);
-    bottom: 0;
-    margin: 0 0 0 calc(var(--dw) / -2);
-    /* Device runs off the bottom of the panel, like a product shot */
-    overflow: hidden;
+    left: 0;
+    right: 0;
+    top: calc(var(--word) * -0.42);
+    margin: 0;
+    pointer-events: none;
+  }
+  .deviceWrap > * {
+    pointer-events: auto;
   }
   .panel {
-    grid-template-columns: minmax(0, 1fr) calc(var(--dw) + 2 * var(--gutter)) minmax(0, 1fr);
+    /* Centre column fits the widest (desktop) frame */
+    grid-template-columns: minmax(0, 1fr) calc(var(--dw) * 1.85 + 2 * var(--gutter)) minmax(0, 1fr);
     gap: 0;
-    min-height: max(calc(var(--dw) * 1.6), 34rem);
+    min-height: max(calc(var(--dw) * 2.11 - var(--word) * 0.42 + 8rem), 34rem);
     padding: clamp(2.5rem, 4vw, 4rem) clamp(2.5rem, 4vw, 4.5rem);
     align-items: stretch;
   }
@@ -489,7 +387,7 @@
     justify-self: end;
   }
   .title {
-    font-size: clamp(2.75rem, 0.8rem + 3.4vw, 5rem);
+    font-size: clamp(2.5rem, 0.5rem + 3.1vw, 4.75rem);
   }
   .edge {
     display: block;
@@ -517,23 +415,26 @@
     scale: none;
   }
   .sCard {
-    left: 17%;
-    top: calc(var(--word) * -0.36);
+    left: 9%;
+    top: calc(var(--word) * -0.3);
   }
   .sChip {
     right: 4%;
-    top: calc(var(--word) * -0.22);
+    top: calc(var(--word) * -0.3);
   }
   .sFlower {
-    right: 26%;
-    top: 30%;
+    right: 20%;
+    top: calc(var(--word) * -0.46);
   }
   .sBubble {
-    left: 3%;
-    top: calc(var(--word) * -0.62);
+    left: 2%;
+    top: calc(var(--word) * -0.5);
+    scale: 0.75;
   }
   .sStar {
-    right: 33%;
-    top: calc(var(--word) * -0.7);
+    right: auto;
+    left: 26%;
+    top: calc(var(--word) * -0.48);
+    scale: 0.8;
   }
 }

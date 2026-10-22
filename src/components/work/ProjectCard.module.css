@@ -4,28 +4,30 @@
 }
 
 .link {
-  display: block;
-  border-radius: var(--r-sm);
-}
-
-.media {
   position: relative;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   aspect-ratio: 4 / 5;
-  background: var(--c-card);
+  padding: clamp(0.75rem, 1.5vw, 1.25rem);
   border-radius: var(--r-lg);
+  background: var(--c-card);
+  overflow: hidden;
   isolation: isolate;
 }
+
+/* ---------- Cover art */
 
 .zoom {
   position: absolute;
   inset: 0;
+  z-index: -1;
   transition: transform 1.1s var(--ease-out);
 }
 
 .art {
   position: absolute;
-  inset: -8% 0;
+  inset: -6% 0;
 }
 
 .img {
@@ -34,139 +36,154 @@
   object-fit: cover;
 }
 
-.chip {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  padding: 0.85rem 1.3rem;
-  background: var(--c-invert);
-  color: var(--c-invert-text);
-  font-family: var(--f-mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  border-radius: var(--r-pill);
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.8);
-  transition:
-    opacity var(--d-base) var(--ease-out),
-    transform var(--d-base) var(--ease-out);
-}
-
 @media (hover: hover) {
   .link:hover .zoom {
     transform: scale(1.04);
   }
-  .link:hover .chip,
-  .link:focus-visible .chip {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
+}
+
+/* ---------- Overlays */
+
+.tag {
+  align-self: flex-start;
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+  padding: 0.55rem 0.9rem;
+  border-radius: var(--r-pill);
+  background: #0b0b0d;
+  color: #fff;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .info {
-  display: grid;
-  grid-template-columns: 2.5rem 1fr;
-  gap: var(--s-2) var(--s-3);
-  padding-top: var(--s-5);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-4);
+  padding: clamp(1rem, 1.8vw, 1.5rem);
+  border-radius: calc(var(--r-lg) - 0.5rem);
+  background: var(--c-surface);
+  color: var(--c-text);
+  box-shadow: var(--c-shadow);
+  transition: translate var(--d-base) var(--ease-spring);
 }
 
-.num {
-  color: var(--c-orange-text);
-  padding-top: 0.45em;
+@media (hover: hover) {
+  .link:hover .info {
+    translate: 0 -4px;
+  }
 }
 
-.titleRow {
+.infoMain {
   min-width: 0;
 }
 
 .name {
-  font-family: var(--f-display);
-  font-size: var(--t-h3);
-  font-weight: 400;
-  text-transform: uppercase;
+  font-size: clamp(1.75rem, 1.3rem + 1.4vw, 2.75rem);
   line-height: 0.95;
 }
 
-.nameLink:hover {
-  color: var(--c-blue);
-}
-
 .summary {
-  margin-top: var(--s-3);
-  max-width: 34rem;
+  margin-top: var(--s-2);
+  max-width: 40rem;
   color: var(--c-text-2);
   font-size: var(--t-small);
-  text-wrap: pretty;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.facts {
-  grid-column: 2;
+.services {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--s-2) var(--s-5);
+  gap: 0.4rem;
   margin-top: var(--s-3);
-  padding-top: var(--s-3);
-  border-top: 1px solid var(--c-line);
-  font-family: var(--f-mono);
-  font-size: var(--t-label);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--c-text-2);
+  list-style: none;
 }
 
-.status {
-  margin-left: auto;
-}
-
-.badge {
-  margin-left: var(--s-2);
-  padding: 0.25rem 0.6rem;
+.services li {
+  padding: 0.3rem 0.65rem;
   border-radius: var(--r-pill);
-  background: var(--c-yellow);
-  color: var(--c-yellow-ink);
+  background: var(--c-card);
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
-/* ---------- Editorial layouts */
+.cta {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2.75rem;
+  padding: 0 1.1rem;
+  border-radius: var(--r-pill);
+  background: var(--c-invert);
+  color: var(--c-invert-text);
+  font-size: var(--t-small);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color var(--d-fast) ease;
+}
+
+.cta svg {
+  transition: transform var(--d-base) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .link:hover .cta {
+    background: var(--c-blue);
+    color: #fff;
+  }
+  .link:hover .cta svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+/* Small cards: stack the CTA under the text */
+.card[data-layout="card"] .info {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ---------- Layout: one featured card, then the rest side by side */
+
+@media (max-width: 599px) {
+  .info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 
 @media (min-width: 768px) {
-  .card[data-layout="wide"] .media {
-    aspect-ratio: 16 / 9;
+  .card[data-layout="featured"] .link {
+    aspect-ratio: 2.1 / 1;
   }
-  .card[data-layout="tall"] {
-    grid-column: 1 / span 7;
+  .card[data-layout="card"] {
+    grid-column: span 6;
   }
-  .card[data-layout="offset"] {
-    grid-column: 8 / -1;
-    margin-top: clamp(6rem, 22vw, 22rem);
+  /* An odd one out on tablet spans the row as a banner */
+  .card[data-layout="card"]:last-child:nth-child(even) {
+    grid-column: 1 / -1;
   }
-  .card[data-layout="offset"] .media {
-    aspect-ratio: 3 / 4;
-  }
-  .card[data-layout="pano"] {
-    grid-column: 3 / -1;
-  }
-  .card[data-layout="pano"] .media {
-    aspect-ratio: 21 / 10;
+  .card[data-layout="card"]:last-child:nth-child(even) .link {
+    aspect-ratio: 2.4 / 1;
   }
 }
 
-@media (min-width: 1024px) {
-  .card[data-layout="wide"] .info {
-    grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 0.8fr);
-    align-items: start;
+@media (min-width: 1100px) {
+  .card[data-layout="card"],
+  .card[data-layout="card"]:last-child:nth-child(even) {
+    grid-column: span 4;
   }
-  .card[data-layout="wide"] .facts {
-    grid-column: 3;
-    grid-row: 1;
-    flex-direction: column;
-    margin-top: 0;
-    padding-top: 0;
-    border-top: 0;
-    align-items: flex-end;
-    text-align: right;
+  .card[data-layout="card"]:last-child:nth-child(even) .link {
+    aspect-ratio: 4 / 5;
   }
-  .card[data-layout="wide"] .status {
-    margin-left: 0;
+  .card[data-layout="featured"] .info {
+    max-width: 52rem;
   }
 }

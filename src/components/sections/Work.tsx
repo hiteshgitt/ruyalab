@@ -4,7 +4,6 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProjectCard, type CardLayout } from "@/components/work/ProjectCard";
 import styles from "./Work.module.css";
 
-const LAYOUTS: CardLayout[] = ["wide", "tall", "offset", "pano"];
 
 export function Work() {
   return (
@@ -16,17 +15,17 @@ export function Work() {
           id="work-title"
           aside={
             <p>
-              Self-initiated concept studies — original explorations, not client commissions — that
-              show how we approach the problems we care about most.
+              Products we designed and prototyped on our own initiative — not client commissions — to
+              show how we approach the problems we care about. Open any study for the full story.
             </p>
           }
         >
-          Ideas, made <span className="blue">tangible</span>
+          Concept <span className="blue">studies</span>
         </SectionHeading>
 
         <div className={`grid ${styles.list}`}>
           {projects.map((project, i) => (
-            <ProjectCard key={project.slug} project={project} index={i} layout={LAYOUTS[i % LAYOUTS.length]} />
+            <ProjectCard key={project.slug} project={project} index={i} layout={(i === 0 ? "featured" : "card") as CardLayout} />
           ))}
         </div>
       </RevealScope>

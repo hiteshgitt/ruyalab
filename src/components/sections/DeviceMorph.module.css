@@ -1,0 +1,548 @@
+/* --dw (device width unit) is provided by the hero stage. */
+.morph {
+  --fw: var(--dw);
+  --fh: calc(var(--dw) * 2.11);
+  --fr: calc(var(--dw) * 0.16);
+  --fp: calc(var(--dw) * 0.032);
+  --lift: 0px;
+  position: relative;
+}
+
+.morph[data-mode="tablet"] {
+  --fw: calc(var(--dw) * 1.36);
+  --fh: calc(var(--dw) * 1.8);
+  --fr: calc(var(--dw) * 0.09);
+  --fp: calc(var(--dw) * 0.04);
+}
+
+.morph[data-mode="desktop"] {
+  --fw: min(calc(var(--dw) * 1.85), 92vw);
+  --fh: calc(var(--fw) * 0.62);
+  --fr: calc(var(--dw) * 0.045);
+  --fp: calc(var(--dw) * 0.022);
+  --lift: calc(var(--dw) * 0.13);
+}
+
+/* Fixed-height stage: frames stand on its bottom edge, so nothing below shifts */
+.box {
+  position: relative;
+  height: calc(var(--dw) * 2.11);
+}
+
+.frame {
+  position: absolute;
+  left: 50%;
+  bottom: var(--lift);
+  width: var(--fw);
+  height: var(--fh);
+  translate: -50% 0;
+  padding: var(--fp);
+  border-radius: var(--fr);
+  background: #111114;
+  box-shadow:
+    inset 0 0 0 1.5px #3a3a42,
+    0 40px 80px -30px rgb(0 0 0 / 0.55);
+  transition:
+    width 0.75s var(--ease-in-out) 0.18s,
+    height 0.75s var(--ease-in-out) 0.18s,
+    border-radius 0.75s var(--ease-in-out) 0.18s,
+    padding 0.75s var(--ease-in-out) 0.18s,
+    bottom 0.75s var(--ease-in-out) 0.18s;
+}
+
+/* Desktop stand appears under the monitor */
+.stand {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: calc(var(--dw) * 0.42);
+  height: calc(var(--dw) * 0.14);
+  translate: -50% 0;
+  background: linear-gradient(#2a2a31, #141418);
+  clip-path: polygon(30% 0, 70% 0, 100% 100%, 0 100%);
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: top;
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s var(--ease-out);
+}
+
+.morph[data-mode="desktop"] .stand {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.7s;
+}
+
+.screen {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: calc(var(--fr) - var(--fp));
+  background: #070d22;
+  transition: border-radius 0.75s var(--ease-in-out) 0.18s;
+}
+
+/* Screens: old fades out fast, new fades in after the frame has resized */
+.layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  container-type: inline-size;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+
+.morph[data-mode="mobile"] .lMobile,
+.morph[data-mode="tablet"] .lTablet,
+.morph[data-mode="desktop"] .lDesktop {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.45s ease 0.85s;
+}
+
+/* ---------- Mobile screen */
+
+.lMobile {
+  background: radial-gradient(120% 80% at 50% 60%, #1b2a6b 0%, #0d1438 45%, #070d22 100%);
+  color: #e6ecff;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5cqw 9cqw 0;
+  font-size: 4.6cqw;
+  font-weight: 600;
+}
+
+.status svg {
+  width: 12cqw;
+}
+
+.island {
+  width: 30cqw;
+  height: 8.5cqw;
+  border-radius: 99px;
+  background: #000;
+}
+
+.appTop {
+  display: flex;
+  justify-content: space-between;
+  padding: 5cqw 6cqw 0;
+  font-family: var(--f-mono);
+  font-size: 3.6cqw;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--c-cyan);
+}
+
+.appWord {
+  margin-top: 3cqw;
+  font-family: var(--f-display);
+  font-size: 40cqw;
+  line-height: 0.85;
+  text-align: center;
+  text-transform: uppercase;
+  color: var(--c-yellow);
+}
+
+.liveMascot {
+  position: absolute;
+  left: -8%;
+  right: -8%;
+  top: 30%;
+}
+
+.appChips {
+  position: absolute;
+  left: 6cqw;
+  right: 6cqw;
+  bottom: 7cqw;
+  display: flex;
+  gap: 2cqw;
+  font-size: 3.8cqw;
+  font-weight: 600;
+}
+
+.appChips span {
+  flex: 1;
+  padding: 2.6cqw 0;
+  text-align: center;
+  border-radius: 99px;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.appChips span[data-on="true"] {
+  background: var(--c-yellow);
+  color: #0b0b0d;
+  border-color: transparent;
+}
+
+/* ---------- Tablet screen */
+
+.lTablet {
+  background: #fff;
+  color: #0b0b0d;
+}
+
+/* Inner wrapper: cqw here resolves against the layer (its container) */
+.dash {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5cqw;
+  padding: 8cqw 7cqw;
+}
+
+.dashTitle {
+  font-family: var(--f-display);
+  font-size: 11cqw;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4cqw;
+}
+
+.kpi {
+  display: grid;
+  gap: 3cqw;
+  padding: 5cqw;
+  border-radius: 5cqw;
+  background: #eceae4;
+  font-size: 5cqw;
+  font-weight: 600;
+}
+
+.kpi[data-tone="yellow"] {
+  background: var(--c-yellow);
+}
+
+.kpi svg {
+  width: 100%;
+  height: 9cqw;
+  fill: none;
+  stroke: #0b0b0d;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.chart {
+  flex: 1;
+  min-height: 30cqw;
+  display: flex;
+  align-items: flex-end;
+  gap: 3cqw;
+  padding: 4cqw;
+  border-radius: 5cqw;
+  background: #0b1438;
+}
+
+.chart span {
+  flex: 1;
+  border-radius: 2cqw 2cqw 0 0;
+  background: rgb(230 236 255 / 0.3);
+}
+
+.chart span[data-on="true"] {
+  background: #45e3ff;
+}
+
+.rows {
+  display: grid;
+  gap: 3cqw;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+}
+
+.row b {
+  width: 6cqw;
+  height: 6cqw;
+  border-radius: 50%;
+  background: #2f45ff;
+}
+
+.row:nth-child(2) b {
+  background: #ff4b2b;
+}
+
+.row:nth-child(3) b {
+  background: #0b0b0d;
+}
+
+.row span {
+  flex: 1;
+  height: 2.6cqw;
+  border-radius: 99px;
+  background: #e2e0da;
+}
+
+.row i {
+  width: 14cqw;
+  height: 2.6cqw;
+  border-radius: 99px;
+  background: #cfcdc6;
+}
+
+/* ---------- Desktop screen */
+
+.lDesktop {
+  display: flex;
+  flex-direction: column;
+  background: #f3f2ee;
+  color: #0b0b0d;
+}
+
+.browserBar {
+  display: flex;
+  align-items: center;
+  gap: 1.1cqw;
+  padding: 1.3cqw 1.8cqw;
+  background: #1d1d22;
+}
+
+.browserBar i {
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.browserBar i:nth-child(2) {
+  background: #febc2e;
+}
+
+.browserBar i:nth-child(3) {
+  background: #28c840;
+}
+
+.url {
+  margin-left: 3cqw;
+  flex: 1;
+  max-width: 40cqw;
+  padding: 0.6cqw 1.8cqw;
+  border-radius: 99px;
+  background: #2a2a31;
+  color: #a9a9ae;
+  font-family: var(--f-mono);
+  font-size: 1.6cqw;
+}
+
+.site {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2cqw;
+  padding: 2.2cqw 3.4cqw 2.8cqw;
+}
+
+.siteNav {
+  display: flex;
+  align-items: center;
+  gap: 2cqw;
+}
+
+.siteNav span {
+  width: 6cqw;
+  height: 1cqw;
+  border-radius: 99px;
+  background: rgb(11 11 13 / 0.18);
+}
+
+.siteLogo {
+  width: 3cqw;
+  height: 3cqw;
+  margin-right: auto;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5ff6ff, #168aff 50%, #8f4dff);
+  box-shadow: 0 0 0 0.6cqw #fff, 0 0 0 0.85cqw #0b0b0d;
+}
+
+.sitePill {
+  margin-left: 1.5cqw;
+  padding: 0.9cqw 2.4cqw;
+  border-radius: 99px;
+  background: #0b0b0d;
+  color: #fff;
+  font-size: 1.6cqw;
+  font-weight: 600;
+}
+
+.siteHero {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  padding: 2cqw 3cqw;
+  border-radius: 2cqw;
+  background: var(--c-yellow);
+}
+
+.siteKicker {
+  font-family: var(--f-mono);
+  font-size: 1.5cqw;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #8a1c05;
+}
+
+.siteTitle {
+  margin-top: 1cqw;
+  font-family: var(--f-display);
+  font-size: 6.4cqw;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.siteTitle mark {
+  background: none;
+  /* Deeper than the brand blue so small renders clear 4.5:1 on yellow */
+  color: #2233d6;
+}
+
+.siteBtns {
+  display: flex;
+  gap: 1.2cqw;
+  margin-top: 2cqw;
+}
+
+.siteBtns b {
+  width: 12cqw;
+  height: 3.4cqw;
+  border-radius: 99px;
+  background: #0b0b0d;
+}
+
+.siteBtns b + b {
+  width: 9cqw;
+  background: none;
+  box-shadow: inset 0 0 0 0.3cqw #0b0b0d;
+}
+
+.siteMascot {
+  width: 120%;
+  max-width: none;
+  margin-left: -6%;
+}
+
+.siteCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6cqw;
+}
+
+.siteCard {
+  display: grid;
+  gap: 1cqw;
+  padding: 1.8cqw;
+  border-radius: 1.6cqw;
+  background: #e7e6e1;
+}
+
+.siteCard span {
+  height: 1cqw;
+  border-radius: 99px;
+  background: rgb(11 11 13 / 0.2);
+}
+
+.siteCard span:first-child {
+  width: 40%;
+  height: 2.6cqw;
+  border-radius: 0.8cqw;
+  background: #0b0b0d;
+}
+
+.siteCard[data-i="1"] span:first-child {
+  background: #2f45ff;
+}
+
+.siteCard[data-i="2"] span:first-child {
+  background: #ff4b2b;
+}
+
+/* ---------- Switcher */
+
+.switcher {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  gap: 0.35rem;
+  width: max-content;
+  margin: 1rem auto 0;
+  padding: 0.3rem;
+  border-radius: var(--r-pill);
+  background: #0b0b0d;
+  box-shadow: 0 12px 30px -12px rgb(0 0 0 / 0.5);
+}
+
+.option {
+  position: relative;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border-radius: var(--r-pill);
+  overflow: hidden;
+  font-family: var(--f-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(255 255 255 / 0.75);
+  transition:
+    background-color var(--d-fast) ease,
+    color var(--d-fast) ease;
+}
+
+.option::before {
+  content: "( ";
+}
+
+.option::after {
+  content: " )";
+}
+
+.option:hover {
+  color: #fff;
+}
+
+.option[aria-pressed="true"] {
+  background: var(--c-yellow);
+  color: #0b0b0d;
+}
+
+/* Autoplay countdown under the active option */
+.timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background: #0b0b0d;
+  transform-origin: left;
+  animation: timer 4.2s linear;
+}
+
+@keyframes timer {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame,
+  .screen,
+  .layer,
+  .stand {
+    transition: none !important;
+  }
+}

@@ -1,7 +1,7 @@
 import type { CSSProperties } from "react";
 import { HeroIntro } from "@/components/motion/HeroIntro";
 import { Sticker } from "@/components/motion/Sticker";
-import { LiveMascot } from "@/components/mascot/LiveMascot";
+import { DeviceMorph } from "@/components/sections/DeviceMorph";
 import { Mascot } from "@/components/mascot/Mascot";
 import { Button } from "@/components/ui/Button";
 import { Flower } from "@/components/ui/Shapes";
@@ -26,42 +26,9 @@ export function Hero() {
         </p>
 
         <div className={styles.scene} data-hero-content>
-          {/* Device with the live mascot */}
+          {/* One device, morphing mobile → tablet → desktop: we build for every screen */}
           <div className={styles.deviceWrap}>
-            <div className={styles.device}>
-              <div className={styles.screen}>
-                <div className={styles.status} aria-hidden="true">
-                  <span>9:41</span>
-                  <span className={styles.island} />
-                  <svg viewBox="0 0 34 12" width="34" height="12">
-                    <rect x="0" y="7" width="3" height="5" rx="1" fill="currentColor" />
-                    <rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor" />
-                    <rect x="10" y="3" width="3" height="9" rx="1" fill="currentColor" />
-                    <rect x="17" y="1" width="16" height="10" rx="3" fill="none" stroke="currentColor" />
-                    <rect x="19" y="3" width="10" height="6" rx="1.5" fill="currentColor" />
-                  </svg>
-                </div>
-                <div className={styles.screenTop} aria-hidden="true">
-                  <span className="paren">Ruyalab</span>
-                  <span>+</span>
-                  <span className="paren">Vision</span>
-                </div>
-                <p className={styles.screenWord} aria-hidden="true">
-                  Ideas
-                </p>
-                <div className={styles.screenSide} aria-hidden="true">
-                  ( DISCOVER ) + ( DESIGN ) + ( BUILD )
-                </div>
-                <div className={styles.liveMascot}>
-                  <LiveMascot />
-                </div>
-                <div className={styles.screenChips} aria-hidden="true">
-                  <span>Discover</span>
-                  <span>Design</span>
-                  <span data-on="true">Build</span>
-                </div>
-              </div>
-            </div>
+            <DeviceMorph />
           </div>
 
           {/* Yellow panel */}
@@ -110,8 +77,7 @@ export function Hero() {
 
             <div className={styles.right} data-hero-fade>
               <p className={styles.mono}>
-                ( Design, engineering and artificial intelligence — combined into products people
-                actually want to use ) +
+                ( Web, mobile and everything in between — one product, designed for every screen ) +
               </p>
               <dl className={styles.meta}>
                 <div>

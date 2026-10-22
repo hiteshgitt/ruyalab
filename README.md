@@ -1,8 +1,8 @@
 # Ruyalab
 
-Website for Ruyalab, an independent creative technology studio. It is a single homepage with concept case-study pages, a WebGL hero, scroll choreography built with GSAP, and a contact form.
+Website for Ruyalab, an independent creative technology studio. It is a single homepage with concept case-study pages, a morphing multi-device hero, scroll choreography built with GSAP, and a contact form.
 
-**Stack:** Next.js 16.4 (App Router, Cache Components, Turbopack), React 19.3, strict TypeScript, CSS Modules with design tokens, GSAP 3.15 (ScrollTrigger, SplitText, Draggable), Three.js 0.186 and simple-icons.
+**Stack:** Next.js 16.4 (App Router, Cache Components, Turbopack), React 19.3, strict TypeScript, CSS Modules with design tokens, GSAP 3.15 (ScrollTrigger, SplitText, Draggable), and simple-icons.
 
 **Design:** the direction comes from two references: a Dribbble shot and a "floating cards" layout. Display type is Anton, ultra-condensed and uppercase. Body text is Inter, and labels use Geist Mono in the form `( WORK )`. Large sunflower-yellow panels carry most sections. The brand's "vision eye" mascot plays the role of the reference's character. The site has **light and dark themes**. It follows the OS setting until the visitor uses the header toggle; that choice is saved, and an inline script applies it before first paint so the wrong theme never flashes.
 
@@ -50,7 +50,6 @@ src/
     layout/            Header (client: scroll state, active section, accessible mobile menu), Footer
     sections/          Hero, Work, Capabilities, Studio, Process, Technology, Contact (Server Components)
     motion/            RevealScope (declarative scroll motion), HeroIntro (scroll hand-off)
-    three/             iris.ts (vanilla Three.js scene), HeroVisual (loader/lifecycle), IrisFallback (SVG)
     work/              ProjectCard, ProjectCover (procedural SVG artwork)
     contact/           ContactForm (client), actions.ts (server), schema.ts (shared validation)
     ui/                Button, SectionHeading, Logo
@@ -74,23 +73,19 @@ Design tokens (color, fluid type scale, spacing, easing and durations) live at t
 
 ## Motion and interaction
 
-- **Hero.** The entrance is pure CSS, so it starts at first paint; the hero paragraph is the LCP element and stays static. The large wordmark letters lift on hover. The stickers can be dragged on mouse and trackpad, and only float on touch so they never get in the way of scrolling. Each sticker uses three wrapper layers (drag, pop-in, float) so GSAP and CSS never fight over the same `transform`.
+- **Hero.** The entrance is pure CSS, so it starts at first paint; the hero paragraph is the LCP element and stays static. The large wordmark letters lift on hover. A single centred device (`DeviceMorph`) morphs mobile → tablet → desktop, showing the same product on each screen. It auto-cycles only while on screen, stops on hover or when the visitor picks a device from the `( MOBILE ) ( TABLET ) ( DESKTOP )` switcher, and never runs under reduced motion. The frames sit in a fixed-height stage, so nothing below the device shifts when it changes. The stickers can be dragged on mouse and trackpad and only float on touch. Each sticker uses three wrapper layers (drag, pop-in, float) so GSAP and CSS never fight over the same `transform`.
 - **Scroll reveals.** `RevealScope` reads data attributes on the page markup: `data-split`, `data-reveal` / `data-reveal-group`, `data-parallax`, `data-scrub-words` and `data-draw`. Hover lifts on revealed elements use the separate `translate` property for the same reason as the stickers.
 - **Cards.** Capability cards tilt toward the pointer and turn yellow on hover. Process steps open as an accordion on hover or keyboard focus.
 - **Reduced motion.** Everything is turned off under `prefers-reduced-motion`. All content is visible without JavaScript.
 
-## The 3D iris (Studio section)
+## Studio mascot
 
-The iris is a WebGL sculpture recoloured to the mascot palette: a navy core with cyan contour lines and violet and cyan rings. It opens as you scroll through the section.
-
-- **Lazy.** Three.js is only fetched when the Studio section comes within 400px of the viewport, so it costs nothing on first load.
-- **Efficient.** Rendering pauses when the section is off screen or the tab is hidden. Pixel ratio is capped, and phones get a lighter quality setting.
-- **Fallback.** A matching SVG replaces it under reduced motion, Save-Data, missing WebGL, an initialisation error or a lost WebGL context.
+The Studio section's centrepiece is the live mascot (the same component as the hero phone). It sits inside slowly counter-rotating orbit rings and a soft glow, and its eye follows the visitor's pointer. It replaces the earlier Three.js sculpture, so there is no WebGL or Three.js on the site any more. It is a small inline SVG and only animates while on screen.
 
 ## Verification (production build, headless Chrome)
 
 - `tsc`, `eslint` and `next build` all pass with no errors.
-- Tested in both themes at 360, 390, 768, 1024, 1440 and 1920 px: no console errors, no failed requests and no horizontal overflow. WebGL starts when you scroll to Studio and falls back to the static SVG under reduced motion.
+- Tested in both themes at 360, 390, 768, 1024, 1440 and 1920 px: no console errors, no failed requests and no horizontal overflow.
 - **Theme:** follows the OS by default, toggles with mouse or keyboard, persists across reloads, and is already set when the HTML is parsed, so there is no flash.
 - **Interaction:** stickers drag, and the mascot's iris follows the pointer. The mobile menu traps focus and closes with Esc. The contact form validates, delivered a real submission to a local webhook in testing, and shows success and reset states.
 - **Lighthouse** (local run, simulated throttling):

@@ -1,6 +1,6 @@
 import { RevealScope } from "@/components/motion/RevealScope";
-import { HeroVisual } from "@/components/three/HeroVisual";
-import { WorkflowTabs } from "@/components/sections/WorkflowTabs";
+import { LiveMascot } from "@/components/mascot/LiveMascot";
+import { Playbooks } from "@/components/sections/Playbooks";
 import styles from "./Studio.module.css";
 
 const PILLARS = [
@@ -23,45 +23,53 @@ export function Studio() {
     <section id="studio" className={styles.section} aria-labelledby="studio-title">
       <div className="container">
         <RevealScope className={styles.panel}>
-          <div className={styles.visual} aria-hidden="true">
-            <HeroVisual />
-          </div>
-
-          <div className={styles.content}>
-            <p className={`label ${styles.meta}`} data-reveal>
+          <div className={styles.topbar} data-reveal>
+            <p className={`label ${styles.meta}`}>
               <span className="paren">03</span> + Studio
             </p>
-
-            <h2 id="studio-title" className={`display ${styles.statement}`} data-scrub-words>
-              Technology is the medium. <span className={styles.hl}>Possibility</span> is the point.
-            </h2>
-
-            <p className={styles.lead} data-reveal>
-              Ruyalab sits where strategy, design and engineering overlap. The people shaping an idea are
-              the people building it — so nothing gets lost between the first sketch and the final deploy.
+            <p className={`label ${styles.meta} ${styles.metaR}`} aria-hidden="true">
+              ( Strategy ) + ( Design ) + ( Engineering )
             </p>
-
-            <ol className={styles.pillars} data-reveal-group>
-              {PILLARS.map((p, i) => (
-                <li key={p.title} className={styles.pillar} data-reveal>
-                  <span className={`label ${styles.pillarNum}`}>( 0{i + 1} )</span>
-                  <h3 className={styles.pillarTitle}>{p.title}</h3>
-                  <p>{p.body}</p>
-                </li>
-              ))}
-            </ol>
           </div>
+
+          <div className={styles.main}>
+            <div className={styles.copy}>
+              <h2 id="studio-title" className={`display ${styles.statement}`} data-scrub-words>
+                Technology is the medium. <span className={styles.hl}>Possibility</span> is the point.
+              </h2>
+              <p className={styles.lead} data-reveal>
+                Ruyalab sits where strategy, design and engineering overlap. The people shaping an idea
+                are the people building it — so nothing gets lost between the first sketch and the final
+                deploy.
+              </p>
+            </div>
+
+            {/* Our vision mascot — its eye follows the visitor */}
+            <div className={styles.stage} aria-hidden="true" data-reveal>
+              <span className={`${styles.ring} ${styles.ringA}`} />
+              <span className={`${styles.ring} ${styles.ringB}`} />
+              <span className={styles.glow} />
+              <div className={styles.mascot}>
+                <LiveMascot />
+              </div>
+              <span className={styles.caption}>( Vision ) + ( Ruya )</span>
+            </div>
+          </div>
+
+          <ol className={styles.pillars} data-reveal-group>
+            {PILLARS.map((p, i) => (
+              <li key={p.title} className={styles.pillar} data-reveal>
+                <span className={`label ${styles.pillarNum}`}>( 0{i + 1} )</span>
+                <h3 className={styles.pillarTitle}>{p.title}</h3>
+                <p>{p.body}</p>
+              </li>
+            ))}
+          </ol>
         </RevealScope>
 
         <RevealScope className={styles.workflows}>
-          <div className={styles.wfHead} data-reveal>
-            <p className="label">
-              <span className="paren">How we think</span>
-            </p>
-            <h3 className={`display ${styles.wfTitle}`}>Our playbooks</h3>
-          </div>
           <div data-reveal>
-            <WorkflowTabs />
+            <Playbooks />
           </div>
         </RevealScope>
       </div>
