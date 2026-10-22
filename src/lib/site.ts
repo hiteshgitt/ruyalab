@@ -32,7 +32,8 @@ export const site = {
   description:
     "Ruyalab is an independent creative technology studio blending design, engineering and AI to build digital products and experiences built for what comes next.",
   tagline: "Design, engineering and AI — built for what comes next.",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || null,
+  // Confirmed studio inbox; overridable per environment.
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "contact@ruyalab.com",
   socials: parseSocials(process.env.NEXT_PUBLIC_SOCIAL_LINKS),
 } as const;
 

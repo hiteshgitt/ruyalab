@@ -73,6 +73,31 @@ Design tokens (color, fluid type scale, spacing, easing and durations) live at t
 - **Projects** (`src/data/projects.ts`): the four entries are **self-initiated concept studies**, and every place they appear labels them that way. Replace them with real work using the same shape. Real work can include an optional `cover` image (rendered with `next/image`), a `caseStudy` (which generates `/work/[slug]`) and a `liveUrl`.
 - **Capabilities, process and stack**: see `src/data/services.ts`.
 
+## SEO and crawlability
+
+Everything is generated from the same data the pages render (`src/data/*`, `src/lib/site.ts`), so none of it can drift out of date.
+
+| URL | What it is |
+| --- | --- |
+| `/sitemap.xml` | Every indexable page, with `lastmod` |
+| `/robots.txt` | Allows all crawlers; points to the sitemap |
+| `/llms.txt` | [llms.txt](https://llmstxt.org) site map for AI assistants (ChatGPT, Claude, Perplexity) |
+| `/llms-full.txt` | All case studies, playbooks and capabilities as plain Markdown |
+| `/manifest.webmanifest` | Web app manifest (name, colours, icons) |
+| `/logo.png` | 512×512 raster logo, referenced by structured data |
+| `/opengraph-image` | 1200×630 social preview |
+
+- **Structured data** (`src/lib/seo.tsx`):
+  - Every page carries `Organization` (name, logo, contact email, the areas the studio works in) and `WebSite`.
+  - Case-study pages add `CreativeWork` and `BreadcrumbList`.
+  - Only facts that are visible on the site are marked up.
+- **Meta tags:**
+  - Canonical URLs on every page.
+  - `googlebot` allows large image previews and full-length snippets.
+  - Open Graph and Twitter cards.
+  - Unknown URLs return a real 404.
+- **One canonical host.** `www` 301-redirects to the root domain, `http` redirects to `https`, and `NEXT_PUBLIC_SITE_URL` must be `https://ruyalab.com`.
+
 ## Brand assets
 
 - **Mascots** live in `public/mascots/*.svg`. They are copied from the brand kit with the background removed so they work on both themes. The poses are hero, explore, discover, code, build, launch and grow. `<Mascot pose="…" />` renders them, and every pose has descriptive alt text.

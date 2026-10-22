@@ -5,6 +5,7 @@ import { getProject, projects } from "@/data/projects";
 import { ProjectCover } from "@/components/work/ProjectCover";
 import { RevealScope } from "@/components/motion/RevealScope";
 import { Button } from "@/components/ui/Button";
+import { JsonLd, caseStudyLd } from "@/lib/seo";
 import styles from "./page.module.css";
 
 // Only the studies listed in data exist; anything else is a real 404.
@@ -51,6 +52,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
 
   return (
     <article className={styles.page}>
+      <JsonLd data={caseStudyLd(project)} />
       <RevealScope className="container">
         <nav aria-label="Breadcrumb" className={styles.crumbs}>
           <Link href="/#work" className="label">
