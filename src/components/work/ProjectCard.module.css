@@ -150,7 +150,7 @@
   align-items: flex-start;
 }
 
-/* ---------- Layout: one featured card, then the rest side by side */
+/* ---------- Layout: live products as banners, then studies two by two */
 
 @media (max-width: 599px) {
   .info {
@@ -166,23 +166,19 @@
   .card[data-layout="card"] {
     grid-column: span 6;
   }
-  /* An odd one out on tablet spans the row as a banner */
-  .card[data-layout="card"]:last-child:nth-child(even) {
+  .card[data-layout="card"] .link {
+    aspect-ratio: 4 / 3;
+  }
+  /* An odd one out spans the row as a banner */
+  .card[data-layout="card"]:last-child:nth-child(odd of [data-layout="card"]) {
     grid-column: 1 / -1;
   }
-  .card[data-layout="card"]:last-child:nth-child(even) .link {
+  .card[data-layout="card"]:last-child:nth-child(odd of [data-layout="card"]) .link {
     aspect-ratio: 2.4 / 1;
   }
 }
 
 @media (min-width: 1100px) {
-  .card[data-layout="card"],
-  .card[data-layout="card"]:last-child:nth-child(even) {
-    grid-column: span 4;
-  }
-  .card[data-layout="card"]:last-child:nth-child(even) .link {
-    aspect-ratio: 4 / 5;
-  }
   .card[data-layout="featured"] .info {
     max-width: 52rem;
   }

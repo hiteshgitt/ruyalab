@@ -1,6 +1,6 @@
 # Ruyalab
 
-Website for Ruyalab, an independent creative technology studio. It is a single homepage with concept case-study pages, a morphing multi-device hero, scroll choreography built with GSAP, and a contact form.
+Website for Ruyalab, an independent creative technology studio. It is a single homepage with product and client case-study pages, a morphing multi-device hero, scroll choreography built with GSAP, and a contact form.
 
 **Stack:** Next.js 16.4 (App Router, fully static generation, Turbopack), React 19.3, strict TypeScript, CSS Modules with design tokens, GSAP 3.15 (ScrollTrigger, SplitText, Draggable), and simple-icons.
 
@@ -70,7 +70,7 @@ Design tokens (color, fluid type scale, spacing, easing and durations) live at t
 
 ### Content
 
-- **Projects** (`src/data/projects.ts`): the four entries are **self-initiated concept studies**, and every place they appear labels them that way. Replace them with real work using the same shape. Real work can include an optional `cover` image (rendered with `next/image`), a `caseStudy` (which generates `/work/[slug]`) and a `liveUrl`.
+- **Projects** (`src/data/projects.ts`): Talkel and Web Monitor are **live Ruyalab products** (with `liveUrl`); the others are **client work**, described without the client's name, logo or live link. Replace them with real work using the same shape. Real work can include an optional `cover` image (rendered with `next/image`), a `caseStudy` (which generates `/work/[slug]`) and a `liveUrl`.
 - **Capabilities, process and stack**: see `src/data/services.ts`.
 
 ## SEO and crawlability

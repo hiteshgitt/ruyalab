@@ -106,8 +106,8 @@ export function Hero() {
                   <dd>{String(capabilities.length).padStart(2, "0")}</dd>
                 </div>
                 <div>
-                  <dt className="paren">Concept studies</dt>
-                  <dd>{String(projects.length).padStart(2, "0")}</dd>
+                  <dt className="paren">Live products</dt>
+                  <dd>{String(projects.filter((p) => p.status === "Live").length).padStart(2, "0")}</dd>
                 </div>
               </dl>
             </div>
@@ -119,7 +119,7 @@ export function Hero() {
               <Mascot pose="grow" decorative className={styles.cardImg} />
               <div>
                 <p className={styles.cardNum}>{String(projects.length).padStart(2, "0")}</p>
-                <p className={styles.cardTxt}>Concept studies</p>
+                <p className={styles.cardTxt}>Selected projects</p>
               </div>
             </div>
             <span className={styles.drag}>↖ drag me</span>

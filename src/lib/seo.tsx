@@ -54,7 +54,7 @@ export function caseStudyLd(p: Project) {
       "@type": "CreativeWork",
       "@id": `${url}#work`,
       name: p.name,
-      headline: `${p.name} — concept study`,
+      headline: `${p.name} — ${p.status === "Live" ? "product" : "client project"}`,
       description: p.summary,
       url,
       dateCreated: String(p.year),

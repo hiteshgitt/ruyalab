@@ -19,22 +19,23 @@ export async function generateMetadata({ params }: PageProps<"/work/[slug]">): P
   const { slug } = await params;
   const project = getProject(slug);
   if (!project) return {};
+  const kind = project.status === "Live" ? "product" : "client project";
   return {
-    title: `${project.name} — concept study`,
+    title: `${project.name} — ${kind}`,
     description: project.summary,
     alternates: { canonical: `/work/${project.slug}` },
     // openGraph/twitter replace the parent objects wholesale, so restate the shared image.
     openGraph: {
       type: "article",
       siteName: "Ruyalab",
-      title: `${project.name} — Ruyalab concept study`,
+      title: `${project.name} — Ruyalab ${kind}`,
       description: project.summary,
       url: `/work/${project.slug}`,
       images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${project.name} — Ruyalab concept study`,
+      title: `${project.name} — Ruyalab ${kind}`,
       description: project.summary,
       images: ["/opengraph-image"],
     },
@@ -79,7 +80,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         <div className={`grid ${styles.body}`}>
           <dl className={styles.facts} data-reveal>
             <div>
-              <dt className="label">Product</dt>
+              <dt className="label">{project.status === "Live" ? "Product" : "Client"}</dt>
               <dd>{project.client}</dd>
             </div>
             <div>
@@ -92,7 +93,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
             </div>
             <div>
               <dt className="label">Status</dt>
-              <dd>{project.status} — self-initiated study</dd>
+              <dd>{project.status === "Live" ? "Live — built and run by Ruyalab" : "Client work — client confidential"}</dd>
             </div>
             {project.liveUrl && (
               <div>
@@ -121,7 +122,7 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
         </div>
 
         <footer className={styles.next}>
-          <p className="label">Next study</p>
+          <p className="label">Next project</p>
           <Link href={next.caseStudy ? `/work/${next.slug}` : "/#work"} className={`display ${styles.nextLink}`}>
             {next.name} <span aria-hidden="true">→</span>
           </Link>

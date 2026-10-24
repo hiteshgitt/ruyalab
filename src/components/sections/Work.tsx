@@ -15,17 +15,17 @@ export function Work() {
           id="work-title"
           aside={
             <p>
-              Products we designed and prototyped on our own initiative — not client commissions — to
-              show how we approach the problems we care about. Open any study for the full story.
+              Products we built and run ourselves, alongside web applications and websites we built for
+              clients. Client names are kept confidential. Open any project for the full story.
             </p>
           }
         >
-          Concept <span className="blue">studies</span>
+          Products <span className="blue">&amp; client work</span>
         </SectionHeading>
 
         <div className={`grid ${styles.list}`}>
           {projects.map((project, i) => (
-            <ProjectCard key={project.slug} project={project} index={i} layout={(i === 0 ? "featured" : "card") as CardLayout} />
+            <ProjectCard key={project.slug} project={project} index={i} layout={(project.status === "Live" ? "featured" : "card") as CardLayout} />
           ))}
         </div>
       </RevealScope>

@@ -9,6 +9,11 @@ import { site } from "@/lib/site";
  */
 
 const studies = projects.filter((p) => p.caseStudy);
+const products = studies.filter((p) => p.status === "Live");
+const clientWork = studies.filter((p) => p.status !== "Live");
+
+const line = (p: (typeof studies)[number]) =>
+  `- [${p.name}](${site.url}/work/${p.slug}): ${p.summary} (${p.industry}; ${p.services.join(", ")})${p.liveUrl ? ` Live at ${p.liveUrl}` : ""}`;
 
 export function llmsIndex(): string {
   return `# ${site.name}
@@ -17,19 +22,23 @@ export function llmsIndex(): string {
 
 Ruyalab is an independent creative technology studio. It designs and builds marketing websites, web applications, AI-powered products, interactive 3D experiences and headless content platforms. Strategy, design and engineering are done by the same team.
 
-The projects listed under "Concept studies" are self-initiated explorations, not client commissions.
+The projects listed under "Products" are built and run by Ruyalab. The projects listed under "Client work" were built for clients, whose names are kept confidential.
 
 ## Pages
 
 - [Home](${site.url}/): Studio overview, capabilities, process, technology and contact form
-- [Selected work](${site.url}/#work): Concept studies with summaries
+- [Selected work](${site.url}/#work): Products and client work with summaries
 - [Capabilities](${site.url}/#capabilities): The five disciplines the studio offers
 - [Studio](${site.url}/#studio): Approach and working playbooks
 - [Contact](${site.url}/#contact): Enquiry form for new projects
 
-## Concept studies
+## Products
 
-${studies.map((p) => `- [${p.name}](${site.url}/work/${p.slug}): ${p.summary} (${p.industry}; ${p.services.join(", ")})`).join("\n")}
+${products.map(line).join("\n")}
+
+## Client work
+
+${clientWork.map(line).join("\n")}
 
 ## Capabilities
 
@@ -53,7 +62,7 @@ export function llmsFull(): string {
       (p) => `### ${p.name}
 
 URL: ${site.url}/work/${p.slug}
-Status: ${p.status} (self-initiated study, ${p.year})
+Status: ${p.status === "Live" ? `Live product, ${p.year}` : `Client work (client confidential), ${p.year}`}${p.liveUrl ? `\nLive site: ${p.liveUrl}` : ""}
 Industry: ${p.industry}
 Services: ${p.services.join(", ")}
 
@@ -89,9 +98,9 @@ ${playbooks.map((b) => `### ${b.label}\n\n${b.steps.map((s, i) => `${i + 1}. **$
 
 ${stack.map((g) => `- **${g.label}** (${g.note}): ${g.items.join(", ")}`).join("\n")}
 
-## Concept studies
+## Work
 
-The following are self-initiated explorations, not client commissions.
+Entries marked "Live" are products built and run by Ruyalab; the rest were built for clients, whose names are kept confidential.
 
 ${caseStudies}
 `;

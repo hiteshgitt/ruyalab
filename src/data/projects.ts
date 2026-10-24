@@ -1,18 +1,19 @@
 /**
- * Portfolio entries. These are concept studies — original, self-initiated
- * explorations — and are labelled as such everywhere they appear. Replace or
- * extend with real client work (or wire to a CMS) using the same shape.
+ * Portfolio entries. "Live" entries are products Ruyalab built and runs;
+ * "Client work" entries are commissions, described without naming the client
+ * (no client name, logo or live link). Extend (or wire to a CMS) using the
+ * same shape.
  */
 
-export type ProjectStatus = "Concept" | "In progress" | "Live";
+export type ProjectStatus = "Live" | "Client work";
 
 /** Procedural cover artwork, used when no `cover` image is supplied. */
-export type ProjectVisual = "orbit" | "ledger" | "signal" | "strata";
+export type ProjectVisual = "call" | "pulse" | "journal" | "stand" | "campus" | "wordpress";
 
 export type Project = {
   slug: string;
   name: string;
-  /** Client or product name. For concepts, the fictional product name. */
+  /** Product name, or a description of the client that does not name them. */
   client: string;
   industry: string;
   services: string[];
@@ -32,83 +33,125 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "atlas-observatory",
-    name: "Atlas Observatory",
-    client: "Atlas — concept product",
-    industry: "Climate data",
-    services: ["Product design", "WebGL", "Data visualisation"],
+    slug: "talkel",
+    name: "Talkel",
+    client: "Talkel — Ruyalab product",
+    industry: "EdTech",
+    services: ["Voice AI", "Android app", "Web app"],
     summary:
-      "An explorable 3D globe that turns dense planetary datasets into a calm, navigable story for non-specialists.",
+      "An AI phone-call partner for rehearsing the English conversations that matter — interviews, salary talks, tough client calls — then seeing exactly what to fix.",
     year: 2026,
-    status: "Concept",
-    visual: "orbit",
+    status: "Live",
+    visual: "call",
+    liveUrl: "https://talkel.ruyalab.com/",
     caseStudy: {
       challenge:
-        "Climate datasets are vast, technical and usually presented as charts for experts. The question we asked: what would it take for a curious non-specialist to explore them for ten minutes without getting lost?",
+        "Plenty of people read and write English well but freeze when they have to speak it under pressure — a job interview, a raise, an unhappy client. Most apps drill vocabulary; almost none let you rehearse the moment itself.",
       approach:
-        "We prototyped a single spatial interface — a slowly rotating globe — where every layer shares the same camera, legend and timeline. Data is streamed in tiles and rendered with lightweight shaders so the experience holds up on mid-range phones.",
+        "A real-time voice call with AI characters who react, ask follow-ups and push back. Open practice scenarios sit alongside eleven missions with five pressure levels, interviews tailored to your own role, and Indian, American, British or Australian accents. After each call Talkel scores the conversation and lists every fix — grammar, more natural phrasing, Hinglish translated word for word, filler words and pauses — explained in English or Hindi.",
       outcome:
-        "A working prototype that explores the interaction model and performance budget. It is a self-initiated study, not a commissioned product.",
+        "Live on the web with an Android app on the way to the Play Store. Ten free minutes of practice every day, and custom topics let people rehearse their own situation.",
     },
   },
   {
-    slug: "ledgerline",
-    name: "Ledgerline",
-    client: "Ledgerline — concept product",
-    industry: "Fintech",
-    services: ["SaaS platform", "Design system", "Engineering"],
+    slug: "web-monitor",
+    name: "Web Monitor",
+    client: "Web Monitor — Ruyalab product",
+    industry: "Developer tools",
+    services: ["SaaS platform", "Mobile app", "Integrations"],
     summary:
-      "A finance operations dashboard exploring how much clarity a dense, real-time product can carry before it needs another screen.",
+      "Round-the-clock monitoring for WordPress, Laravel, Next.js and PHP sites — real response times, downtime alerts, security and SEO health, on the web and your phone.",
     year: 2026,
-    status: "Concept",
-    visual: "ledger",
+    status: "Live",
+    visual: "pulse",
+    liveUrl: "https://webmonitor.ruyalab.com/",
     caseStudy: {
       challenge:
-        "Operations teams live inside dashboards that grow by accretion. Each new metric adds noise until the important signal is the hardest thing to find.",
+        "Teams run WordPress, Laravel, Next.js and plain PHP sites side by side, and too often hear a site is slow or down from a customer. A basic uptime ping says a site answered — not whether it is healthy.",
       approach:
-        "We designed a typographic, grid-first system where hierarchy comes from scale and rhythm rather than colour, then built it as a typed component library with live-updating views.",
+        "A small integration for each platform — a WordPress plugin, an npm package, Composer packages for Laravel and CodeIgniter, or one endpoint for anything else — reports real health, performance, SEO and security data. Every site is checked every minute, downtime opens an incident and a push alert, and a Pro Advanced view adds AI insights built on the site's own history.",
       outcome:
-        "A reference design system and interactive prototype used to test information density patterns.",
+        "Live with a free Basic plan, a web dashboard and the same live view on Android and iPhone. Every number comes from a real check — when something can't be measured, it says so instead of guessing.",
     },
   },
   {
-    slug: "murmur",
-    name: "Murmur",
-    client: "Murmur — concept product",
-    industry: "Customer experience",
-    services: ["AI product", "Conversational UI", "Prototyping"],
+    slug: "wellness-publishing-platform",
+    name: "Wellness Journal",
+    client: "Wellness publisher — client confidential",
+    industry: "Media & wellness",
+    services: ["Web application", "Headless CMS", "Memberships & payments"],
     summary:
-      "A conversational support layer that knows when to answer, when to ask, and when to hand over to a person.",
-    year: 2025,
-    status: "Concept",
-    visual: "signal",
+      "A bilingual editorial and membership platform for a Nordic wellness publication — long-form journalism, members-only content, retreats and paid subscriptions.",
+    year: 2026,
+    status: "Client work",
+    visual: "journal",
     caseStudy: {
       challenge:
-        "Most AI assistants are optimised to always respond. In support, a confident wrong answer costs more than a short wait for a human.",
+        "A wellness publication and retreat practice wanted one home for its writing, its retreats and its paying members — in two languages, with the calm pacing of a printed magazine rather than the look of a SaaS template.",
       approach:
-        "We explored retrieval-grounded responses with explicit confidence states in the interface, plus a hand-over pattern that carries full context to a human agent.",
+        "A Next.js front end on Payload CMS and Postgres, with every page in two languages. Editors control gating per article; memberships, an introductory three-month offer and renewal reminders run on Stripe with transactional email. Events, retreats and advertising campaigns are managed from the same CMS, with role-based access for the team.",
       outcome:
-        "An interaction prototype and evaluation harness for testing escalation behaviour.",
+        "An editorial site and member platform the client's team runs day to day — publishing, selling memberships and filling retreats without a developer in the loop.",
     },
   },
   {
-    slug: "folio-press",
-    name: "Folio Press",
-    client: "Folio — concept platform",
-    industry: "Publishing",
-    services: ["Headless WordPress", "Next.js", "Editorial design"],
+    slug: "exhibition-studio-website",
+    name: "Exhibition Studio",
+    client: "Exhibition design & fabrication company — client confidential",
+    industry: "Exhibitions & manufacturing",
+    services: ["Marketing website", "Creative development", "Bilingual content"],
     summary:
-      "A headless publishing platform where editors keep the tools they know and readers get a fast, art-directed magazine.",
-    year: 2025,
-    status: "Concept",
-    visual: "strata",
+      "A premium bilingual website for an exhibition stand design and fabrication company — editorial typography, cinematic scroll motion and a full project portfolio.",
+    year: 2026,
+    status: "Client work",
+    visual: "stand",
     caseStudy: {
       challenge:
-        "Editorial teams want WordPress. Readers want speed and craft. Traditional themes force a trade-off between the two.",
+        "The company designs, builds and installs exhibition stands across Europe, but its site read like a supplier listing. It needed to sell craft and scale to marketing teams choosing a partner for their next trade fair — in Polish and English.",
       approach:
-        "WordPress as a structured content API, Next.js as the presentation layer, with block-level art direction that editors control without writing code.",
+        "A fully static Next.js site with large display type, duotone photography and GSAP scroll choreography: line-by-line reveals, masked image reveals, counters and a pinned horizontal walk through the eight-step process. Ten case studies, a sector index, published client reviews and a contact form that sends straight to the team's inbox, with localised metadata for both languages.",
       outcome:
-        "A reference architecture and front-end prototype for content-led sites.",
+        "A fast, static site that presents the company as a design-led partner, with a portfolio and content structure ready to move into a CMS.",
+    },
+  },
+  {
+    slug: "education-websites",
+    name: "Education Websites",
+    client: "Universities, business schools and K-12 schools — clients confidential",
+    industry: "Higher education",
+    services: ["University websites", "Admissions landing pages", "Lead capture"],
+    summary:
+      "Websites and admissions campaign pages for universities, business schools and K-12 schools across India and the UAE — built to turn ad traffic into qualified applications.",
+    year: 2026,
+    status: "Client work",
+    visual: "campus",
+    caseStudy: {
+      challenge:
+        "Every admissions season brings new programmes, entrance tests and expos, each with its own ad campaign and a short window to capture enquiries. Institutions need pages that launch in days, load fast on mobile data and feed every lead straight to their admissions teams.",
+      approach:
+        "Lightweight, static-first landing pages for each programme and campaign, with enquiry forms wired to the institution's CRM, tag-manager tracking and per-campaign variants. For full institutional sites we build on Next.js or Laravel with a CMS, so editors can update programmes, news and events themselves.",
+      outcome:
+        "Around thirty sites and campaign pages delivered for institutions in India and the UAE, from undergraduate and MBA admissions to school enrolment and education expos.",
+    },
+  },
+  {
+    slug: "wordpress-engineering",
+    name: "WordPress Engineering",
+    client: "Agencies, publishers and brands — clients confidential",
+    industry: "Web platforms",
+    services: ["Custom plugins", "Custom themes", "Gutenberg blocks"],
+    summary:
+      "Custom WordPress plugins, themes and block libraries on our own modular framework — business logic in a tested core plugin, presentation in a lean theme.",
+    year: 2026,
+    status: "Client work",
+    visual: "wordpress",
+    caseStudy: {
+      challenge:
+        "Most WordPress builds pile business logic into the theme and a stack of third-party plugins, so every redesign or update breaks something. Teams want to keep the editor they know without inheriting that fragility.",
+      approach:
+        "An in-house modular framework: a core plugin holds all business logic with dependency injection and PSR-4 autoloading, a presentation-only theme handles the front end, and adapters add Gutenberg blocks, Elementor widgets or WooCommerce only where a site needs them. A Vite build pipeline, WordPress Coding Standards, static analysis, and accessibility, security and performance are built in. We also ship standalone plugins, such as the integration that feeds health data to Web Monitor.",
+      outcome:
+        "Client sites where editors keep the WordPress tools they know, redesigns touch only the theme, and logic is tested once and reused across projects.",
     },
   },
 ];

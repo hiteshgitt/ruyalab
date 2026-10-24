@@ -37,7 +37,7 @@ export function ProjectCard({ project, index, layout }: { project: Project; inde
       </div>
 
       <p className={styles.tag}>
-        <span>( {project.status === "Concept" ? "Concept" : project.status} {num} )</span>
+        <span>( {project.status === "Live" ? "Live" : "Client"} {num} )</span>
         <span aria-hidden="true">+</span>
         <span>( {project.industry} )</span>
       </p>
@@ -56,7 +56,7 @@ export function ProjectCard({ project, index, layout }: { project: Project; inde
         </div>
         {href && (
           <span className={styles.cta} aria-hidden="true">
-            {external ? "Visit site" : "View study"}
+            {external ? "Visit site" : project.status === "Live" ? "View product" : "View project"}
             <svg viewBox="0 0 16 16" width="14" height="14">
               <path d="M4 12L12 4M6 4h6v6" fill="none" stroke="currentColor" strokeWidth="1.6" />
             </svg>
