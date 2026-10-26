@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { afterQuiet } from "@/lib/after-quiet";
 import { MQ } from "@/lib/motion";
 import styles from "./Sticker.module.css";
 
@@ -34,7 +35,7 @@ export function Sticker({
     let revert = () => {};
     let cancelled = false;
 
-    void (async () => {
+    const cancelQuiet = afterQuiet(() => void (async () => {
       const { default: gsap } = await import("gsap");
       const { Draggable } = await import("gsap/Draggable");
       if (cancelled) return;
@@ -55,10 +56,11 @@ export function Sticker({
         return () => d.kill();
       });
       revert = () => mm.revert();
-    })();
+    })());
 
     return () => {
       cancelled = true;
+      cancelQuiet();
       revert();
     };
   }, [bounds]);

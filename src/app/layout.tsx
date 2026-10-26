@@ -8,18 +8,20 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
+// optional: if the file is not here in the first instant, the fallback paints
+// and is kept. That stops a late font swap from becoming the mobile LCP.
+// A preloaded Anton still wins on a fast desktop connection.
 const display = Anton({
   subsets: ["latin"],
   weight: "400",
   variable: "--font-display",
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 
-// Body text is not the LCP element. Skip the preload so Anton gets the bandwidth.
-const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap", preload: false });
+const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "optional", preload: false });
 
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap", preload: false });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "optional", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { afterQuiet } from "@/lib/after-quiet";
 import { MQ } from "@/lib/motion";
 
 /**
@@ -20,7 +21,7 @@ export function HeroIntro({ children, className }: { children: ReactNode; classN
     let revert = () => {};
     let cancelled = false;
 
-    void (async () => {
+    const cancelQuiet = afterQuiet(() => void (async () => {
       const { default: gsap } = await import("gsap");
       const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       if (cancelled) return;
@@ -35,10 +36,11 @@ export function HeroIntro({ children, className }: { children: ReactNode; classN
         });
       });
       revert = () => mm.revert();
-    })();
+    })());
 
     return () => {
       cancelled = true;
+      cancelQuiet();
       revert();
     };
   }, []);

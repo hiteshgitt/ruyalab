@@ -1,63 +1,16 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { LiveMascot } from "@/components/mascot/LiveMascot";
 import { Mascot } from "@/components/mascot/Mascot";
+import { DeviceStage } from "./DeviceStage";
 import styles from "./DeviceMorph.module.css";
-
-type Mode = "mobile" | "tablet" | "desktop";
-const MODES: Mode[] = ["mobile", "tablet", "desktop"];
-const CYCLE_MS = 4200;
 
 /**
  * One device frame that morphs mobile → tablet → desktop, showing the same
- * product on every screen. The frame resizes while the screens cross-fade, so
- * content never visibly reflows. Auto-cycles while on screen (not under
- * reduced motion); hovering, focusing or choosing a device stops it.
+ * product on every screen. The screens are static markup; DeviceStage owns
+ * the cycling and the buttons.
  */
 export function DeviceMorph() {
-  const [mode, setMode] = useState<Mode>("mobile");
-  const [auto, setAuto] = useState(true);
-  const [hover, setHover] = useState(false);
-  const [inView, setInView] = useState(true);
-  const [reduced, setReduced] = useState(true);
-  // Cross-fades start only after first paint. The mobile screen is the LCP text.
-  const [settled, setSettled] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    setSettled(true);
-  }, []);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const sync = () => setReduced(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    const io = new IntersectionObserver(([e]) => setInView(e.isIntersecting));
-    if (rootRef.current) io.observe(rootRef.current);
-    return () => {
-      mq.removeEventListener("change", sync);
-      io.disconnect();
-    };
-  }, []);
-
-  const running = auto && !hover && inView && !reduced;
-  useEffect(() => {
-    if (!running) return;
-    const t = window.setInterval(() => setMode((m) => MODES[(MODES.indexOf(m) + 1) % MODES.length]), CYCLE_MS);
-    return () => window.clearInterval(t);
-  }, [running]);
-
   return (
-    <div
-      ref={rootRef}
-      className={styles.morph}
-      data-mode={mode}
-      data-settled={settled ? "" : undefined}
-      onPointerEnter={() => setHover(true)}
-      onPointerLeave={() => setHover(false)}
-    >
+    <DeviceStage>
       <div className={styles.box} aria-hidden="true">
         <span className={styles.stand} />
         <div className={styles.frame} data-hit>
@@ -169,24 +122,6 @@ export function DeviceMorph() {
           </div>
         </div>
       </div>
-
-      <div className={styles.switcher} data-hit role="group" aria-label="Preview the product on a device">
-        {MODES.map((m) => (
-          <button
-            key={m}
-            type="button"
-            aria-pressed={mode === m}
-            className={styles.option}
-            onClick={() => {
-              setMode(m);
-              setAuto(false);
-            }}
-          >
-            {m}
-            {running && mode === m && <span className={styles.timer} aria-hidden="true" />}
-          </button>
-        ))}
-      </div>
-    </div>
+    </DeviceStage>
   );
 }

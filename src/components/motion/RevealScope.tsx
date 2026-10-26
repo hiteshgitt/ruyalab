@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ElementType, type ComponentPropsWithoutRef } from "react";
+import { afterQuiet } from "@/lib/after-quiet";
 import { motion, MQ } from "@/lib/motion";
 
 /**
@@ -30,7 +31,7 @@ export function RevealScope<T extends ElementType = "div">({ as, children, ...re
     let revert = () => {};
     let cancelled = false;
 
-    void (async () => {
+    const cancelQuiet = afterQuiet(() => void (async () => {
       const [{ default: gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
         import("gsap"),
         import("gsap/ScrollTrigger"),
@@ -144,10 +145,11 @@ export function RevealScope<T extends ElementType = "div">({ as, children, ...re
       document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
       revert = () => mm.revert();
-    })();
+    })());
 
     return () => {
       cancelled = true;
+      cancelQuiet();
       revert();
     };
   }, []);
