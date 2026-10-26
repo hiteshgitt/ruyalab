@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, type CSSProperties, type ReactNode } from "react";
-import { gsap, Draggable, useGSAP, MQ } from "@/lib/gsap";
+import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { MQ } from "@/lib/motion";
 import styles from "./Sticker.module.css";
 
 /**
@@ -28,10 +28,17 @@ export function Sticker({
 }) {
   const ref = useRef<HTMLDivElement>(null);
 
-  useGSAP(
-    () => {
-      const el = ref.current;
-      if (!el) return;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let revert = () => {};
+    let cancelled = false;
+
+    void (async () => {
+      const { default: gsap } = await import("gsap");
+      const { Draggable } = await import("gsap/Draggable");
+      if (cancelled) return;
+      gsap.registerPlugin(Draggable);
       const mm = gsap.matchMedia();
       mm.add(`${MQ.motionOk} and ${MQ.finePointer}`, () => {
         const [d] = Draggable.create(el, {
@@ -47,10 +54,14 @@ export function Sticker({
         });
         return () => d.kill();
       });
-      return () => mm.revert();
-    },
-    { scope: ref },
-  );
+      revert = () => mm.revert();
+    })();
+
+    return () => {
+      cancelled = true;
+      revert();
+    };
+  }, [bounds]);
 
   return (
     <div ref={ref} className={`${styles.sticker} ${className ?? ""}`} style={style} aria-hidden="true">

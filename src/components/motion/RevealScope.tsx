@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, type ElementType, type ComponentPropsWithoutRef } from "react";
-import { gsap, ScrollTrigger, SplitText, useGSAP, motion, MQ } from "@/lib/gsap";
+import { useEffect, useRef, type ElementType, type ComponentPropsWithoutRef } from "react";
+import { motion, MQ } from "@/lib/motion";
 
 /**
  * Declarative scroll motion. Server-rendered children opt in with data
@@ -24,10 +24,21 @@ export function RevealScope<T extends ElementType = "div">({ as, children, ...re
   const Tag = (as ?? "div") as ElementType;
   const ref = useRef<HTMLElement>(null);
 
-  useGSAP(
-    () => {
-      const root = ref.current;
-      if (!root) return;
+  useEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    let revert = () => {};
+    let cancelled = false;
+
+    void (async () => {
+      const [{ default: gsap }, { ScrollTrigger }, { SplitText }] = await Promise.all([
+        import("gsap"),
+        import("gsap/ScrollTrigger"),
+        import("gsap/SplitText"),
+      ]);
+      if (cancelled || !ref.current) return;
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+
       const q = <E extends Element = HTMLElement>(sel: string) =>
         Array.from(root.querySelectorAll<E & Element>(sel)) as E[];
 
@@ -132,10 +143,14 @@ export function RevealScope<T extends ElementType = "div">({ as, children, ...re
       // Fonts can shift layout after first paint; keep trigger positions honest.
       document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
-      return () => mm.revert();
-    },
-    { scope: ref },
-  );
+      revert = () => mm.revert();
+    })();
+
+    return () => {
+      cancelled = true;
+      revert();
+    };
+  }, []);
 
   return (
     <Tag ref={ref} {...rest}>

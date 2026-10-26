@@ -35,6 +35,8 @@ export const site = {
   // Confirmed studio inbox; overridable per environment.
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "contact@ruyalab.com",
   socials: parseSocials(process.env.NEXT_PUBLIC_SOCIAL_LINKS),
+  // GA4 measurement ID. Public by design (it ships in the page).
+  gaId: "G-G7Z9V7RN67",
 } as const;
 
 export const navItems = [

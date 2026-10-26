@@ -21,7 +21,13 @@ export function DeviceMorph() {
   const [hover, setHover] = useState(false);
   const [inView, setInView] = useState(true);
   const [reduced, setReduced] = useState(true);
+  // Cross-fades start only after first paint. The mobile screen is the LCP text.
+  const [settled, setSettled] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSettled(true);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -48,6 +54,7 @@ export function DeviceMorph() {
       ref={rootRef}
       className={styles.morph}
       data-mode={mode}
+      data-settled={settled ? "" : undefined}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
     >

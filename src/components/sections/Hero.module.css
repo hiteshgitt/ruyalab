@@ -53,10 +53,11 @@
   }
 }
 
+/* Shift only. Starting at opacity 0 kept the wordmark out of the first paint
+   and pushed Largest Contentful Paint to the end of the animation. */
 @keyframes word-in {
   from {
     transform: translateY(30%);
-    opacity: 0;
   }
 }
 
@@ -108,7 +109,9 @@
 
 .mask {
   display: block;
-  overflow: clip;
+  /* Visible so the headline paints at full size on the first frame. Clipping
+     it until the rise finished was delaying Largest Contentful Paint. */
+  overflow: visible;
   padding-bottom: 0.04em;
 }
 
@@ -395,12 +398,14 @@
   }
 }
 
+/* The headline used to start fully clipped (translateY 105% inside the mask),
+   so it could not paint until the animation ended. A short rise stays visible. */
 @keyframes hero-rise {
-  from { transform: translateY(105%); }
+  from { transform: translateY(0.35em); }
 }
 
 @keyframes hero-fade {
-  from { opacity: 0; transform: translateY(16px); }
+  from { transform: translateY(16px); }
 }
 
 

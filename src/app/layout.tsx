@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Inter, Geist_Mono } from "next/font/google";
+import { GoogleTag } from "@/components/analytics/GoogleTag";
 import { site } from "@/lib/site";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { JsonLd, organizationLd, websiteLd } from "@/lib/seo";
@@ -16,7 +17,7 @@ const display = Anton({
 
 const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
 
-const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
+const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
@@ -81,6 +82,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <main id="main">{children}</main>
         <Footer />
       </body>
+      <GoogleTag id={site.gaId} />
     </html>
   );
 }

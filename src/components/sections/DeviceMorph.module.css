@@ -42,6 +42,12 @@
   box-shadow:
     inset 0 0 0 1.5px #3a3a42,
     0 40px 80px -30px rgb(0 0 0 / 0.55);
+}
+
+/* Size transitions start only after first paint. Running them on load grew
+   the "Ideas" word (it is sized from the frame) and delayed LCP until the
+   frame finished resizing. */
+.morph[data-settled] .frame {
   transition:
     width 0.75s var(--ease-in-out) 0.18s,
     height 0.75s var(--ease-in-out) 0.18s,
@@ -80,10 +86,15 @@
   overflow: hidden;
   border-radius: calc(var(--fr) - var(--fp));
   background: #070d22;
+}
+
+.morph[data-settled] .screen {
   transition: border-radius 0.75s var(--ease-in-out) 0.18s;
 }
 
-/* Screens: old fades out fast, new fades in after the frame has resized */
+/* Screens: old fades out fast, new fades in after the frame has resized.
+   The mobile screen is visible immediately — a delayed fade made it the LCP
+   element and held the paint until the animation finished. */
 .layer {
   position: absolute;
   inset: 0;
@@ -98,6 +109,11 @@
 .morph[data-mode="desktop"] .lDesktop {
   opacity: 1;
   pointer-events: auto;
+}
+
+.morph[data-settled][data-mode="mobile"] .lMobile,
+.morph[data-settled][data-mode="tablet"] .lTablet,
+.morph[data-settled][data-mode="desktop"] .lDesktop {
   transition: opacity 0.45s ease 0.85s;
 }
 
