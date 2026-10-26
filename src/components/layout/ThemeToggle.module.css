@@ -36,16 +36,19 @@
   transition: transform var(--d-base) var(--ease-spring);
 }
 
-/* Dark: rays collapse, the bite slides in → moon */
+/* Dark: rays collapse, the bite slides in → moon. html[data-theme] is set before paint. */
+:global(html[data-theme="dark"]) .rays,
 .toggle[data-theme-state="dark"] .rays {
   opacity: 0;
   transform: rotate(-45deg) scale(0.6);
 }
 
+:global(html[data-theme="dark"]) .bite,
 .toggle[data-theme-state="dark"] .bite {
   transform: none;
 }
 
+:global(html[data-theme="dark"]) .disc,
 .toggle[data-theme-state="dark"] .disc {
   transform: scale(1.35);
 }

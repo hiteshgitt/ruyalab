@@ -44,6 +44,9 @@
 
   .spin {
     transform-origin: 490px 310px;
+  }
+
+  .spin[data-spinning] {
     animation: spin 0.9s var(--ease-spring);
   }
 }

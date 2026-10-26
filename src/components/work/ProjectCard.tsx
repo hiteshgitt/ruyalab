@@ -1,5 +1,3 @@
-import Image from "next/image";
-import Link from "next/link";
 import type { Project } from "@/data/projects";
 import { ProjectCover } from "./ProjectCover";
 import styles from "./ProjectCard.module.css";
@@ -22,13 +20,14 @@ export function ProjectCard({ project, index, layout }: { project: Project; inde
       <div className={styles.zoom}>
         <div className={styles.art} data-parallax="0.08">
           {project.cover ? (
-            <Image
+            <img
               src={project.cover.src}
               alt={project.cover.alt}
               width={project.cover.width}
               height={project.cover.height}
-              sizes={layout === "featured" ? "100vw" : "(min-width: 1024px) 33vw, 100vw"}
               className={styles.img}
+              loading="lazy"
+              decoding="async"
             />
           ) : (
             <ProjectCover visual={project.visual} className={styles.img} />
@@ -74,9 +73,9 @@ export function ProjectCard({ project, index, layout }: { project: Project; inde
             {body}
           </a>
         ) : (
-          <Link href={href} className={styles.link} aria-labelledby={titleId}>
+          <a href={href} className={styles.link} aria-labelledby={titleId}>
             {body}
-          </Link>
+          </a>
         )
       ) : (
         <div className={styles.link}>{body}</div>

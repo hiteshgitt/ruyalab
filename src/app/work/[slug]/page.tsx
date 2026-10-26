@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProject, projects } from "@/data/projects";
 import { ProjectCover } from "@/components/work/ProjectCover";
@@ -56,9 +55,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
       <JsonLd data={caseStudyLd(project)} />
       <RevealScope className="container">
         <nav aria-label="Breadcrumb" className={styles.crumbs}>
-          <Link href="/#work" className="label">
+          <a href="/#work" className="label">
             ← Selected work
-          </Link>
+          </a>
         </nav>
 
         <header className={`grid ${styles.head}`}>
@@ -123,9 +122,9 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
 
         <footer className={styles.next}>
           <p className="label">Next project</p>
-          <Link href={next.caseStudy ? `/work/${next.slug}` : "/#work"} className={`display ${styles.nextLink}`}>
+          <a href={next.caseStudy ? `/work/${next.slug}` : "/#work"} className={`display ${styles.nextLink}`}>
             {next.name} <span aria-hidden="true">→</span>
-          </Link>
+          </a>
           <Button href="/#contact" variant="ghost" arrow>
             Start a project
           </Button>

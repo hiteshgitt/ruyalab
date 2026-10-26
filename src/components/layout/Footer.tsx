@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { navItems, site } from "@/lib/site";
 import { Logo } from "@/components/ui/Logo";
 import { Mascot } from "@/components/mascot/Mascot";
@@ -12,9 +11,9 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={`container grid ${styles.top}`}>
         <div className={styles.brand}>
-          <Link href="/" aria-label="Ruyalab — home" className={styles.logoLink}>
+          <a href="/" aria-label="Ruyalab — home" className={styles.logoLink}>
             <Logo />
-          </Link>
+          </a>
           <p className={styles.statement}>
             An independent creative technology lab combining engineering, design and artificial
             intelligence to build meaningful digital products.
@@ -26,9 +25,9 @@ export function Footer() {
           <ul>
             {navItems.map((item) => (
               <li key={item.id}>
-                <Link href={item.href} className={styles.link}>
+                <a href={item.href} className={styles.link}>
                   <span className="paren">{item.label}</span>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

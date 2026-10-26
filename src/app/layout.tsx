@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Anton, Inter, Geist_Mono } from "next/font/google";
-import { GoogleTag } from "@/components/analytics/GoogleTag";
 import { site } from "@/lib/site";
+import { IMMEDIATE_SCRIPT } from "@/lib/immediate";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { JsonLd, organizationLd, websiteLd } from "@/lib/seo";
 import { Header } from "@/components/layout/Header";
@@ -73,7 +73,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     // The theme script sets data-theme before hydration, hence the warning opt-out.
-    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang="en" data-ga={site.gaId} className={`${display.variable} ${body.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} />
         <JsonLd data={[organizationLd(), websiteLd()]} />
@@ -85,8 +85,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         <main id="main">{children}</main>
         <Footer />
+        <script dangerouslySetInnerHTML={{ __html: IMMEDIATE_SCRIPT }} />
       </body>
-      <GoogleTag id={site.gaId} />
     </html>
   );
 }

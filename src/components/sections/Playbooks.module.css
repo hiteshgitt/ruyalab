@@ -232,6 +232,12 @@
   letter-spacing: -0.1em;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .play {
+    display: none;
+  }
+}
+
 /* Autoplay countdown bar */
 .timer {
   position: absolute;
@@ -241,6 +247,10 @@
   width: 100%;
   background: var(--c-blue);
   transform-origin: left;
+  transform: scaleX(0);
+}
+
+.detail[data-running] .timer {
   animation: timer 2.8s linear;
 }
 

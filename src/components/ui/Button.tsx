@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import styles from "./Button.module.css";
 
@@ -60,9 +59,9 @@ export function Button(props: LinkProps | ButtonProps) {
       );
     }
     return (
-      <Link href={href} className={cls} {...anchorRest}>
+      <a href={href} className={cls} {...anchorRest}>
         <Inner arrow={arrow}>{children}</Inner>
-      </Link>
+      </a>
     );
   }
 

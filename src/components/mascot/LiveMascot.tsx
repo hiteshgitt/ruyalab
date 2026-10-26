@@ -1,82 +1,18 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import styles from "./LiveMascot.module.css";
 
 /**
- * The hero mascot drawn inline (adapted from the brand kit's hero.svg) so it
- * can come alive: the iris follows the pointer, it blinks now and then, and a
- * click makes it spin its star. Decorative — hidden from assistive tech.
+ * The hero mascot drawn inline (adapted from the brand kit's hero.svg).
+ * Blinking and the idle bob are CSS. The eye and the star spin are attached
+ * after the page has gone quiet. Decorative — hidden from assistive tech.
  */
 export function LiveMascot({ className }: { className?: string }) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const irisRef = useRef<SVGGElement>(null);
-  const pupilRef = useRef<SVGGElement>(null);
-  const [spin, setSpin] = useState(0);
-
-  useEffect(() => {
-    const svg = svgRef.current;
-    const iris = irisRef.current;
-    const pupil = pupilRef.current;
-    if (!svg || !iris || !pupil) return;
-
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const target = { x: 0, y: 0 };
-    const cur = { x: 0, y: 0 };
-    let raf = 0;
-    let idle = 0;
-
-    const onMove = (e: PointerEvent) => {
-      const r = svg.getBoundingClientRect();
-      // Eye centre in the 1000×600 artboard is (490, 315).
-      const cx = r.left + r.width * 0.49;
-      const cy = r.top + r.height * 0.525;
-      const dx = e.clientX - cx;
-      const dy = e.clientY - cy;
-      const dist = Math.hypot(dx, dy) || 1;
-      const reach = Math.min(dist / 260, 1);
-      target.x = (dx / dist) * reach;
-      target.y = (dy / dist) * reach;
-      idle = 0;
-    };
-
-    const tick = () => {
-      // Drift back toward centre when the pointer has been still for a while.
-      idle += 1;
-      if (idle > 240) {
-        target.x *= 0.98;
-        target.y *= 0.98;
-      }
-      const k = reduced ? 1 : 0.12;
-      cur.x += (target.x - cur.x) * k;
-      cur.y += (target.y - cur.y) * k;
-      iris.setAttribute("transform", `translate(${(cur.x * 22).toFixed(2)} ${(cur.y * 18).toFixed(2)})`);
-      pupil.setAttribute("transform", `translate(${(cur.x * 14).toFixed(2)} ${(cur.y * 11).toFixed(2)})`);
-      raf = requestAnimationFrame(tick);
-    };
-
-    // Only animate while visible.
-    const io = new IntersectionObserver(([entry]) => {
-      cancelAnimationFrame(raf);
-      if (entry.isIntersecting) raf = requestAnimationFrame(tick);
-    });
-    io.observe(svg);
-    window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      io.disconnect();
-      cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onMove);
-    };
-  }, []);
-
   return (
     <svg
-      ref={svgRef}
+      data-live-mascot=""
       className={`${styles.mascot} ${className ?? ""}`}
       viewBox="80 20 800 560"
       aria-hidden="true"
       focusable="false"
-      onClick={() => setSpin((s) => s + 1)}
     >
       <defs>
         <linearGradient id="lm-shell" x1="0" y1="0" x2="1" y2="1">
@@ -143,11 +79,11 @@ export function LiveMascot({ className }: { className?: string }) {
         {/* Moving eye, clipped to the socket; the blink squashes this group */}
         <g clipPath="url(#lm-socket)">
           <g className={styles.blink}>
-            <g ref={irisRef}>
+            <g data-iris="">
               <ellipse cx="490" cy="315" rx="145" ry="115" fill="url(#lm-iris)" stroke="#4deeff" strokeWidth="7" />
-              <g ref={pupilRef}>
+              <g data-pupil="">
                 <ellipse cx="490" cy="315" rx="103" ry="86" fill="#06112d" stroke="#536dff" strokeWidth="5" />
-                <g key={spin} className={spin ? styles.spin : undefined}>
+                <g data-star="" className={styles.spin}>
                   <path d="M490 270 L505 300 L535 310 L505 320 L490 350 L475 320 L445 310 L475 300 Z" fill="#e9fdff" />
                 </g>
                 <ellipse cx="452" cy="275" rx="19" ry="10" transform="rotate(-42 452 275)" fill="#e6ffff" opacity=".95" />

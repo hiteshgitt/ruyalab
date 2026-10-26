@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 export type MascotPose = "hero" | "explore" | "discover" | "code" | "build" | "launch" | "grow";
 
 const ALT: Record<MascotPose, string> = {
@@ -25,15 +23,15 @@ export function Mascot({
   priority?: boolean;
 }) {
   return (
-    <Image
+    <img
       src={`/mascots/${pose}.svg`}
       alt={decorative ? "" : ALT[pose]}
       width={1000}
       height={600}
       className={className}
-      priority={priority}
-      unoptimized
       draggable={false}
+      decoding="async"
+      fetchPriority={priority ? "high" : undefined}
     />
   );
 }
