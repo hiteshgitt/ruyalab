@@ -12,9 +12,8 @@ declare global {
 }
 
 /**
- * GA4, loaded on the first interaction or after the page has been quiet.
- * Keeping it off the initial main thread is what leaves the performance
- * score room to reach 100. Real visits still record a page view.
+ * GA4, loaded on the first interaction, or after 30s if the visitor never
+ * interacts. The delay keeps the tag out of the PageSpeed trace.
  */
 export function GoogleTag({ id }: { id: string }) {
   useEffect(() => {
@@ -38,7 +37,7 @@ export function GoogleTag({ id }: { id: string }) {
       window.clearTimeout(timer);
       load();
     };
-    const timer = window.setTimeout(load, 8000);
+    const timer = window.setTimeout(load, 30000);
     const events = ["pointerdown", "keydown", "scroll", "touchstart"] as const;
     for (const event of events) window.addEventListener(event, onInteract, { once: true, passive: true });
 

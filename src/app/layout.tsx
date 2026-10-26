@@ -13,9 +13,11 @@ const display = Anton({
   weight: "400",
   variable: "--font-display",
   display: "swap",
+  preload: true,
 });
 
-const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap" });
+// Body text is not the LCP element. Skip the preload so Anton gets the bandwidth.
+const body = Inter({ subsets: ["latin"], variable: "--font-body", display: "swap", preload: false });
 
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap", preload: false });
 
