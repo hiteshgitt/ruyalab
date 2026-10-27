@@ -1,0 +1,11 @@
+{
+  // EXAMPLE ONLY — merge these bindings into your Cloudflare Workers Builds / OpenNext config.
+  // Do not use this file as the sole wrangler.jsonc for the ruyalab Worker (it is incomplete).
+  "d1_databases": [
+    {
+      "binding": "CMS_DB",
+      "database_name": "ruyalab-cms",
+      "database_id": "79c81fb0-c122-48cb-aec5-4f96215c2372"
+    }
+  ]
+}

@@ -27,7 +27,7 @@ npx wrangler d1 execute ruyalab-cms --remote --file=migrations/0003_media.sql
 
 **Still required in Cloudflare dashboard before production CMS works:**
 
-1. Worker `ruyalab` → Settings → Bindings → D1 → bind database `ruyalab-cms` as **`CMS_DB`** (see `wrangler.jsonc`).
+1. Worker `ruyalab` → Settings → Bindings → D1 → bind database `ruyalab-cms` as **`CMS_DB`** (see `wrangler.cms.example.jsonc`).
 2. Enable **R2**, create bucket `ruyalab-cms-media`, bind as **`CMS_MEDIA`** (for Media uploads in production).
 3. Deploy/push this branch so `/ruyashield` code is live.
 
@@ -51,7 +51,7 @@ CMS_SESSION_SECRET=your-long-dev-secret-16+
 npx wrangler d1 create ruyalab-cms
 ```
 
-2. Put the printed `database_id` into the Worker’s D1 binding named **`CMS_DB`** (Workers dashboard → ruyalab → Settings → Bindings, or your `wrangler.jsonc`).
+2. Put the printed `database_id` into the Worker’s D1 binding named **`CMS_DB`** (Workers dashboard → ruyalab → Settings → Bindings, or merge from `wrangler.cms.example.jsonc`).
 
 3. Apply the schema:
 
