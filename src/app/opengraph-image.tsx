@@ -1,13 +1,13 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Ruyalab — We turn ambitious ideas into digital reality.";
+export const alt = "Ruyalab — Design, engineering and AI by the same team.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 // Fetch Anton from Google Fonts so the card matches the site's display face.
 async function anton(): Promise<ArrayBuffer | null> {
   try {
-    const css = await fetch("https://fonts.googleapis.com/css2?family=Anton&text=RUYALABWETNMBISDGOC.", {
+    const css = await fetch("https://fonts.googleapis.com/css2?family=Anton&text=RUYALABDESIGNENGINEERINGAIBYTHESAMETEAM.", {
       headers: { "User-Agent": "Mozilla/5.0 (Windows NT 6.1)" },
     }).then((r) => r.text());
     const url = css.match(/src: url\((.+?)\) format/)?.[1];
@@ -37,8 +37,8 @@ export default async function OpengraphImage() {
           }}
         >
           <div style={{ display: "flex", flexDirection: "column", fontSize: 64, lineHeight: 0.95, color: "#0b0b0d" }}>
-            <span>WE TURN AMBITIOUS IDEAS</span>
-            <span style={{ color: "#2f45ff" }}>INTO DIGITAL REALITY.</span>
+            <span>DESIGN + ENGINEERING + AI</span>
+            <span style={{ color: "#2f45ff" }}>BY THE SAME TEAM.</span>
           </div>
           {/* Vision-eye mark */}
           <div style={{ display: "flex", width: 150, height: 130, borderRadius: "50%", background: "#fff", border: "6px solid #0b0b0d", alignItems: "center", justifyContent: "center" }}>

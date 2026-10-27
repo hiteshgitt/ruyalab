@@ -13,6 +13,10 @@ npm run dev                  # http://localhost:3000
 npm run lint && npx tsc --noEmit && npm run build
 ```
 
+## Organic growth
+
+Founder checklist, LinkedIn kickoff posts, and pipeline tracking: [docs/organic-growth.md](docs/organic-growth.md).
+
 ## Configuration
 
 Values that must be real (the domain, email address and social profiles) come from environment variables. When a value is unset, the UI leaves it out rather than showing a placeholder. See `.env.example`.

@@ -18,7 +18,8 @@ export function Contact() {
               Have something <span className={styles.hl}>ambitious</span> in mind?
             </h2>
             <p className={styles.copy} data-reveal>
-              Tell us what you&apos;re imagining. Let&apos;s work out how to make it real.
+              Building a product, an AI feature, or a site that has to convert? Tell us what you&apos;re
+              imagining — we&apos;ll work out how to ship it with one team.
             </p>
             {site.email && (
               <p className={styles.direct} data-reveal>

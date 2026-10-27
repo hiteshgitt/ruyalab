@@ -30,8 +30,8 @@ export const site = {
   url: resolveSiteUrl(),
   title: "Ruyalab — Creative Technology Studio",
   description:
-    "Ruyalab is an independent creative technology studio blending design, engineering and AI to build digital products and experiences built for what comes next.",
-  tagline: "Design, engineering and AI — built for what comes next.",
+    "Ruyalab is an independent creative technology studio. Design, engineering and AI by the same team — shipping digital products, AI-powered experiences and high-craft websites.",
+  tagline: "Design, engineering and AI — built for what comes next. By the same team.",
   // Confirmed studio inbox; overridable per environment.
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "contact@ruyalab.com",
   socials: parseSocials(process.env.NEXT_PUBLIC_SOCIAL_LINKS),

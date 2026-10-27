@@ -15,8 +15,8 @@ export function Footer() {
             <Logo />
           </a>
           <p className={styles.statement}>
-            An independent creative technology lab combining engineering, design and artificial
-            intelligence to build meaningful digital products.
+            An independent creative technology studio. Design, engineering and AI by the same team —
+            shipping digital products and experiences built for what comes next.
           </p>
         </div>
 

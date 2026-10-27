@@ -403,6 +403,16 @@ function bootPlaybooks() {
   sync();
 }
 
+/** Queue a GA4 event even if the gtag script has not finished loading yet. */
+function track(name: string, params: Record<string, string> = {}) {
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag === "function") {
+    window.gtag("event", name, params);
+    return;
+  }
+  window.dataLayer.push(["event", name, params]);
+}
+
 function bootContact() {
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
   const success = document.querySelector<HTMLElement>("[data-contact-success]");
@@ -445,6 +455,7 @@ function bootContact() {
       form.hidden = true;
       success.hidden = false;
       success.focus();
+      track("contact_submit", { method: "form" });
     } catch {
       showError("Something went wrong sending your message. Please try again in a moment.");
     } finally {
@@ -474,6 +485,25 @@ function bootAnalytics() {
   script.async = true;
   script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
   document.head.appendChild(script);
+
+  const path = location.pathname;
+  const work = path.match(/^\/work\/([^/]+)\/?$/);
+  if (work) track("case_study_view", { project: work[1] });
+
+  document.addEventListener(
+    "click",
+    (e) => {
+      const link = (e.target as Element | null)?.closest?.<HTMLAnchorElement>("[data-track]");
+      if (!link) return;
+      const name = link.dataset.track;
+      if (!name) return;
+      track(name, {
+        label: link.dataset.trackLabel || link.href,
+        href: link.href,
+      });
+    },
+    { passive: true },
+  );
 }
 
 declare global {

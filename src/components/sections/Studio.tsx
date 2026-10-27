@@ -38,9 +38,9 @@ export function Studio() {
                 Technology is the medium. <span className={styles.hl}>Possibility</span> is the point.
               </h2>
               <p className={styles.lead} data-reveal>
-                Ruyalab sits where strategy, design and engineering overlap. The people shaping an idea
-                are the people building it — so nothing gets lost between the first sketch and the final
-                deploy.
+                Ruyalab sits where strategy, design, engineering and AI overlap. The people shaping an
+                idea are the people building it — so nothing gets lost between the first sketch and the
+                final deploy.
               </p>
             </div>
 

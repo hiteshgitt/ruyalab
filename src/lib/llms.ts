@@ -20,7 +20,7 @@ export function llmsIndex(): string {
 
 > ${site.description}
 
-Ruyalab is an independent creative technology studio. It designs and builds marketing websites, web applications, AI-powered products, interactive 3D experiences and headless content platforms. Strategy, design and engineering are done by the same team.
+Ruyalab is an independent creative technology studio. Design, engineering and AI are done by the same team. It ships digital products, AI-powered experiences, marketing websites, interactive 3D, and headless content platforms — without a handoff between three vendors.
 
 The projects listed under "Products" are built and run by Ruyalab. The projects listed under "Client work" were built for clients, whose names are kept confidential.
 

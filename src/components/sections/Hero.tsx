@@ -63,15 +63,15 @@ export function Hero() {
                 </span>
               </h1>
               <p className={styles.copy}>
-                Ruyalab blends design, engineering and AI to create digital products and experiences
-                built for what comes next.
+                Design, engineering and AI — by the same team. We ship digital products, AI-powered
+                experiences and high-craft websites without the handoff between three vendors.
               </p>
               <div className={styles.ctas} data-hero-fade>
                 <Button href="#work" arrow="down">
                   Explore our work
                 </Button>
                 <Button href="#contact" variant="ghost" arrow className={styles.ghostOnYellow}>
-                  Let&apos;s build something
+                  Start a project
                 </Button>
               </div>
             </div>

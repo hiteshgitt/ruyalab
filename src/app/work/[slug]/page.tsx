@@ -98,7 +98,13 @@ export default async function CaseStudy({ params }: PageProps<"/work/[slug]">) {
               <div>
                 <dt className="label">Live</dt>
                 <dd>
-                  <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-track="product_outbound"
+                    data-track-label={project.slug}
+                  >
                     Visit site<span className="visually-hidden"> (opens in a new tab)</span>
                   </a>
                 </dd>
