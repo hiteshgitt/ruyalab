@@ -10,11 +10,17 @@ import {
   verifyPassword,
 } from "./auth";
 import {
+  createLinkedInDraft,
   createPost,
+  deleteLinkedInDraft,
   deletePost,
   getPostById,
+  getSeoSettings,
+  listLinkedInDrafts,
   listPosts,
   setCmsSocials,
+  setSeoSettings,
+  updateLinkedInDraft,
   updatePost,
   getCmsSocials,
   cmsStorageMode,
@@ -22,9 +28,11 @@ import {
   updateEnquiry,
 } from "./db";
 import { deleteMedia, listMedia, updateMediaAlt } from "./media";
-import type { EnquiryStage, PostInput, SocialLink } from "./types";
+import type { EnquiryStage, LinkedInDraft, PostInput, SeoSettings, SocialLink } from "./types";
 
-export type ActionResult = { ok: true } | { ok: false; error: string };
+export type ActionResult =
+  | { ok: true; draft?: LinkedInDraft; seo?: SeoSettings }
+  | { ok: false; error: string };
 
 export async function loginAction(formData: FormData): Promise<ActionResult> {
   if (!cmsConfigured()) {
@@ -160,4 +168,69 @@ export async function updateMediaAltAction(formData: FormData): Promise<ActionRe
     return { ok: false, error: e instanceof Error ? e.message : "Could not update alt text." };
   }
   return { ok: true };
+}
+
+export async function loadAdminLinkedIn() {
+  if (!(await isCmsAuthed())) redirect("/ruyashield/login");
+  return listLinkedInDrafts();
+}
+
+export async function createLinkedInAction(formData: FormData): Promise<ActionResult> {
+  try {
+    await requireCmsAuth();
+    const draft = await createLinkedInDraft({
+      title: String(formData.get("title") || ""),
+      body: String(formData.get("body") || ""),
+    });
+    return { ok: true, draft };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not create LinkedIn draft." };
+  }
+}
+
+export async function updateLinkedInAction(formData: FormData): Promise<ActionResult> {
+  try {
+    await requireCmsAuth();
+    const id = String(formData.get("id") || "");
+    if (!id) throw new Error("Missing draft id.");
+    const draft = await updateLinkedInDraft(id, {
+      title: String(formData.get("title") || ""),
+      body: String(formData.get("body") || ""),
+    });
+    return { ok: true, draft };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not update LinkedIn draft." };
+  }
+}
+
+export async function deleteLinkedInAction(formData: FormData): Promise<ActionResult> {
+  try {
+    await requireCmsAuth();
+    const id = String(formData.get("id") || "");
+    if (!id) throw new Error("Missing draft id.");
+    await deleteLinkedInDraft(id);
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not delete LinkedIn draft." };
+  }
+  return { ok: true };
+}
+
+export async function loadAdminSeo() {
+  if (!(await isCmsAuthed())) redirect("/ruyashield/login");
+  return getSeoSettings();
+}
+
+export async function saveSeoAction(formData: FormData): Promise<ActionResult> {
+  try {
+    await requireCmsAuth();
+    const input: SeoSettings = {
+      title: String(formData.get("title") || ""),
+      description: String(formData.get("description") || ""),
+      tagline: String(formData.get("tagline") || ""),
+    };
+    const seo = await setSeoSettings(input);
+    return { ok: true, seo };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "Could not save SEO settings." };
+  }
 }

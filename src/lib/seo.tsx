@@ -10,7 +10,7 @@ import { site } from "@/lib/site";
 const ORG_ID = `${site.url}/#organization`;
 const SITE_ID = `${site.url}/#website`;
 
-export function organizationLd() {
+export function organizationLd(description: string = site.description) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -19,7 +19,7 @@ export function organizationLd() {
     url: site.url,
     logo: { "@type": "ImageObject", url: `${site.url}/logo.png`, width: 512, height: 512 },
     image: `${site.url}/opengraph-image`,
-    description: site.description,
+    description,
     email: site.email,
     contactPoint: {
       "@type": "ContactPoint",
@@ -33,14 +33,14 @@ export function organizationLd() {
   };
 }
 
-export function websiteLd() {
+export function websiteLd(description: string = site.description) {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": SITE_ID,
     name: site.name,
     url: site.url,
-    description: site.description,
+    description,
     inLanguage: "en",
     publisher: { "@id": ORG_ID },
   };

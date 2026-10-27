@@ -23,7 +23,7 @@ Primary wedge: AI-powered products and product engineering for founders / heads 
 | 3 · Ops kit | This checklist + LinkedIn copy pack | Done (below) |
 | 4 · You | GSC: homepage **Request indexing**; wait until Sitemaps = **Success** | Indexing requested — wait for Success |
 | 4 · You | Browser-submit contact once → GA4 mark `contact_submit` key event | API test done; **browser submit + Mark key event** still you |
-| 4 · You | LinkedIn: 3 kickoffs via CMS **LinkedIn pack → Copy** | Waiting on you (no autopost) |
+| 4 · You | LinkedIn: CMS **LinkedIn posts** → Create / Copy | Waiting on you (no autopost) |
 | 4 · You | Enquiry tracker | **CMS Enquiries** (CSV optional backup) |
 | 5 · CMS | D1 `ruyalab-cms` + migrations + CMS secrets | Done in Cloudflare |
 | 5 · You | Bind `CMS_DB` on Worker + enable R2 `CMS_MEDIA` + deploy code | Remaining |

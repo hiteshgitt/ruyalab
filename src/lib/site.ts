@@ -25,13 +25,20 @@ function parseSocials(raw: string | undefined): SocialLink[] {
     .map(([label, href]) => ({ label, href }));
 }
 
-export const site = {
-  name: "Ruyalab",
-  url: resolveSiteUrl(),
+/** Defaults when CMS SEO settings are empty. */
+export const DEFAULT_SEO = {
   title: "Ruyalab — Creative Technology Studio",
   description:
     "Ruyalab is an independent creative technology studio. Design, engineering and AI by the same team — shipping digital products, AI-powered experiences and high-craft websites.",
   tagline: "Design, engineering and AI — built for what comes next. By the same team.",
+} as const;
+
+export const site = {
+  name: "Ruyalab",
+  url: resolveSiteUrl(),
+  title: DEFAULT_SEO.title,
+  description: DEFAULT_SEO.description,
+  tagline: DEFAULT_SEO.tagline,
   // Confirmed studio inbox; overridable per environment.
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || "contact@ruyalab.com",
   socials: parseSocials(process.env.NEXT_PUBLIC_SOCIAL_LINKS),

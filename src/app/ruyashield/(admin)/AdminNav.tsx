@@ -10,8 +10,8 @@ const items = [
   { href: "/ruyashield/media", label: "Media", match: "prefix" as const, group: "content" },
   { href: "/ruyashield/social", label: "Social links", match: "prefix" as const, group: "content" },
   { href: "/ruyashield/enquiries", label: "Enquiries", match: "prefix" as const, group: "growth" },
-  { href: "/ruyashield/linkedin", label: "LinkedIn pack", match: "prefix" as const, group: "growth" },
-  { href: "/ruyashield/seo", label: "SEO status", match: "prefix" as const, group: "growth" },
+  { href: "/ruyashield/linkedin", label: "LinkedIn posts", match: "prefix" as const, group: "growth" },
+  { href: "/ruyashield/seo", label: "SEO", match: "prefix" as const, group: "growth" },
 ];
 
 function isActive(pathname: string, href: string, match: "exact" | "prefix") {

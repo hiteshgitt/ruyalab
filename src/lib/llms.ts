@@ -15,10 +15,10 @@ const clientWork = studies.filter((p) => p.status !== "Live");
 const line = (p: (typeof studies)[number]) =>
   `- [${p.name}](${site.url}/work/${p.slug}): ${p.summary} (${p.industry}; ${p.services.join(", ")})${p.liveUrl ? ` Live at ${p.liveUrl}` : ""}`;
 
-export function llmsIndex(): string {
+export function llmsIndex(description: string = site.description): string {
   return `# ${site.name}
 
-> ${site.description}
+> ${description}
 
 Ruyalab is an independent creative technology studio. Design, engineering and AI are done by the same team. It ships digital products, AI-powered experiences, marketing websites, interactive 3D, and headless content platforms — without a handoff between three vendors.
 
@@ -56,7 +56,7 @@ ${capabilities.map((c) => `- ${c.title}: ${c.description}`).join("\n")}
 `;
 }
 
-export function llmsFull(): string {
+export function llmsFull(description: string = site.description): string {
   const caseStudies = studies
     .map(
       (p) => `### ${p.name}
@@ -78,7 +78,7 @@ ${p.summary}
 
   return `# ${site.name}: full content
 
-> ${site.description}
+> ${description}
 
 Source: ${site.url}. Contact: ${site.email}.
 

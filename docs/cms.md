@@ -9,8 +9,8 @@ Studio admin for **ruyalab.com** at `/ruyashield` — separate from Web Monitor�
 | **Posts** | Create / edit / publish Markdown posts → public `/blog` and `/blog/[slug]` |
 | **Social** | Footer social links + icons (overrides `NEXT_PUBLIC_SOCIAL_LINKS` when non-empty) |
 | **Enquiries** | Contact-form tracker (stage / ICP / notes) — replaces the CSV for site leads |
-| **LinkedIn pack** | 3 kickoff posts with **Copy** (LinkedIn API auto-post needs a LinkedIn app — not enabled) |
-| **SEO status** | Checklist for GA4, robots, sitemaps, llms.txt (owned in code, not editable here) |
+| **LinkedIn posts** | Create / edit / delete LinkedIn drafts + **Copy** (no autopost — paste into LinkedIn yourself) |
+| **SEO** | Edit site title, meta description, tagline (apply to pages / OG / JSON-LD / llms.txt). Robots + sitemaps stay in code. |
 | **Media** | Upload images/PDFs → `/api/media/[id]` (local `.data/media`; production needs R2 `CMS_MEDIA`) |
 
 Later (not built yet): case-study editor, LinkedIn OAuth auto-post.

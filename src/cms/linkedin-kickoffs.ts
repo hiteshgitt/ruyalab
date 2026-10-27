@@ -1,4 +1,4 @@
-/** Founder LinkedIn kickoff pack — publish manually; CMS only stores/copy helpers. */
+/** Seed drafts for CMS LinkedIn posts (first visit). Edit/create more in /ruyashield/linkedin. */
 export const LINKEDIN_KICKOFFS = [
   {
     id: "positioning",

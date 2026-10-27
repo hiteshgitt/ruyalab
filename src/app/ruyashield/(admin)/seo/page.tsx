@@ -1,13 +1,15 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
 import { listPosts } from "@/cms/db";
-import { isCmsAuthed } from "@/cms/auth";
-import { redirect } from "next/navigation";
+import { loadAdminSeo, saveSeoAction } from "@/cms/actions";
+import { SeoForm } from "./SeoForm";
 import styles from "../../admin.module.css";
 
 export default async function CmsSeoPage() {
-  if (!(await isCmsAuthed())) redirect("/ruyashield/login");
-  const published = (await listPosts({ status: "published" })).length;
+  const [seo, published] = await Promise.all([
+    loadAdminSeo(),
+    listPosts({ status: "published" }).then((p) => p.length),
+  ]);
 
   const checks = [
     {
@@ -36,7 +38,7 @@ export default async function CmsSeoPage() {
     },
     {
       label: "llms.txt",
-      detail: "AI crawler map for ChatGPT / Claude / Perplexity",
+      detail: "Uses the meta description below when saved",
       ok: true,
       href: "/llms.txt",
     },
@@ -52,15 +54,18 @@ export default async function CmsSeoPage() {
       <header className={styles.hero}>
         <div>
           <p className={styles.kicker}>Growth</p>
-          <h1 className={styles.title}>SEO status</h1>
+          <h1 className={styles.title}>SEO</h1>
           <p className={styles.muted}>
-            Robots, sitemaps and analytics are owned in code (more reliable for Google than editing them
-            in a CMS). This page is the checklist — GSC indexing still needs your Search Console click.
+            Edit title, description and tagline here. The checklist below is status-only — GSC indexing still needs
+            your Search Console click.
           </p>
         </div>
       </header>
 
-      <div className={styles.card}>
+      <SeoForm initial={seo} action={saveSeoAction} />
+
+      <div className={styles.card} style={{ marginTop: "1.25rem" }}>
+        <h2 className={styles.sectionTitle}>Status checklist</h2>
         <ul className={styles.seoList}>
           {checks.map((c) => (
             <li key={c.label} data-ok={c.ok ? "true" : "false"}>

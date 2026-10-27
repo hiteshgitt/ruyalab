@@ -1,5 +1,16 @@
 import { join } from "node:path";
-import type { Enquiry, EnquiryStage, Post, PostInput, PostStatus, SocialLink } from "./types";
+import { LINKEDIN_KICKOFFS } from "./linkedin-kickoffs";
+import type {
+  Enquiry,
+  EnquiryStage,
+  LinkedInDraft,
+  Post,
+  PostInput,
+  PostStatus,
+  SeoSettings,
+  SocialLink,
+} from "./types";
+import { DEFAULT_SEO } from "@/lib/site";
 
 type D1Prepared = {
   bind: (...values: unknown[]) => D1Prepared;
@@ -339,6 +350,110 @@ export async function setCmsSocials(links: SocialLink[]): Promise<void> {
     .map((s) => ({ label: s.label.trim(), href: s.href.trim() }))
     .filter((s) => s.label && s.href.startsWith("https://"));
   await setSetting("social_links", JSON.stringify(clean));
+}
+
+const LINKEDIN_KEY = "linkedin_posts";
+const SEO_KEY = "seo";
+
+function seedLinkedInDrafts(): LinkedInDraft[] {
+  const ts = nowIso();
+  return LINKEDIN_KICKOFFS.map((k) => ({
+    id: k.id,
+    title: k.title,
+    body: k.body,
+    createdAt: ts,
+    updatedAt: ts,
+  }));
+}
+
+async function readLinkedInDrafts(): Promise<LinkedInDraft[]> {
+  const raw = await getSetting(LINKEDIN_KEY);
+  if (!raw) {
+    const seeded = seedLinkedInDrafts();
+    await setSetting(LINKEDIN_KEY, JSON.stringify(seeded));
+    return seeded;
+  }
+  try {
+    const parsed = JSON.parse(raw) as LinkedInDraft[];
+    if (!Array.isArray(parsed)) return seedLinkedInDrafts();
+    return parsed.filter((p) => p?.id && typeof p.body === "string");
+  } catch {
+    return seedLinkedInDrafts();
+  }
+}
+
+async function writeLinkedInDrafts(drafts: LinkedInDraft[]): Promise<void> {
+  await setSetting(LINKEDIN_KEY, JSON.stringify(drafts));
+}
+
+export async function listLinkedInDrafts(): Promise<LinkedInDraft[]> {
+  const drafts = await readLinkedInDrafts();
+  return [...drafts].sort((a, b) => (a.updatedAt < b.updatedAt ? 1 : -1));
+}
+
+export async function createLinkedInDraft(input: { title: string; body: string }): Promise<LinkedInDraft> {
+  const title = input.title.trim() || "Untitled LinkedIn post";
+  const body = input.body.trim();
+  if (body.length < 20) throw new Error("Post body needs at least 20 characters.");
+  const ts = nowIso();
+  const draft: LinkedInDraft = { id: newId(), title, body, createdAt: ts, updatedAt: ts };
+  const drafts = await readLinkedInDrafts();
+  drafts.unshift(draft);
+  await writeLinkedInDrafts(drafts);
+  return draft;
+}
+
+export async function updateLinkedInDraft(
+  id: string,
+  input: { title: string; body: string },
+): Promise<LinkedInDraft> {
+  const title = input.title.trim() || "Untitled LinkedIn post";
+  const body = input.body.trim();
+  if (body.length < 20) throw new Error("Post body needs at least 20 characters.");
+  const drafts = await readLinkedInDrafts();
+  const idx = drafts.findIndex((d) => d.id === id);
+  if (idx < 0) throw new Error("LinkedIn draft not found.");
+  const next: LinkedInDraft = { ...drafts[idx], title, body, updatedAt: nowIso() };
+  drafts[idx] = next;
+  await writeLinkedInDrafts(drafts);
+  return next;
+}
+
+export async function deleteLinkedInDraft(id: string): Promise<void> {
+  const drafts = await readLinkedInDrafts();
+  const next = drafts.filter((d) => d.id !== id);
+  if (next.length === drafts.length) throw new Error("LinkedIn draft not found.");
+  await writeLinkedInDrafts(next);
+}
+
+export async function getSeoSettings(): Promise<SeoSettings> {
+  const raw = await getSetting(SEO_KEY);
+  if (!raw) return { ...DEFAULT_SEO };
+  try {
+    const parsed = JSON.parse(raw) as Partial<SeoSettings>;
+    return {
+      title: (parsed.title || DEFAULT_SEO.title).trim() || DEFAULT_SEO.title,
+      description: (parsed.description || DEFAULT_SEO.description).trim() || DEFAULT_SEO.description,
+      tagline: (parsed.tagline || DEFAULT_SEO.tagline).trim() || DEFAULT_SEO.tagline,
+    };
+  } catch {
+    return { ...DEFAULT_SEO };
+  }
+}
+
+export async function setSeoSettings(input: SeoSettings): Promise<SeoSettings> {
+  const next: SeoSettings = {
+    title: input.title.trim(),
+    description: input.description.trim(),
+    tagline: input.tagline.trim(),
+  };
+  if (next.title.length < 8) throw new Error("Title is too short.");
+  if (next.description.length < 40) throw new Error("Description needs at least 40 characters.");
+  if (next.title.length > 70) throw new Error("Title should stay under 70 characters.");
+  if (next.description.length > 320) throw new Error("Description should stay under 320 characters.");
+  if (next.tagline.length > 160) throw new Error("Tagline should stay under 160 characters.");
+  await setSetting(SEO_KEY, JSON.stringify(next));
+  return next;
 }
 
 export function suggestSlug(title: string) {

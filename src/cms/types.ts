@@ -49,3 +49,19 @@ export type MediaAsset = {
   /** Public path to fetch the bytes */
   url: string;
 };
+
+/** Manual LinkedIn drafts — copy/paste to LinkedIn (no autopost). */
+export type LinkedInDraft = {
+  id: string;
+  title: string;
+  body: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+/** Public site SEO overrides (robots/sitemaps stay in code). */
+export type SeoSettings = {
+  title: string;
+  description: string;
+  tagline: string;
+};
