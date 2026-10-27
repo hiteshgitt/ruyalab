@@ -39,9 +39,18 @@ The sitemap file itself is valid (HTTP 200, real XML). If GSC still says **Could
 
 **In Cloudflare (ruyalab.com zone):**
 
-1. **Security → Bots** (or Security → Settings): turn **Bot Fight Mode** / **Super Bot Fight Mode** **Off**, or set verified bots / Google to allow.
-2. Optional WAF rule: **Skip** remaining bot checks when `URI Path` equals `/sitemap.xml` or `/robots.txt`, or when `Verified Bot` is Google.
-3. **Security → Events**: filter for `sitemap.xml` and confirm Googlebot is not Challenged / Blocked.
+1. **Bot Fight Mode** — leave **Off** (you already did).
+2. **Configure AI bot policies** (Security → Settings → Bot traffic) — this is a separate control. If it is set to **Block AI bots** / block crawlers, it has returned **403 to Googlebot** for other sites even while Bot Fight Mode was off. Set it to **Allow** / do not block verified search crawlers.
+3. Optional WAF rule: **Skip** remaining checks when `URI Path` is `/sitemap.xml` or `/robots.txt`, or `Verified Bot` eq Google.
+4. **Security → Events**: filter `sitemap.xml`. You should eventually see Google IPs (`66.249.x.x`), not only your home ISP.
+
+**In Search Console (required debug step):**
+
+1. URL Inspection → paste `https://ruyalab.com/sitemap.xml` → **Test live URL**.
+2. You want **Page fetch = Successful** and **Crawl allowed? = Yes**.
+3. If live test fails, the details page is the real reason (not the Sitemaps table).
+4. Also check **Manual actions** — sitemaps are ignored while one is open.
+5. Then Resubmit the sitemap and wait 1–3 days for **Last read** to fill in.
 
 **Then in Search Console:**
 
