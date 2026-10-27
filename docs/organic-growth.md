@@ -10,6 +10,20 @@ Primary wedge: AI-powered products and product engineering for founders / heads 
 
 ---
 
+## Status (code vs you)
+
+| Item | Status |
+| --- | --- |
+| ruyalab.com wedge copy + pipeline events + static sitemap | Done (live) |
+| Sitemap `noindex` removed; live test available to Google | Done — wait for Sitemaps **Success** |
+| Enquiry tracker template | [enquiry-tracker.csv](enquiry-tracker.csv) |
+| Talkel “Built by Ruyalab” | In git `main` — confirm live after deploy |
+| Web Monitor “Built by Ruyalab” link | In git `layoutchage` — live still shows old “by Ruyalab” text; needs that branch deployed |
+| Social `NEXT_PUBLIC_SOCIAL_LINKS` | Later (your call) |
+| LinkedIn 3 kickoff posts | You |
+| GSC: request indexing on homepage; wait on sitemap row | You |
+| GA4: mark `contact_submit` key event | You (after one form submit) |
+
 ## Done on the website (this repo)
 
 - Homepage, studio, contact, footer, meta description, and OG card copy sharpened to the wedge.
