@@ -1,5 +1,5 @@
 import { loadAdminEnquiries, updateEnquiryAction } from "@/cms/actions";
-import { EnquiryRow } from "./EnquiryRow";
+import { EnquiriesList } from "./EnquiriesList";
 import styles from "../../admin.module.css";
 
 export default async function CmsEnquiriesPage() {
@@ -12,8 +12,7 @@ export default async function CmsEnquiriesPage() {
           <p className={styles.kicker}>Growth</p>
           <h1 className={styles.title}>Enquiries</h1>
           <p className={styles.muted}>
-            Contact-form submissions land here automatically (replaces the spreadsheet for site
-            enquiries). Update stage, ICP fit and notes as you work them.
+            Contact-form submissions land here. Rows stay compact — open one to update stage, ICP and notes.
           </p>
         </div>
       </header>
@@ -21,16 +20,10 @@ export default async function CmsEnquiriesPage() {
       <div className={styles.card}>
         {enquiries.length === 0 ? (
           <div className={styles.emptyPanel}>
-            <p className={styles.muted}>
-              No enquiries yet. Submit the contact form once to verify the pipeline.
-            </p>
+            <p className={styles.muted}>No enquiries yet. Submit the contact form once to verify the pipeline.</p>
           </div>
         ) : (
-          <div className={styles.enquiryList}>
-            {enquiries.map((enquiry) => (
-              <EnquiryRow key={enquiry.id} enquiry={enquiry} action={updateEnquiryAction} />
-            ))}
-          </div>
+          <EnquiriesList enquiries={enquiries} action={updateEnquiryAction} />
         )}
       </div>
     </div>
