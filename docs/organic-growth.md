@@ -19,18 +19,37 @@ Primary wedge: AI-powered products and product engineering for founders / heads 
   - `product_outbound` — click “Visit site” on a live product case study
 - Sitemap remains at `https://ruyalab.com/sitemap.xml`.
 
-In GA4 Admin → Events, mark `contact_submit` as a **key event**.
+**GA4 — where Events moved (new Admin UI):**
+
+There is no longer a top-level **Admin → Events**. Use either:
+
+1. Left sidebar under the property: open **Data display** → **Events**, or
+2. Top search bar: type `Events` and open it, or
+3. Reports → Engagement → Events (to see counts; marking key events is still under Admin → Data display).
+
+`contact_submit` only appears after it has fired at least once (submit the contact form on the live site, wait a few minutes / up to 24h). Then open the event → **Mark as key event**.
 
 ---
 
 ## You need to do these (I cannot)
 
-### 1. Google Search Console (today)
+### 1. Google Search Console + Cloudflare (today)
 
-1. Open the property for `ruyalab.com` or `https://ruyalab.com`.
-2. **Sitemaps** → submit `https://ruyalab.com/sitemap.xml`.
-3. Wait until status is **Success** (not only “Indexing requested” on URL Inspection).
-4. Reply here when sitemap shows Success, or paste a screenshot if it fails.
+The sitemap file itself is valid (HTTP 200, real XML). If GSC still says **Couldn't fetch**, Google’s crawler is being blocked before it gets the file — almost always **Cloudflare Bot Fight Mode** on this host (same class of issue that once broke PageSpeed).
+
+**In Cloudflare (ruyalab.com zone):**
+
+1. **Security → Bots** (or Security → Settings): turn **Bot Fight Mode** / **Super Bot Fight Mode** **Off**, or set verified bots / Google to allow.
+2. Optional WAF rule: **Skip** remaining bot checks when `URI Path` equals `/sitemap.xml` or `/robots.txt`, or when `Verified Bot` is Google.
+3. **Security → Events**: filter for `sitemap.xml` and confirm Googlebot is not Challenged / Blocked.
+
+**Then in Search Console:**
+
+1. Sitemaps → open `https://ruyalab.com/sitemap.xml` → **Resubmit** (or remove and submit again).
+2. Wait until **Last read** fills in and status is **Success**.
+3. Reply here with Success, or a Cloudflare Events screenshot if it still fails.
+
+The site now also ships a **static** `public/sitemap.xml` (built at deploy) so the file is not only a Worker-rendered route.
 
 ### 2. Social profiles (this week)
 

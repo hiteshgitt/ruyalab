@@ -25,10 +25,21 @@ const securityHeaders = [
   { key: "Content-Security-Policy", value: contentSecurityPolicy },
 ];
 
+const crawlerHeaders = [
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains" },
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "Cache-Control", value: "public, max-age=3600" },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      // Keep sitemap/robots light — Google's fetch often fails on heavy Worker responses.
+      { source: "/sitemap.xml", headers: crawlerHeaders },
+      { source: "/robots.txt", headers: crawlerHeaders },
+      { source: "/:path*", headers: securityHeaders },
+    ];
   },
 };
 
