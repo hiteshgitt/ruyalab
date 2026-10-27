@@ -2,12 +2,16 @@
 
 import { redirect } from "next/navigation";
 import {
+  clearPendingCookie,
   clearSessionCookie,
   cmsConfigured,
+  hasPendingAuth,
   isCmsAuthed,
   requireCmsAuth,
+  setPendingCookie,
   setSessionCookie,
-  verifyPassword,
+  verifyAuthenticatorCode,
+  verifyCredentials,
 } from "./auth";
 import {
   createLinkedInDraft,
@@ -31,19 +35,44 @@ import { deleteMedia, listMedia, updateMediaAlt } from "./media";
 import type { EnquiryStage, LinkedInDraft, PostInput, SeoSettings, SocialLink } from "./types";
 
 export type ActionResult =
-  | { ok: true; draft?: LinkedInDraft; seo?: SeoSettings }
+  | { ok: true; draft?: LinkedInDraft; seo?: SeoSettings; needsTotp?: boolean }
   | { ok: false; error: string };
 
 export async function loginAction(formData: FormData): Promise<ActionResult> {
   if (!cmsConfigured()) {
-    return { ok: false, error: "CMS env is not configured. Set CMS_ADMIN_PASSWORD and CMS_SESSION_SECRET." };
+    return {
+      ok: false,
+      error:
+        "CMS env is not configured. Set CMS_ADMIN_USERNAME, CMS_ADMIN_PASSWORD, CMS_TOTP_SECRET, and CMS_SESSION_SECRET.",
+    };
   }
+  const username = String(formData.get("username") || "");
   const password = String(formData.get("password") || "");
-  if (!verifyPassword(password)) {
-    return { ok: false, error: "Wrong password." };
+  if (!verifyCredentials(username, password)) {
+    return { ok: false, error: "Wrong username or password." };
+  }
+  await setPendingCookie(username.trim());
+  return { ok: true, needsTotp: true };
+}
+
+export async function verifyTotpAction(formData: FormData): Promise<ActionResult> {
+  if (!cmsConfigured()) {
+    return { ok: false, error: "CMS env is not configured." };
+  }
+  if (!(await hasPendingAuth())) {
+    return { ok: false, error: "Session expired — enter username and password again." };
+  }
+  const code = String(formData.get("code") || "");
+  if (!verifyAuthenticatorCode(code)) {
+    return { ok: false, error: "Invalid authenticator code." };
   }
   await setSessionCookie();
   redirect("/ruyashield");
+}
+
+export async function cancelTotpAction(): Promise<ActionResult> {
+  await clearPendingCookie();
+  return { ok: true };
 }
 
 export async function logoutAction() {

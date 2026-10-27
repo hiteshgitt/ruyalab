@@ -23,7 +23,15 @@ npx wrangler d1 execute ruyalab-cms --remote --file=migrations/0002_enquiries.sq
 npx wrangler d1 execute ruyalab-cms --remote --file=migrations/0003_media.sql
 ```
 
-`CMS_ADMIN_PASSWORD` and `CMS_SESSION_SECRET` are already set as Worker secrets on `ruyalab`.
+Login is **username + password**, then a **6-digit authenticator** code (Google Authenticator / 1Password / Authy).
+
+Generate a TOTP secret (and otpauth URL to scan):
+
+```bash
+node scripts/cms-totp-setup.mjs your-username
+```
+
+Worker secrets needed: `CMS_ADMIN_USERNAME`, `CMS_ADMIN_PASSWORD`, `CMS_TOTP_SECRET`, `CMS_SESSION_SECRET`.
 
 **Still required in Cloudflare dashboard before production CMS works:**
 
@@ -36,7 +44,9 @@ npx wrangler d1 execute ruyalab-cms --remote --file=migrations/0003_media.sql
 1. In `.env.local`:
 
 ```bash
+CMS_ADMIN_USERNAME=your-username
 CMS_ADMIN_PASSWORD=your-long-dev-password
+CMS_TOTP_SECRET=base32-from-cms-totp-setup
 CMS_SESSION_SECRET=your-long-dev-secret-16+
 ```
 
@@ -59,12 +69,14 @@ npx wrangler d1 create ruyalab-cms
 npx wrangler d1 execute ruyalab-cms --remote --file=migrations/0001_cms.sql
 ```
 
-4. Set **runtime secrets / vars** on the Worker:
+4. Set **runtime secrets** on the Worker:
 
+- `CMS_ADMIN_USERNAME` — login username  
 - `CMS_ADMIN_PASSWORD` — long random password  
+- `CMS_TOTP_SECRET` — base32 from `node scripts/cms-totp-setup.mjs`  
 - `CMS_SESSION_SECRET` — different long random string (16+)
 
-5. Redeploy. Sign in at `https://ruyalab.com/ruyashield`.
+5. Redeploy. Sign in at `https://ruyalab.com/ruyashield` (password step, then authenticator).
 
 ### Example wrangler binding snippet
 
@@ -86,7 +98,7 @@ Match any other existing OpenNext bindings (`ASSETS`, `IMAGES`, `WORKER_SELF_REF
 
 - `/ruyashield` is `noindex` and listed in `robots.txt` as `Disallow`.
 - Sessions are httpOnly cookies, 8 hours.
-- One shared admin password (v1). Add TOTP / multiple admins later if needed.
+- Single admin: username + password + TOTP (v1). Multiple admins later if needed.
 - Do not link `/ruyashield` from the public site.
 
 ## Organic growth

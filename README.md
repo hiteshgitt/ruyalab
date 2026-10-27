@@ -19,7 +19,7 @@ Founder checklist, LinkedIn kickoff posts, and pipeline tracking: [docs/organic-
 
 ## Studio CMS (RuyaShield)
 
-Admin at `/ruyashield` — blog posts and footer social links. Local uses `.data/cms.json`; production needs Cloudflare D1 (`CMS_DB`) plus `CMS_ADMIN_PASSWORD` / `CMS_SESSION_SECRET`. Setup: [docs/cms.md](docs/cms.md).
+Admin at `/ruyashield` — blog posts and footer social links. Local uses `.data/cms.json`; production needs Cloudflare D1 (`CMS_DB`) plus `CMS_ADMIN_USERNAME` / `CMS_ADMIN_PASSWORD` / `CMS_TOTP_SECRET` / `CMS_SESSION_SECRET`. Setup: [docs/cms.md](docs/cms.md).
 
 ## Configuration
 
