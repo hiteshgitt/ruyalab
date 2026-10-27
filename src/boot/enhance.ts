@@ -421,11 +421,8 @@ function track(name: string, params: Record<string, string> = {}) {
 
 function bootContact() {
   const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
-  const success = document.querySelector<HTMLElement>("[data-contact-success]");
-  const message = document.querySelector<HTMLElement>("[data-contact-message]");
   const error = document.querySelector<HTMLElement>("[data-contact-error]");
-  const reset = document.querySelector<HTMLButtonElement>("[data-contact-reset]");
-  if (!form || !success) return;
+  if (!form) return;
 
   const showError = (text: string) => {
     if (!error) return;
@@ -433,6 +430,7 @@ function bootContact() {
     error.textContent = text;
   };
 
+  // Always finish on /thanks so UX + GA4 stay one path (inline script there fires contact_submit).
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!form.reportValidity()) return;
@@ -457,24 +455,12 @@ function bootContact() {
         showError(data.message || "Something went wrong sending your message. Please try again in a moment.");
         return;
       }
-      if (message) message.textContent = data.message || "Thanks — your message is in. We'll be in touch soon.";
-      form.hidden = true;
-      success.hidden = false;
-      success.focus();
-      track("contact_submit", { method: "form" });
+      window.location.assign("/thanks");
     } catch {
       showError("Something went wrong sending your message. Please try again in a moment.");
     } finally {
       if (submit) submit.disabled = false;
     }
-  });
-
-  reset?.addEventListener("click", () => {
-    form.reset();
-    form.hidden = false;
-    success.hidden = true;
-    if (error) error.hidden = true;
-    form.querySelector<HTMLElement>("input, textarea, select")?.focus();
   });
 }
 

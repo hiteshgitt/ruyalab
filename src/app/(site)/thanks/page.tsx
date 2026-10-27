@@ -1,15 +1,34 @@
 import type { Metadata } from "next";
-import { ContactSubmitBeacon } from "@/components/analytics/ContactSubmitBeacon";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Message received",
   robots: { index: false, follow: false },
 };
 
+/** Inline so GA4 fires even before React hydrates (and if the client chunk is delayed). */
+const CONTACT_SUBMIT_SCRIPT = `(function(){
+  var id=${JSON.stringify(site.gaId)};
+  if(!id)return;
+  try{if(sessionStorage.getItem("ruyalab_contact_submit")==="1")return;sessionStorage.setItem("ruyalab_contact_submit","1")}catch(e){}
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments)}
+  window.gtag=window.gtag||gtag;
+  if(!document.documentElement.dataset.gaConfigured){
+    document.documentElement.dataset.gaConfigured="1";
+    gtag("js",new Date());
+    gtag("config",id,{send_page_view:true});
+  }
+  if(!document.querySelector('script[src*="googletagmanager.com/gtag/js?id='+id+'"]')){
+    var s=document.createElement("script");s.async=true;s.src="https://www.googletagmanager.com/gtag/js?id="+id;document.head.appendChild(s);
+  }
+  gtag("event","contact_submit",{method:"form",page_path:"/thanks"});
+})();`;
+
 export default function Thanks() {
   return (
     <section className="container" style={{ paddingBlock: "8rem 6rem", maxWidth: "40rem" }}>
-      <ContactSubmitBeacon />
+      <script dangerouslySetInnerHTML={{ __html: CONTACT_SUBMIT_SCRIPT }} />
       <p className="label">
         <span className="paren">Contact</span>
       </p>
