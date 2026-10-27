@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactSubmitBeacon } from "@/components/analytics/ContactSubmitBeacon";
 
 export const metadata: Metadata = {
   title: "Message received",
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
 export default function Thanks() {
   return (
     <section className="container" style={{ paddingBlock: "8rem 6rem", maxWidth: "40rem" }}>
+      <ContactSubmitBeacon />
       <p className="label">
         <span className="paren">Contact</span>
       </p>
@@ -15,7 +17,7 @@ export default function Thanks() {
         Message received.
       </h1>
       <p style={{ marginTop: "1.25rem", maxWidth: "36rem", color: "var(--c-text-2)" }}>
-        Thanks — your message is in. We'll be in touch soon.
+        Thanks — your message is in. We&apos;ll be in touch soon.
       </p>
       <p style={{ marginTop: "2rem" }}>
         <a href="/" className="label">

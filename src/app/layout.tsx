@@ -4,8 +4,6 @@ import { site } from "@/lib/site";
 import { IMMEDIATE_SCRIPT } from "@/lib/immediate";
 import { THEME_SCRIPT } from "@/lib/theme";
 import { JsonLd, organizationLd, websiteLd } from "@/lib/seo";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 import "./globals.css";
 
 // optional: if the file is not here in the first instant, the fallback paints
@@ -79,12 +77,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <JsonLd data={[organizationLd(), websiteLd()]} />
       </head>
       <body>
-        <a href="#main" className="skip-link">
-          Skip to content
-        </a>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
+        {children}
         <script dangerouslySetInnerHTML={{ __html: IMMEDIATE_SCRIPT }} />
       </body>
     </html>

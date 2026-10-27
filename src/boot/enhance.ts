@@ -403,14 +403,20 @@ function bootPlaybooks() {
   sync();
 }
 
+/** Ensure the gtag stub exists so events queue correctly before the script loads. */
+function ensureGtag() {
+  window.dataLayer = window.dataLayer || [];
+  if (typeof window.gtag === "function") return;
+  window.gtag = function gtag(...args: unknown[]) {
+    // Must push Arguments-shaped entries — an array literal is ignored by gtag.js.
+    window.dataLayer?.push(args);
+  };
+}
+
 /** Queue a GA4 event even if the gtag script has not finished loading yet. */
 function track(name: string, params: Record<string, string> = {}) {
-  window.dataLayer = window.dataLayer || [];
-  if (typeof window.gtag === "function") {
-    window.gtag("event", name, params);
-    return;
-  }
-  window.dataLayer.push(["event", name, params]);
+  ensureGtag();
+  window.gtag?.("event", name, params);
 }
 
 function bootContact() {
@@ -474,17 +480,20 @@ function bootContact() {
 
 function bootAnalytics() {
   const id = document.documentElement.dataset.ga;
-  if (!id || document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${id}"]`)) return;
-  window.dataLayer = window.dataLayer || [];
-  window.gtag = function gtag(...args: unknown[]) {
-    window.dataLayer?.push(args);
-  };
-  window.gtag("js", new Date());
-  window.gtag("config", id);
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
-  document.head.appendChild(script);
+  if (!id) return;
+  ensureGtag();
+  // Config once even if the gtag.js script tag was injected elsewhere (e.g. Zaraz).
+  if (!document.documentElement.dataset.gaConfigured) {
+    document.documentElement.dataset.gaConfigured = "1";
+    window.gtag?.("js", new Date());
+    window.gtag?.("config", id, { send_page_view: true });
+  }
+  if (!document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${id}"]`)) {
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(script);
+  }
 
   const path = location.pathname;
   const work = path.match(/^\/work\/([^/]+)\/?$/);
@@ -518,5 +527,5 @@ bootTilt();
 bootDevice();
 bootMascots();
 bootPlaybooks();
-bootContact();
 bootAnalytics();
+bootContact();

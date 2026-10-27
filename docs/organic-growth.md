@@ -12,17 +12,22 @@ Primary wedge: AI-powered products and product engineering for founders / heads 
 
 ## Status (code vs you)
 
-| Item | Status |
-| --- | --- |
-| ruyalab.com wedge copy + pipeline events + static sitemap | Done (live) |
-| Sitemap `noindex` removed; live test available to Google | Done — wait for Sitemaps **Success** |
-| Enquiry tracker template | [enquiry-tracker.csv](enquiry-tracker.csv) |
-| Talkel “Built by Ruyalab” | In git `main` — confirm live after deploy |
-| Web Monitor “Built by Ruyalab” link | In git `layoutchage` — live still shows old “by Ruyalab” text; needs that branch deployed |
-| Social `NEXT_PUBLIC_SOCIAL_LINKS` | Later (your call) |
-| LinkedIn 3 kickoff posts | You |
-| GSC: request indexing on homepage; wait on sitemap row | You |
-| GA4: mark `contact_submit` key event | You (after one form submit) |
+| Phase | Item | Status |
+| --- | --- | --- |
+| 1 · Site | Wedge copy, meta, OG, `llms.txt` | Done (live) |
+| 1 · Site | GA4 pipeline: `contact_submit`, `case_study_view`, `product_outbound` | Done (live in `/boot/enhance.js`) |
+| 1 · Site | Static `sitemap.xml` + `robots.txt`; no `noindex` on sitemap | Done (live 200 / XML) |
+| 2 · Products | Talkel footer → https://ruyalab.com/ | Done (live on talkel.ruyalab.com + /download) |
+| 2 · Products | Web Monitor footer → https://ruyalab.com/ | Done (live on webmonitor.ruyalab.com) |
+| 3 · Ops kit | Enquiry tracker CSV template | Done — [enquiry-tracker.csv](enquiry-tracker.csv) |
+| 3 · Ops kit | This checklist + LinkedIn copy pack | Done (below) |
+| 4 · You | GSC: homepage **Request indexing**; wait until Sitemaps = **Success** | Indexing requested — wait for Success |
+| 4 · You | Browser-submit contact once → GA4 mark `contact_submit` key event | API test done; **browser submit + Mark key event** still you |
+| 4 · You | LinkedIn: 3 kickoffs via CMS **LinkedIn pack → Copy** | Waiting on you (no autopost) |
+| 4 · You | Enquiry tracker | **CMS Enquiries** (CSV optional backup) |
+| 5 · CMS | D1 `ruyalab-cms` + migrations + CMS secrets | Done in Cloudflare |
+| 5 · You | Bind `CMS_DB` on Worker + enable R2 `CMS_MEDIA` + deploy code | Remaining |
+| 5 · You | Social URLs in CMS Social tab | Waiting on you (need real profile links) |
 
 ## Done on the website (this repo)
 
@@ -47,59 +52,40 @@ There is no longer a top-level **Admin → Events**. Use either:
 
 ## You need to do these (I cannot)
 
-### 1. Google Search Console + Cloudflare (today)
+Code + product-footer phases are finished. Everything below needs your Google / LinkedIn / spreadsheet access.
 
-The sitemap file itself is valid (HTTP 200, real XML). If GSC still says **Couldn't fetch**, Google’s crawler is being blocked before it gets the file — almost always **Cloudflare Bot Fight Mode** on this host (same class of issue that once broke PageSpeed).
+### 1. Google Search Console (today / this week)
 
-**In Cloudflare (ruyalab.com zone):**
+Cloudflare **Bot Fight Mode** is already **Off**. Sitemap live-fetches as valid XML (HTTP 200, no `noindex`).
 
-1. **Bot Fight Mode** — leave **Off** (you already did).
-2. **Configure AI bot policies** (Security → Settings → Bot traffic) — this is a separate control. If it is set to **Block AI bots** / block crawlers, it has returned **403 to Googlebot** for other sites even while Bot Fight Mode was off. Set it to **Allow** / do not block verified search crawlers.
-3. Optional WAF rule: **Skip** remaining checks when `URI Path` is `/sitemap.xml` or `/robots.txt`, or `Verified Bot` eq Google.
-4. **Security → Events**: filter `sitemap.xml`. You should eventually see Google IPs (`66.249.x.x`), not only your home ISP.
+**Do this in Search Console:**
 
-**In Search Console (required debug step):**
+1. URL Inspection → `https://ruyalab.com/` → **Request indexing** (homepage).
+2. Sitemaps → `https://ruyalab.com/sitemap.xml` — leave it; wait until **Last read** fills and status is **Success** (often 1–2 days after a good live test). Resubmit only if it is still **Couldn't fetch** after that.
+3. Optional: URL Inspection → sitemap URL → **Test live URL** again if the table is stuck.
+4. Reply here when Sitemaps shows **Success**, or with a screenshot if it fails.
 
-1. URL Inspection → paste `https://ruyalab.com/sitemap.xml` → **Test live URL**.
-2. You want **Page fetch = Successful** and **Crawl allowed? = Yes**.
-3. If live test fails, the details page is the real reason (not the Sitemaps table).
-4. Also check **Manual actions** — sitemaps are ignored while one is open.
-5. Then Resubmit the sitemap and wait 1–3 days for **Last read** to fill in.
+If crawl fails again: Cloudflare → Security → Bot traffic / AI Crawl Control — do not block verified Googlebot. Security → Events filter `sitemap.xml` for `66.249.x.x`.
 
-**Then in Search Console:**
+### 2. GA4 key event (after one real submit)
 
-1. Sitemaps → open `https://ruyalab.com/sitemap.xml` → **Resubmit** (or remove and submit again).
-2. Wait until **Last read** fills in and status is **Success**.
-3. Reply here with Success, or a Cloudflare Events screenshot if it still fails.
+1. On the live site, submit the contact form once (a real or test enquiry).
+2. Wait until `contact_submit` appears under **Data display → Events** (minutes to ~24h).
+3. Open the event → **Mark as key event**.
 
-The site now also ships a **static** `public/sitemap.xml` (built at deploy) so the file is not only a Worker-rendered route.
+### 3. Enquiry spreadsheet (today)
 
-### 2. Social profiles (this week)
+Import [enquiry-tracker.csv](enquiry-tracker.csv) into Sheets/Excel. Log every enquiry with Stage + Source.
 
-Send me the real `https://` URLs you will post from, for example:
+### 4. Social profiles (when ready — not blocking kickoff)
 
-- LinkedIn company page
-- Your personal LinkedIn (for founder posts — not stored on the site unless you want it)
-- GitHub org or X, if you will keep them alive
-
-I will put them in Cloudflare Workers build env as:
+Send real `https://` URLs you will actually post from (LinkedIn company, GitHub, X). I will set:
 
 `NEXT_PUBLIC_SOCIAL_LINKS=LinkedIn|https://...,GitHub|https://...`
 
-Only list profiles you will actually use.
+Skip any profile you will not keep alive.
 
-### 3. Product sites — “Built by Ruyalab”
-
-On **Talkel** and **Web Monitor**, add a plain footer/about link:
-
-`Built by [Ruyalab](https://ruyalab.com/)`
-
-Those repos are not in this codebase. Either:
-
-- point me at the Talkel / Web Monitor repo paths or remotes, or
-- add the link yourself and confirm.
-
-### 4. LinkedIn kickoff (this week)
+### 5. LinkedIn kickoff (this week)
 
 Post from **your personal profile** first (reach). Reshare from the company page.
 

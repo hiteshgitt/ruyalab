@@ -1,5 +1,6 @@
 import { readFields, validate, type ContactState } from "./schema";
 import { emailConfig, sendConfirmation, sendEnquiry } from "./email";
+import { createEnquiry } from "@/cms/db";
 
 /**
  * Delivery, in order of preference:
@@ -28,6 +29,11 @@ export async function deliverContact(formData: FormData): Promise<ContactState> 
   if (!mail && !webhook) {
     if (process.env.NODE_ENV !== "production") {
       console.info("[contact] no delivery configured — submission logged only:", fields);
+      try {
+        await createEnquiry({ ...fields, source: "Contact form" });
+      } catch (err) {
+        console.error("[contact] CMS enquiry log failed:", err);
+      }
       return {
         status: "success",
         message: "Thanks — your message is in. (Development mode: logged to the server console.)",
@@ -75,6 +81,13 @@ export async function deliverContact(formData: FormData): Promise<ContactState> 
     } catch (err) {
       console.error("[contact] confirmation email failed:", err);
     }
+  }
+
+  try {
+    await createEnquiry({ ...fields, source: "Contact form" });
+  } catch (err) {
+    // Delivery already succeeded — do not fail the visitor for a CRM write issue.
+    console.error("[contact] CMS enquiry log failed:", err);
   }
 
   return {

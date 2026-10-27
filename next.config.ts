@@ -2,9 +2,18 @@ import type { NextConfig } from "next";
 
 // Allows the theme boot script, Next.js runtime, JSON-LD, and the GA4 tag.
 // Nonces would force every page to render dynamically.
+// 'unsafe-eval' is only for local Next/React dev overlays — never needed in production.
+const isDev = process.env.NODE_ENV === "development";
 const contentSecurityPolicy = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://static.cloudflareinsights.com",
+  [
+    "script-src 'self' 'unsafe-inline'",
+    isDev ? "'unsafe-eval'" : null,
+    "https://www.googletagmanager.com",
+    "https://static.cloudflareinsights.com",
+  ]
+    .filter(Boolean)
+    .join(" "),
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' blob: data: https://www.googletagmanager.com https://www.google-analytics.com",
   "font-src 'self'",

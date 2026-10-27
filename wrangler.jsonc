@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ruyalab",
+  "compatibility_date": "2025-10-01",
+  "d1_databases": [
+    {
+      "binding": "CMS_DB",
+      "database_name": "ruyalab-cms",
+      "database_id": "79c81fb0-c122-48cb-aec5-4f96215c2372"
+    }
+  ]
+}

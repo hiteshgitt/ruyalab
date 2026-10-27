@@ -1,19 +1,23 @@
+import Link from "next/link";
 import { navItems, site } from "@/lib/site";
+import { resolveSocials } from "@/cms/socials";
 import { Logo } from "@/components/ui/Logo";
 import { Mascot } from "@/components/mascot/Mascot";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 import styles from "./Footer.module.css";
 
-export function Footer() {
+export async function Footer() {
   // Static pages: resolved at build time, so each deploy picks up the new year.
   const year = new Date().getFullYear();
+  const socials = await resolveSocials();
 
   return (
     <footer className={styles.footer}>
       <div className={`container grid ${styles.top}`}>
         <div className={styles.brand}>
-          <a href="/" aria-label="Ruyalab — home" className={styles.logoLink}>
+          <Link href="/" aria-label="Ruyalab — home" className={styles.logoLink}>
             <Logo />
-          </a>
+          </Link>
           <p className={styles.statement}>
             An independent creative technology studio. Design, engineering and AI by the same team —
             shipping digital products and experiences built for what comes next.
@@ -33,7 +37,7 @@ export function Footer() {
           </ul>
         </nav>
 
-        {(site.email || site.socials.length > 0) && (
+        {(site.email || socials.length > 0) && (
           <div className={styles.col}>
             <p className="label">Contact</p>
             <ul>
@@ -44,10 +48,11 @@ export function Footer() {
                   </a>
                 </li>
               )}
-              {site.socials.map((s) => (
+              {socials.map((s) => (
                 <li key={s.href}>
-                  <a href={s.href} className={styles.link} target="_blank" rel="noopener noreferrer">
-                    {s.label}
+                  <a href={s.href} className={styles.socialLink} target="_blank" rel="noopener noreferrer">
+                    <SocialIcon label={s.label} href={s.href} className={styles.socialIcon} />
+                    <span>{s.label}</span>
                     <span className="visually-hidden"> (opens in a new tab)</span>
                   </a>
                 </li>

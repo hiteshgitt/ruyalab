@@ -1,4 +1,6 @@
 User-Agent: *
 Allow: /
+Disallow: /ruyashield
 
 Sitemap: https://ruyalab.com/sitemap.xml
+Sitemap: https://ruyalab.com/blog/sitemap.xml

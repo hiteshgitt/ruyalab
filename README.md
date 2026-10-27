@@ -17,6 +17,10 @@ npm run lint && npx tsc --noEmit && npm run build
 
 Founder checklist, LinkedIn kickoff posts, and pipeline tracking: [docs/organic-growth.md](docs/organic-growth.md).
 
+## Studio CMS (RuyaShield)
+
+Admin at `/ruyashield` — blog posts and footer social links. Local uses `.data/cms.json`; production needs Cloudflare D1 (`CMS_DB`) plus `CMS_ADMIN_PASSWORD` / `CMS_SESSION_SECRET`. Setup: [docs/cms.md](docs/cms.md).
+
 ## Configuration
 
 Values that must be real (the domain, email address and social profiles) come from environment variables. When a value is unset, the UI leaves it out rather than showing a placeholder. See `.env.example`.

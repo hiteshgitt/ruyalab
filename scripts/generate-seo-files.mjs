@@ -44,8 +44,10 @@ ${urls
 
 const robots = `User-Agent: *
 Allow: /
+Disallow: /ruyashield
 
 Sitemap: ${site}/sitemap.xml
+Sitemap: ${site}/blog/sitemap.xml
 `;
 
 const out = join(root, "public");

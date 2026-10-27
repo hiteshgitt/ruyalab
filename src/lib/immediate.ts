@@ -138,5 +138,10 @@ export const IMMEDIATE_SCRIPT = `(function(){
   addEventListener("pointerdown",start,{once:true,passive:true});
   addEventListener("keydown",start,{once:true});
   addEventListener("scroll",start,{once:true,passive:true});
+  // Contact form: load enhance as soon as someone focuses a field so submit is intercepted.
+  document.addEventListener("focusin",function(e){
+    if(e.target&&e.target.closest&&e.target.closest("[data-contact-form]"))start();
+  },true);
+  if(location.hash==="#contact")start();
   setTimeout(start,30000);
 })();`;
