@@ -56,7 +56,7 @@ Setup:
 
 With neither configured, production shows an honest "not accepting messages" error and development logs submissions to the console.
 
-Spam protection is the honeypot only. If spam shows up, add Cloudflare Turnstile to the form.
+Spam protection: honeypot, submit-timing check, heuristic scoring (name/email/company patterns), and per-IP / per-email rate limits. Obvious spam is dropped before Resend so it cannot burn quota. Visitor confirmation emails are off unless `CONTACT_SEND_CONFIRMATION=1`. If spam still gets through, add Cloudflare Turnstile (`NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`).
 
 ## Structure
 

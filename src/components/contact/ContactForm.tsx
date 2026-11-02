@@ -55,6 +55,8 @@ export function ContactForm() {
       <div className={styles.hp} aria-hidden="true">
         <label htmlFor="contact-website">Website</label>
         <input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" />
+        {/* Timing token — enhance.js stamps load time; too-fast submits are dropped as bots */}
+        <input type="hidden" name="form_ts" value="" data-contact-ts="" />
       </div>
 
       <div className={styles.submitRow}>

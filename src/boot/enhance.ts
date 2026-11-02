@@ -424,6 +424,9 @@ function bootContact() {
   const error = document.querySelector<HTMLElement>("[data-contact-error]");
   if (!form) return;
 
+  const ts = form.querySelector<HTMLInputElement>("[data-contact-ts]");
+  if (ts && !ts.value) ts.value = String(Date.now());
+
   const showError = (text: string) => {
     if (!error) return;
     error.hidden = false;
