@@ -90,8 +90,14 @@ export function scoreSubmission(fields: ContactFields, meta: { elapsedMs: number
   let score = 0;
   const reasons: string[] = [];
 
+  // Known flood bot from Oct–Nov 2026 contact spam
+  if (/robert\s*jougs/i.test(fields.name) || /dmelnichuk/i.test(fields.email)) {
+    score += 10;
+    reasons.push("known-bot");
+  }
+
   if (looksLikeFusedName(fields.name)) {
-    score += 2;
+    score += 3; // alone is enough to discard
     reasons.push("fused-name");
   }
   if (nameEmailMismatch(fields.name, fields.email)) {
@@ -121,9 +127,9 @@ export function scoreSubmission(fields: ContactFields, meta: { elapsedMs: number
     score += 3;
     reasons.push("too-fast");
   }
-  // Missing timing from enhanced form is a mild signal (plain no-JS still ok)
+  // Missing timing — bots POST raw forms; real no-JS users are rare
   if (meta.elapsedMs === null) {
-    score += 1;
+    score += 2;
     reasons.push("no-timing");
   }
 
