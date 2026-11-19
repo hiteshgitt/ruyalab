@@ -37,7 +37,8 @@ function librariesFromManifest() {
     devDependencies,
     all_libraries: [...dependencies, ...devDependencies],
     outdated_count: null,
-    node_version: process.version,
+    // Cloudflare Workers emulate process.version; it is not a real Node.js install, so no version is reported.
+    node_version: null,
     nextjs_version: nextPackage.version,
   };
 }
