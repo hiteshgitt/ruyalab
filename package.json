@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/generate-seo-files.mjs && node scripts/build-boot.mjs && next build",
+    "postinstall": "node scripts/ci-build.mjs",
     "start": "next start",
     "lint": "eslint"
   },
