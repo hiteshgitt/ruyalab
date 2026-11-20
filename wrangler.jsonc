@@ -4,6 +4,8 @@
   "compatibility_date": "2026-10-28",
   "compatibility_flags": ["global_fetch_strictly_public", "nodejs_compat"],
   "main": ".open-next/worker.js",
+  // Variables set in the Cloudflare dashboard survive every deploy (same as `wrangler deploy --keep-vars`).
+  "keep_vars": true,
   "assets": {
     "directory": ".open-next/assets",
     "binding": "ASSETS"
